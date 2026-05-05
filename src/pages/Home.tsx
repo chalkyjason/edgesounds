@@ -109,7 +109,7 @@ function FeatureCard({
   return (
     <div className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4">
       <div className="mb-2">{icon}</div>
-      <h3 className="text-sm font-medium text-zinc-100">{title}</h3>
+      <h2 className="text-sm font-medium text-zinc-100">{title}</h2>
       <p className="mt-1 text-sm text-zinc-400">{body}</p>
     </div>
   )
@@ -132,10 +132,10 @@ function PipelineDiagram() {
             </span>
             <div className="flex-1">
               <div className="text-sm font-medium text-zinc-100">{s.label}</div>
-              <div className="font-mono text-xs text-zinc-500">{s.sub}</div>
+              <div className="font-mono text-xs text-zinc-400">{s.sub}</div>
             </div>
             {i < steps.length - 1 && (
-              <span className="font-mono text-xs text-zinc-600">↓</span>
+              <span className="font-mono text-xs text-zinc-500">↓</span>
             )}
           </li>
         ))}

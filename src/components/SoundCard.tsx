@@ -46,7 +46,7 @@ export function SoundCard({
         <AudioPreview src={sound.path} id={sound.id} />
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-medium text-zinc-100">{sound.displayName}</div>
-          <div className="mt-0.5 font-mono text-xs text-zinc-500">{sound.filename}</div>
+          <div className="mt-0.5 font-mono text-xs text-zinc-400">{sound.filename}</div>
         </div>
       </div>
 
@@ -63,7 +63,7 @@ export function SoundCard({
         </div>
       )}
 
-      <div className="flex items-center justify-between text-xs text-zinc-500">
+      <div className="flex items-center justify-between text-xs text-zinc-400">
         {sound.credit && <span className="truncate">{sound.credit}</span>}
         <a
           href={sound.path}
