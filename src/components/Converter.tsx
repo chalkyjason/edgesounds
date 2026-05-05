@@ -1,6 +1,7 @@
 import { Download, RefreshCw, Wand2 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { useAudioConversion } from '../hooks/useAudioConversion'
+import { useMySounds } from '../hooks/useMySounds'
 import { useToast } from '../hooks/useToast'
 import { TRIGGER_PRESETS } from '../utils/triggerPresets'
 import {
@@ -17,6 +18,7 @@ import { TrimSlider } from './TrimSlider'
 export function Converter() {
   const { convert, status, reset } = useAudioConversion()
   const { notify } = useToast()
+  const { save: saveMySound } = useMySounds()
   const [file, setFile] = useState<File | null>(null)
   const [duration, setDuration] = useState<number>(0)
   const [start, setStart] = useState(0)
@@ -61,12 +63,24 @@ export function Converter() {
       return
     }
     try {
-      await convert(file, {
+      const result = await convert(file, {
         filename,
         trimStartSeconds: start > 0 ? start : undefined,
         trimEndSeconds: end > start ? end : undefined,
       })
-      notify('Conversion complete', 'success')
+      try {
+        await saveMySound({
+          filename: result.filename,
+          displayName: file.name.replace(/\.[^/.]+$/, ''),
+          duration: result.durationSeconds,
+          // Clone the blob so the saved copy is independent of the download URL lifecycle
+          blob: result.blob.slice(0, result.blob.size, result.blob.type),
+        })
+      } catch (e) {
+        // Saving is best-effort — don't block the user from downloading
+        console.warn('[Converter] failed to save to My Sounds', e)
+      }
+      notify('Conversion complete · saved to My Sounds', 'success')
     } catch (e) {
       const message = e instanceof Error ? e.message : 'Conversion failed'
       notify(message, 'error')
