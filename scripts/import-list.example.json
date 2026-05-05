@@ -1,0 +1,47 @@
+[
+  {
+    "_comment": "Each entry produces public/sounds/<category>/<id>.wav and a library.json entry. Replace `url` with the DIRECT mp3/wav URL — not the soundboard's page URL. To find it on Myinstants: open the page → DevTools (F12) → Network tab → click play → look for the .mp3 request → right-click 'Copy URL'.",
+
+    "id": "vine-boom",
+    "category": "memes",
+    "edgetxName": "boom",
+    "displayName": "Vine Boom",
+    "tags": ["meme", "boom", "impact"],
+    "url": "https://example.com/path/to/vine-boom.mp3",
+    "credit": "Vine app · via Myinstants",
+    "license": "fair-use-personal",
+    "trim": { "start": 0.0, "end": 1.5 }
+  },
+  {
+    "id": "topgun-speed",
+    "category": "movies",
+    "edgetxName": "armed",
+    "displayName": "Top Gun — feel the need for speed",
+    "tags": ["movie", "topgun", "armed"],
+    "url": "https://example.com/path/to/feel-the-need.mp3",
+    "credit": "Top Gun (1986)",
+    "license": "fair-use-personal",
+    "trigger": "armed",
+    "trim": { "start": 1.2, "end": 4.0 }
+  },
+  {
+    "id": "xbox-achievement",
+    "category": "games",
+    "edgetxName": "achv",
+    "displayName": "Xbox Achievement Unlocked",
+    "tags": ["game", "xbox", "achievement"],
+    "url": "https://example.com/path/to/xbox-achievement.mp3",
+    "credit": "Xbox 360 system sound",
+    "license": "fair-use-personal"
+  },
+  {
+    "id": "freesound-bell-cc0",
+    "category": "warnings",
+    "edgetxName": "bell",
+    "displayName": "Notification Bell (CC0)",
+    "tags": ["bell", "alert", "cc0"],
+    "url": "https://cdn.freesound.org/previews/.../sound.mp3",
+    "credit": "freesound.org user XYZ",
+    "license": "CC0"
+  }
+]

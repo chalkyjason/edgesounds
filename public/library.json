@@ -1,0 +1,213 @@
+{
+  "categories": [
+    {
+      "id": "callouts",
+      "name": "EdgeTX Callouts",
+      "description": "Auto-trigger sounds for arm, disarm, telemetry, and warnings. Use the exact EdgeTX filenames so the radio plays them at the right time.",
+      "sounds": [
+        {
+          "id": "callout-armed",
+          "filename": "armed.wav",
+          "displayName": "Armed (TTS)",
+          "trigger": "armed",
+          "duration": 1.64,
+          "tags": ["callout", "armed", "tts"],
+          "path": "/sounds/callouts/armed.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "callout-dsarmd",
+          "filename": "dsarmd.wav",
+          "displayName": "Disarmed (TTS)",
+          "trigger": "dsarmd",
+          "duration": 1.46,
+          "tags": ["callout", "disarmed", "tts"],
+          "path": "/sounds/callouts/dsarmd.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "callout-battlw",
+          "filename": "battlw.wav",
+          "displayName": "Battery Low (TTS)",
+          "trigger": "battlw",
+          "duration": 1.48,
+          "tags": ["callout", "battery", "warning", "tts"],
+          "path": "/sounds/callouts/battlw.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "callout-thrwrn",
+          "filename": "thrwrn.wav",
+          "displayName": "Throttle Warning (TTS)",
+          "trigger": "thrwrn",
+          "duration": 1.77,
+          "tags": ["callout", "throttle", "warning", "tts"],
+          "path": "/sounds/callouts/thrwrn.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "callout-swtwrn",
+          "filename": "swtwrn.wav",
+          "displayName": "Switch Warning (TTS)",
+          "trigger": "swtwrn",
+          "duration": 1.71,
+          "tags": ["callout", "switch", "warning", "tts"],
+          "path": "/sounds/callouts/swtwrn.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "callout-inacti",
+          "filename": "inacti.wav",
+          "displayName": "Radio Inactivity (TTS)",
+          "trigger": "inacti",
+          "duration": 2.03,
+          "tags": ["callout", "inactivity", "tts"],
+          "path": "/sounds/callouts/inacti.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "callout-telemok",
+          "filename": "telemok.wav",
+          "displayName": "Telemetry Recovered (TTS)",
+          "trigger": "telemok",
+          "duration": 1.99,
+          "tags": ["callout", "telemetry", "tts"],
+          "path": "/sounds/callouts/telemok.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "callout-tellst",
+          "filename": "tellst.wav",
+          "displayName": "Telemetry Lost (TTS)",
+          "trigger": "tellst",
+          "duration": 1.92,
+          "tags": ["callout", "telemetry", "warning", "tts"],
+          "path": "/sounds/callouts/tellst.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "callout-lowbat",
+          "filename": "lowbat.wav",
+          "displayName": "TX Battery Low (TTS)",
+          "trigger": "lowbat",
+          "duration": 2.14,
+          "tags": ["callout", "battery", "transmitter", "tts"],
+          "path": "/sounds/callouts/lowbat.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        }
+      ]
+    },
+    {
+      "id": "memes",
+      "name": "Memes",
+      "description": "Vine boom, airhorn, MLG hits — for when the flight deserves a meme.",
+      "sounds": [
+        {
+          "id": "meme-boom",
+          "filename": "boom.wav",
+          "displayName": "Sub-Bass Boom",
+          "duration": 0.9,
+          "tags": ["bass", "boom", "impact", "synth"],
+          "path": "/sounds/memes/boom.wav",
+          "credit": "Synthesized locally (sub-bass thump, original)",
+          "license": "generated-original"
+        },
+        {
+          "id": "meme-horn",
+          "filename": "horn.wav",
+          "displayName": "Chord Horn Blast",
+          "duration": 1.4,
+          "tags": ["horn", "chord", "synth", "alert"],
+          "path": "/sounds/memes/horn.wav",
+          "credit": "Synthesized locally (sawtooth chord, original)",
+          "license": "generated-original"
+        }
+      ]
+    },
+    {
+      "id": "movies",
+      "name": "Movies",
+      "description": "Top Gun, Anchorman, Princess Bride — short, recognizable, ready for a switch.",
+      "sounds": []
+    },
+    {
+      "id": "tv",
+      "name": "TV",
+      "description": "Quotes from Rick & Morty, Always Sunny, The Office, and friends.",
+      "sounds": [
+        {
+          "id": "tv-dexter-meme",
+          "filename": "dexter.wav",
+          "displayName": "Dexter Meme",
+          "duration": 3,
+          "tags": ["tv", "dexter", "meme"],
+          "path": "/sounds/tv/tv-dexter-meme.wav",
+          "credit": "Dexter (Showtime) · via Myinstants",
+          "license": "fair-use-personal"
+        }
+      ]
+    },
+    {
+      "id": "games",
+      "name": "Games",
+      "description": "Halo, Xbox achievement chime, retro SFX. Pure dopamine.",
+      "sounds": []
+    },
+    {
+      "id": "warnings",
+      "name": "Warnings",
+      "description": "Computer voice / robotic callouts — battery, telemetry, signal, link quality.",
+      "sounds": [
+        {
+          "id": "warn-win",
+          "filename": "win.wav",
+          "displayName": "Achievement Chime",
+          "duration": 0.74,
+          "tags": ["chime", "success", "synth"],
+          "path": "/sounds/warnings/win.wav",
+          "credit": "Synthesized locally (C-E-G triangle bell, original)",
+          "license": "generated-original"
+        },
+        {
+          "id": "warn-fail",
+          "filename": "fail.wav",
+          "displayName": "Sad Trombone",
+          "duration": 1.26,
+          "tags": ["fail", "sad", "synth"],
+          "path": "/sounds/warnings/fail.wav",
+          "credit": "Synthesized locally (descending sawtooth, original)",
+          "license": "generated-original"
+        },
+        {
+          "id": "warn-bzzt",
+          "filename": "bzzt.wav",
+          "displayName": "Error Buzz",
+          "duration": 0.35,
+          "tags": ["error", "buzz", "synth"],
+          "path": "/sounds/warnings/bzzt.wav",
+          "credit": "Synthesized locally (low square wave, original)",
+          "license": "generated-original"
+        },
+        {
+          "id": "warn-ping",
+          "filename": "ping.wav",
+          "displayName": "Notification Ping",
+          "duration": 0.6,
+          "tags": ["notification", "bell", "synth"],
+          "path": "/sounds/warnings/ping.wav",
+          "credit": "Synthesized locally (sine bell, original)",
+          "license": "generated-original"
+        }
+      ]
+    }
+  ]
+}
