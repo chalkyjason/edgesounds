@@ -130,6 +130,66 @@
           "path": "/sounds/memes/horn.wav",
           "credit": "Synthesized locally (sawtooth chord, original)",
           "license": "generated-original"
+        },
+        {
+          "id": "meme-vine-boom",
+          "filename": "vboom.wav",
+          "displayName": "Vine Boom",
+          "duration": 1.25,
+          "tags": ["meme", "boom", "impact"],
+          "path": "/sounds/memes/meme-vine-boom.wav",
+          "credit": "Vine app · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-mlg-airhorn",
+          "filename": "mlghrn.wav",
+          "displayName": "MLG Airhorn",
+          "duration": 1.58,
+          "tags": ["meme", "airhorn", "mlg"],
+          "path": "/sounds/memes/meme-mlg-airhorn.wav",
+          "credit": "via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-bruh",
+          "filename": "bruh.wav",
+          "displayName": "Bruh Sound Effect",
+          "duration": 0.82,
+          "tags": ["meme", "bruh"],
+          "path": "/sounds/memes/meme-bruh.wav",
+          "credit": "via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-roblox-oof",
+          "filename": "oof.wav",
+          "displayName": "Roblox Oof",
+          "duration": 1,
+          "tags": ["meme", "oof", "roblox"],
+          "path": "/sounds/memes/meme-roblox-oof.wav",
+          "credit": "Roblox · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-discord-ping",
+          "filename": "disc.wav",
+          "displayName": "Discord Notification",
+          "duration": 0.48,
+          "tags": ["meme", "discord", "ping"],
+          "path": "/sounds/memes/meme-discord-ping.wav",
+          "credit": "Discord · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-nani",
+          "filename": "nani.wav",
+          "displayName": "Nani?!",
+          "duration": 2,
+          "tags": ["meme", "anime", "nani"],
+          "path": "/sounds/memes/meme-nani.wav",
+          "credit": "via Myinstants",
+          "license": "fair-use-personal"
         }
       ]
     },
@@ -137,7 +197,49 @@
       "id": "movies",
       "name": "Movies",
       "description": "Top Gun, Anchorman, Princess Bride — short, recognizable, ready for a switch.",
-      "sounds": []
+      "sounds": [
+        {
+          "id": "movie-inconceivable",
+          "filename": "incon.wav",
+          "displayName": "Inconceivable!",
+          "duration": 1.58,
+          "tags": ["movie", "princess-bride"],
+          "path": "/sounds/movies/movie-inconceivable.wav",
+          "credit": "The Princess Bride (1987) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "movie-need-for-speed",
+          "filename": "need.wav",
+          "displayName": "Top Gun — I feel the need for speed",
+          "duration": 3,
+          "tags": ["movie", "top-gun", "armed"],
+          "path": "/sounds/movies/movie-need-for-speed.wav",
+          "trigger": "armed",
+          "credit": "Top Gun (1986) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "movie-wilhelm-scream",
+          "filename": "scream.wav",
+          "displayName": "Wilhelm Scream",
+          "duration": 1.01,
+          "tags": ["movie", "scream", "wilhelm"],
+          "path": "/sounds/movies/movie-wilhelm-scream.wav",
+          "credit": "Wilhelm scream (1951) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "movie-i-love-lamp",
+          "filename": "lamp.wav",
+          "displayName": "I love lamp",
+          "duration": 2.5,
+          "tags": ["movie", "anchorman"],
+          "path": "/sounds/movies/movie-i-love-lamp.wav",
+          "credit": "Anchorman (2004) · via Myinstants",
+          "license": "fair-use-personal"
+        }
+      ]
     },
     {
       "id": "tv",
@@ -153,6 +255,46 @@
           "path": "/sounds/tv/tv-dexter-meme.wav",
           "credit": "Dexter (Showtime) · via Myinstants",
           "license": "fair-use-personal"
+        },
+        {
+          "id": "tv-thats-what-she-said",
+          "filename": "twss.wav",
+          "displayName": "That's what she said",
+          "duration": 0.94,
+          "tags": ["tv", "office", "michael"],
+          "path": "/sounds/tv/tv-thats-what-she-said.wav",
+          "credit": "The Office (US) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "tv-parkour",
+          "filename": "parkur.wav",
+          "displayName": "PARKOUR! (Office)",
+          "duration": 2.5,
+          "tags": ["tv", "office", "parkour"],
+          "path": "/sounds/tv/tv-parkour.wav",
+          "credit": "The Office (US) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "tv-bazinga",
+          "filename": "bazing.wav",
+          "displayName": "Bazinga!",
+          "duration": 0.78,
+          "tags": ["tv", "big-bang-theory"],
+          "path": "/sounds/tv/tv-bazinga.wav",
+          "credit": "The Big Bang Theory · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "tv-wubba-lubba",
+          "filename": "wubba.wav",
+          "displayName": "Wubba Lubba Dub Dub",
+          "duration": 1.47,
+          "tags": ["tv", "rick-and-morty"],
+          "path": "/sounds/tv/tv-wubba-lubba.wav",
+          "credit": "Rick and Morty · via Myinstants",
+          "license": "fair-use-personal"
         }
       ]
     },
@@ -160,7 +302,58 @@
       "id": "games",
       "name": "Games",
       "description": "Halo, Xbox achievement chime, retro SFX. Pure dopamine.",
-      "sounds": []
+      "sounds": [
+        {
+          "id": "game-xbox-achievement",
+          "filename": "xbox.wav",
+          "displayName": "Xbox Achievement Unlocked",
+          "duration": 1.25,
+          "tags": ["game", "xbox", "achievement"],
+          "path": "/sounds/games/game-xbox-achievement.wav",
+          "credit": "Xbox 360 system sound · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-mario-coin",
+          "filename": "coin.wav",
+          "displayName": "Mario Coin",
+          "duration": 0.74,
+          "tags": ["game", "mario", "coin", "retro"],
+          "path": "/sounds/games/game-mario-coin.wav",
+          "credit": "Super Mario Bros. · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-mario-jump",
+          "filename": "jump.wav",
+          "displayName": "Mario Jump",
+          "duration": 0.86,
+          "tags": ["game", "mario", "retro"],
+          "path": "/sounds/games/game-mario-jump.wav",
+          "credit": "Super Mario Bros. · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-halo-theme",
+          "filename": "halo.wav",
+          "displayName": "Halo Theme",
+          "duration": 3,
+          "tags": ["game", "halo"],
+          "path": "/sounds/games/game-halo-theme.wav",
+          "credit": "Halo · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-skyrim-level-up",
+          "filename": "lvlup.wav",
+          "displayName": "Skyrim Level Up",
+          "duration": 3,
+          "tags": ["game", "skyrim", "level"],
+          "path": "/sounds/games/game-skyrim-level-up.wav",
+          "credit": "The Elder Scrolls V: Skyrim · via Myinstants",
+          "license": "fair-use-personal"
+        }
+      ]
     },
     {
       "id": "warnings",
@@ -206,6 +399,16 @@
           "path": "/sounds/warnings/ping.wav",
           "credit": "Synthesized locally (sine bell, original)",
           "license": "generated-original"
+        },
+        {
+          "id": "warn-pull-up",
+          "filename": "pullup.wav",
+          "displayName": "Pull Up! (Aviation GPWS)",
+          "duration": 2.5,
+          "tags": ["warning", "aviation", "pull-up"],
+          "path": "/sounds/warnings/warn-pull-up.wav",
+          "credit": "GPWS aviation alert (Concorde flight recorder) · via Myinstants",
+          "license": "fair-use-personal"
         }
       ]
     }
