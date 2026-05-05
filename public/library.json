@@ -190,6 +190,146 @@
           "path": "/sounds/memes/meme-nani.wav",
           "credit": "via Myinstants",
           "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-gigachad",
+          "filename": "gchad.wav",
+          "displayName": "Gigachad",
+          "duration": 3,
+          "tags": ["meme", "chad"],
+          "path": "/sounds/memes/meme-gigachad.wav",
+          "credit": "via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-john-cena",
+          "filename": "cena.wav",
+          "displayName": "John Cena",
+          "duration": 3,
+          "tags": ["meme", "wwe", "cena"],
+          "path": "/sounds/memes/meme-john-cena.wav",
+          "credit": "WWE · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-windows-error",
+          "filename": "winerr.wav",
+          "displayName": "Windows XP Error",
+          "duration": 0.99,
+          "tags": ["meme", "windows", "xp", "error"],
+          "path": "/sounds/memes/meme-windows-error.wav",
+          "credit": "Windows XP · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-windows-shutdown",
+          "filename": "winsdn.wav",
+          "displayName": "Windows XP Shutdown",
+          "duration": 2,
+          "tags": ["meme", "windows", "xp", "shutdown"],
+          "path": "/sounds/memes/meme-windows-shutdown.wav",
+          "credit": "Windows XP · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-metal-pipe",
+          "filename": "pipe.wav",
+          "displayName": "Metal Pipe Falling",
+          "duration": 2.5,
+          "tags": ["meme", "pipe", "impact"],
+          "path": "/sounds/memes/meme-metal-pipe.wav",
+          "credit": "via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-weide",
+          "filename": "weide.wav",
+          "displayName": "Directed by Robert B. Weide",
+          "duration": 3,
+          "tags": ["meme", "weide", "outro"],
+          "path": "/sounds/memes/meme-weide.wav",
+          "credit": "Curb Your Enthusiasm · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-among-us",
+          "filename": "amongs.wav",
+          "displayName": "Among Us — Emergency Meeting",
+          "duration": 3,
+          "tags": ["meme", "among-us"],
+          "path": "/sounds/memes/meme-among-us.wav",
+          "credit": "Among Us (Innersloth) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-to-be-continued",
+          "filename": "tobcnt.wav",
+          "displayName": "To Be Continued",
+          "duration": 3,
+          "tags": ["meme", "jojo", "outro"],
+          "path": "/sounds/memes/meme-to-be-continued.wav",
+          "credit": "JoJo's Bizarre Adventure · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-chad-yes",
+          "filename": "yes.wav",
+          "displayName": "Chad Yes",
+          "duration": 1.5,
+          "tags": ["meme", "chad", "yes"],
+          "path": "/sounds/memes/meme-chad-yes.wav",
+          "credit": "via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-chicken-dinner",
+          "filename": "winnr.wav",
+          "displayName": "Winner Winner Chicken Dinner",
+          "duration": 2.05,
+          "tags": ["meme", "pubg", "victory"],
+          "path": "/sounds/memes/meme-chicken-dinner.wav",
+          "credit": "PUBG · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-bombs-away",
+          "filename": "bombs.wav",
+          "displayName": "Bombs Away",
+          "duration": 2,
+          "tags": ["meme", "bombs", "fpv"],
+          "path": "/sounds/memes/meme-bombs-away.wav",
+          "credit": "via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-mission-accomplished",
+          "filename": "mssion.wav",
+          "displayName": "Mission Accomplished",
+          "duration": 2.5,
+          "tags": ["meme", "mission", "victory"],
+          "path": "/sounds/memes/meme-mission-accomplished.wav",
+          "credit": "via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-target-acquired",
+          "filename": "target.wav",
+          "displayName": "Target Acquired",
+          "duration": 1.06,
+          "tags": ["meme", "target", "fpv"],
+          "path": "/sounds/memes/meme-target-acquired.wav",
+          "credit": "via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "meme-enemy-spotted",
+          "filename": "enmysp.wav",
+          "displayName": "Enemy Spotted (CS)",
+          "duration": 1.54,
+          "tags": ["meme", "cs", "enemy"],
+          "path": "/sounds/memes/meme-enemy-spotted.wav",
+          "credit": "Counter-Strike · via Myinstants",
+          "license": "fair-use-personal"
         }
       ]
     },
@@ -237,6 +377,166 @@
           "tags": ["movie", "anchorman"],
           "path": "/sounds/movies/movie-i-love-lamp.wav",
           "credit": "Anchorman (2004) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "movie-ill-be-back",
+          "filename": "illbeb.wav",
+          "displayName": "I'll be back",
+          "duration": 2.06,
+          "tags": ["movie", "terminator", "arnold"],
+          "path": "/sounds/movies/movie-ill-be-back.wav",
+          "credit": "The Terminator (1984) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "movie-chopper",
+          "filename": "chpper.wav",
+          "displayName": "Get to the chopper!",
+          "duration": 2.5,
+          "tags": ["movie", "predator", "arnold"],
+          "path": "/sounds/movies/movie-chopper.wav",
+          "credit": "Predator (1987) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "movie-captain-now",
+          "filename": "captn.wav",
+          "displayName": "I'm the captain now",
+          "duration": 3,
+          "tags": ["movie", "captain-phillips"],
+          "path": "/sounds/movies/movie-captain-now.wav",
+          "credit": "Captain Phillips (2013) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "movie-james-bond",
+          "filename": "bond.wav",
+          "displayName": "James Bond Theme",
+          "duration": 3,
+          "tags": ["movie", "bond"],
+          "path": "/sounds/movies/movie-james-bond.wav",
+          "credit": "James Bond · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "movie-milkshake",
+          "filename": "mlkshk.wav",
+          "displayName": "I drink your milkshake",
+          "duration": 3,
+          "tags": ["movie", "there-will-be-blood"],
+          "path": "/sounds/movies/movie-milkshake.wav",
+          "credit": "There Will Be Blood (2007) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "movie-little-friend",
+          "filename": "hello.wav",
+          "displayName": "Say hello to my little friend",
+          "duration": 3,
+          "tags": ["movie", "scarface"],
+          "path": "/sounds/movies/movie-little-friend.wav",
+          "credit": "Scarface (1983) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "movie-not-pass",
+          "filename": "nopass.wav",
+          "displayName": "You shall not pass!",
+          "duration": 3,
+          "tags": ["movie", "lotr", "gandalf"],
+          "path": "/sounds/movies/movie-not-pass.wav",
+          "credit": "Lord of the Rings · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "movie-heres-johnny",
+          "filename": "johnny.wav",
+          "displayName": "Here's Johnny!",
+          "duration": 3,
+          "tags": ["movie", "shining"],
+          "path": "/sounds/movies/movie-heres-johnny.wav",
+          "credit": "The Shining (1980) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "sw-lightsaber",
+          "filename": "saber.wav",
+          "displayName": "Lightsaber",
+          "duration": 2.5,
+          "tags": ["movie", "star-wars", "lightsaber"],
+          "path": "/sounds/movies/sw-lightsaber.wav",
+          "credit": "Star Wars · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "sw-tie-fighter",
+          "filename": "tie.wav",
+          "displayName": "TIE Fighter Roar",
+          "duration": 2.5,
+          "tags": ["movie", "star-wars", "tie"],
+          "path": "/sounds/movies/sw-tie-fighter.wav",
+          "credit": "Star Wars · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "sw-r2d2",
+          "filename": "r2d2.wav",
+          "displayName": "R2-D2",
+          "duration": 2.5,
+          "tags": ["movie", "star-wars", "droid"],
+          "path": "/sounds/movies/sw-r2d2.wav",
+          "credit": "Star Wars · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "sw-imperial-march",
+          "filename": "march.wav",
+          "displayName": "Imperial March",
+          "duration": 3,
+          "tags": ["movie", "star-wars", "vader"],
+          "path": "/sounds/movies/sw-imperial-march.wav",
+          "credit": "Star Wars · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "sw-i-am-your-father",
+          "filename": "father.wav",
+          "displayName": "I am your father",
+          "duration": 3,
+          "tags": ["movie", "star-wars", "vader"],
+          "path": "/sounds/movies/sw-i-am-your-father.wav",
+          "credit": "Star Wars: Empire Strikes Back · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "sw-chewbacca",
+          "filename": "chewy.wav",
+          "displayName": "Chewbacca",
+          "duration": 1.62,
+          "tags": ["movie", "star-wars", "wookiee"],
+          "path": "/sounds/movies/sw-chewbacca.wav",
+          "credit": "Star Wars · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "sw-vader-breath",
+          "filename": "breath.wav",
+          "displayName": "Vader Breathing",
+          "duration": 3,
+          "tags": ["movie", "star-wars", "vader"],
+          "path": "/sounds/movies/sw-vader-breath.wav",
+          "credit": "Star Wars · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "sw-tie-blaster",
+          "filename": "blastr.wav",
+          "displayName": "TIE Fighter Blaster",
+          "duration": 1.04,
+          "tags": ["movie", "star-wars", "tie", "blaster"],
+          "path": "/sounds/movies/sw-tie-blaster.wav",
+          "credit": "Star Wars · via Myinstants",
           "license": "fair-use-personal"
         }
       ]
@@ -351,6 +651,116 @@
           "tags": ["game", "skyrim", "level"],
           "path": "/sounds/games/game-skyrim-level-up.wav",
           "credit": "The Elder Scrolls V: Skyrim · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-sonic-ring",
+          "filename": "sring.wav",
+          "displayName": "Sonic Ring",
+          "duration": 0.86,
+          "tags": ["game", "sonic", "retro"],
+          "path": "/sounds/games/game-sonic-ring.wav",
+          "credit": "Sonic the Hedgehog (Sega) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-zelda-secret",
+          "filename": "zsecrt.wav",
+          "displayName": "Zelda — Secret Found",
+          "duration": 1.39,
+          "tags": ["game", "zelda", "retro"],
+          "path": "/sounds/games/game-zelda-secret.wav",
+          "credit": "The Legend of Zelda · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-zelda-item",
+          "filename": "zitem.wav",
+          "displayName": "Zelda — Item Get",
+          "duration": 2.5,
+          "tags": ["game", "zelda", "retro"],
+          "path": "/sounds/games/game-zelda-item.wav",
+          "credit": "The Legend of Zelda · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-gameboy-startup",
+          "filename": "gbboot.wav",
+          "displayName": "Game Boy Startup",
+          "duration": 1.72,
+          "tags": ["game", "nintendo", "retro", "boot"],
+          "path": "/sounds/games/game-gameboy-startup.wav",
+          "credit": "Nintendo Game Boy · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-tetris-theme",
+          "filename": "tetris.wav",
+          "displayName": "Tetris Theme",
+          "duration": 3,
+          "tags": ["game", "tetris", "retro"],
+          "path": "/sounds/games/game-tetris-theme.wav",
+          "credit": "Tetris (Korobeiniki) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-pacman-waka",
+          "filename": "waka.wav",
+          "displayName": "Pac-Man Waka",
+          "duration": 0.99,
+          "tags": ["game", "pacman", "retro"],
+          "path": "/sounds/games/game-pacman-waka.wav",
+          "credit": "Pac-Man (Bandai Namco) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-pokemon-level-up",
+          "filename": "poklvl.wav",
+          "displayName": "Pokemon Level Up",
+          "duration": 2.5,
+          "tags": ["game", "pokemon", "level"],
+          "path": "/sounds/games/game-pokemon-level-up.wav",
+          "credit": "Pokemon · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-mario-1up",
+          "filename": "oneup.wav",
+          "displayName": "Mario 1-Up",
+          "duration": 0.94,
+          "tags": ["game", "mario", "retro"],
+          "path": "/sounds/games/game-mario-1up.wav",
+          "credit": "Super Mario Bros. · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-hadouken",
+          "filename": "haduke.wav",
+          "displayName": "Hadouken!",
+          "duration": 1.14,
+          "tags": ["game", "street-fighter", "retro"],
+          "path": "/sounds/games/game-hadouken.wav",
+          "credit": "Street Fighter (Capcom) · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-mk-fatality",
+          "filename": "fatlty.wav",
+          "displayName": "MK: Fatality!",
+          "duration": 2.03,
+          "tags": ["game", "mortal-kombat"],
+          "path": "/sounds/games/game-mk-fatality.wav",
+          "credit": "Mortal Kombat · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "game-cs-bomb",
+          "filename": "csbomb.wav",
+          "displayName": "CS:GO — Bomb Planted",
+          "duration": 1.58,
+          "tags": ["game", "cs-go", "bomb"],
+          "path": "/sounds/games/game-cs-bomb.wav",
+          "credit": "Counter-Strike: GO (Valve) · via Myinstants",
           "license": "fair-use-personal"
         }
       ]
