@@ -409,6 +409,96 @@
           "path": "/sounds/warnings/warn-pull-up.wav",
           "credit": "GPWS aviation alert (Concorde flight recorder) · via Myinstants",
           "license": "fair-use-personal"
+        },
+        {
+          "id": "warn-terrain-pull-up",
+          "filename": "terrn.wav",
+          "displayName": "Terrain! Pull Up!",
+          "duration": 3,
+          "tags": ["warning", "aviation", "gpws", "terrain"],
+          "path": "/sounds/warnings/warn-terrain-pull-up.wav",
+          "credit": "Aviation GPWS · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "warn-houston",
+          "filename": "houstn.wav",
+          "displayName": "Houston, we have a problem",
+          "duration": 3,
+          "tags": ["warning", "aviation", "apollo", "famous"],
+          "path": "/sounds/warnings/warn-houston.wav",
+          "credit": "Apollo 13 transmission · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "warn-sink-rate",
+          "filename": "sinkrt.wav",
+          "displayName": "Sink Rate (GPWS)",
+          "duration": 3,
+          "tags": ["warning", "aviation", "gpws", "sink-rate"],
+          "path": "/sounds/warnings/warn-sink-rate.wav",
+          "credit": "Aviation GPWS · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "warn-landing-gear",
+          "filename": "gear.wav",
+          "displayName": "Landing Gear",
+          "duration": 1.76,
+          "tags": ["warning", "aviation", "landing-gear"],
+          "path": "/sounds/warnings/warn-landing-gear.wav",
+          "credit": "MD-series cockpit callout · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "warn-danger-alarm",
+          "filename": "alarm.wav",
+          "displayName": "Danger Alarm",
+          "duration": 2,
+          "tags": ["warning", "alarm", "danger"],
+          "path": "/sounds/warnings/warn-danger-alarm.wav",
+          "credit": "via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "warn-air-raid",
+          "filename": "airrad.wav",
+          "displayName": "Air Raid Siren",
+          "duration": 3,
+          "tags": ["warning", "siren", "air-raid", "ww2"],
+          "path": "/sounds/warnings/warn-air-raid.wav",
+          "credit": "WW2 air raid siren · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "warn-klaxon",
+          "filename": "klaxon.wav",
+          "displayName": "Klaxon",
+          "duration": 2,
+          "tags": ["warning", "klaxon", "alarm"],
+          "path": "/sounds/warnings/warn-klaxon.wav",
+          "credit": "QI klaxon · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "warn-stall",
+          "filename": "stall.wav",
+          "displayName": "Stall Warning",
+          "duration": 1.84,
+          "tags": ["warning", "aviation", "stall"],
+          "path": "/sounds/warnings/warn-stall.wav",
+          "credit": "Aviation stall warning · via Myinstants",
+          "license": "fair-use-personal"
+        },
+        {
+          "id": "warn-red-alert",
+          "filename": "redalt.wav",
+          "displayName": "Red Alert (TOS)",
+          "duration": 2.5,
+          "tags": ["warning", "alarm", "star-trek"],
+          "path": "/sounds/warnings/warn-red-alert.wav",
+          "credit": "Star Trek: TOS · via Myinstants",
+          "license": "fair-use-personal"
         }
       ]
     }
