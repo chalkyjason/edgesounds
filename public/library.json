@@ -107,6 +107,133 @@
       ]
     },
     {
+      "id": "flight",
+      "name": "Flight Modes & Switch Phrases",
+      "description": "FPV-specific TTS callouts — RTH, recording, mode changes, failsafe. Map to a switch via Special Functions on the radio.",
+      "sounds": [
+        {
+          "id": "flight-crashed",
+          "filename": "crashd.wav",
+          "displayName": "Crashed. Again. (TTS)",
+          "duration": 2.88,
+          "tags": ["flight", "crash", "tts"],
+          "path": "/sounds/flight/crashd.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "flight-gohome",
+          "filename": "gohome.wav",
+          "displayName": "Returning Home (TTS)",
+          "duration": 1.77,
+          "tags": ["flight", "rth", "tts"],
+          "path": "/sounds/flight/gohome.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "flight-punch",
+          "filename": "punch.wav",
+          "displayName": "Punch Out (TTS)",
+          "duration": 1.50,
+          "tags": ["flight", "throttle", "tts"],
+          "path": "/sounds/flight/punch.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "flight-dive",
+          "filename": "dive.wav",
+          "displayName": "Diving (TTS)",
+          "duration": 1.44,
+          "tags": ["flight", "dive", "tts"],
+          "path": "/sounds/flight/dive.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "flight-recon",
+          "filename": "recon.wav",
+          "displayName": "Recording On (TTS)",
+          "duration": 1.74,
+          "tags": ["flight", "dvr", "recording", "tts"],
+          "path": "/sounds/flight/recon.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "flight-recoff",
+          "filename": "recoff.wav",
+          "displayName": "Recording Off (TTS)",
+          "duration": 1.74,
+          "tags": ["flight", "dvr", "recording", "tts"],
+          "path": "/sounds/flight/recoff.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "flight-acro",
+          "filename": "acro.wav",
+          "displayName": "Acro Mode (TTS)",
+          "duration": 1.55,
+          "tags": ["flight", "mode", "acro", "tts"],
+          "path": "/sounds/flight/acro.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "flight-angle",
+          "filename": "angle.wav",
+          "displayName": "Angle Mode (TTS)",
+          "duration": 1.56,
+          "tags": ["flight", "mode", "angle", "tts"],
+          "path": "/sounds/flight/angle.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "flight-horizon",
+          "filename": "horizn.wav",
+          "displayName": "Horizon Mode (TTS)",
+          "duration": 1.70,
+          "tags": ["flight", "mode", "horizon", "tts"],
+          "path": "/sounds/flight/horizn.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "flight-failsafe",
+          "filename": "failsf.wav",
+          "displayName": "Failsafe (TTS)",
+          "duration": 1.77,
+          "tags": ["flight", "failsafe", "warning", "tts"],
+          "path": "/sounds/flight/failsf.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "flight-beeper",
+          "filename": "beeper.wav",
+          "displayName": "Beeper On (TTS)",
+          "duration": 1.53,
+          "tags": ["flight", "beeper", "tts"],
+          "path": "/sounds/flight/beeper.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        },
+        {
+          "id": "flight-turtle",
+          "filename": "turtle.wav",
+          "displayName": "Turtle Mode (TTS)",
+          "duration": 1.54,
+          "tags": ["flight", "mode", "turtle", "tts"],
+          "path": "/sounds/flight/turtle.wav",
+          "credit": "Generated locally (Windows TTS — Zira voice)",
+          "license": "generated-original"
+        }
+      ]
+    },
+    {
       "id": "memes",
       "name": "Memes",
       "description": "Vine boom, airhorn, MLG hits — for when the flight deserves a meme.",
