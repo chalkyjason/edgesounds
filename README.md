@@ -397,18 +397,14 @@ Betaflight project's, not this one's, and are included as a reference and
 test fixture. No stock glyph art is used as a build base — the only bytes
 that reach a built font from stock are the two protected indexes.
 
-The Army Jay glyph art, the boot splash and the tooling in this repository
-are original work, dual-licensed — see [`LICENSE`](LICENSE):
+**MIT** — see [`LICENSE`](LICENSE). That covers everything original here:
+the tooling, the glyph art, the built fonts, the boot splash and the
+previews. Use it, ship it, remix a glyph, put it in a font pack. Credit is
+welcome but not required.
 
-- **Code** (`tools/`, `tests/`, `variants.toml`, CI) — MIT.
-- **Font art** (`glyphs/`, `fonts/*.mcm`, `assets/logo_288x72.png`,
-  `previews/`) — CC BY 4.0. Share it, remix it, ship it commercially; just
-  credit *Army Jay OSD*. Attribution rather than share-alike, so swapping a
-  glyph does not drag a copyleft obligation onto your config.
-
-These are sensible community defaults picked for the project, not legal
-advice, and they are the author's to change — editing `LICENSE` is all it
-takes. Nothing in the build depends on the choice.
+The two vendored stock fonts under `assets/references/` are the exception,
+and are not this project's to license: they are Betaflight's, GPL-3.0, and
+included only as a shape reference and a round-trip test fixture.
 
 This repository previously held **EdgeSounds**, an in-browser EdgeTX `.wav`
 converter, which was MIT licensed. Its full history is preserved in git —

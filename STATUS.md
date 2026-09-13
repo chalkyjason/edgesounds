@@ -199,14 +199,14 @@ rather than preserve it. The art follows stock.
 
 ### Licensing
 
-Set in `LICENSE`: **MIT for the code, CC BY 4.0 for the font art.**
-Attribution rather than share-alike, so a pilot who swaps one glyph does
-not inherit a copyleft obligation. The vendored stock fonts stay GPL-3.0
-and the property of the Betaflight project; they are reference and test
-fixtures only, and no stock art is a build base.
+**MIT, for everything original to the repository** — tooling, glyph art,
+built fonts, splash and previews alike. An earlier pass split it MIT for
+code and CC BY 4.0 for the art; the author asked for one licence across the
+lot, which is simpler for anyone redistributing a font pack.
 
-Community defaults, not legal advice — editing `LICENSE` is all it takes to
-change them, and nothing in the build depends on the choice.
+The vendored stock fonts stay GPL-3.0 and the Betaflight project's. That is
+not a choice — they are not ours to relicense. They are reference and test
+fixtures only, and no stock art is a build base.
 
 ### What the `clean` variant actually is
 
