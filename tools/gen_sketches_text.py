@@ -7,7 +7,6 @@ them and adds the black outline; the emitted art is the committed source.
 import sys
 from pathlib import Path
 
-
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from outline_art import sketch_to_art  # noqa: E402
 

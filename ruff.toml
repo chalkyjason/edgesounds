@@ -1,0 +1,27 @@
+# Lint configuration for the Army Jay OSD build tools.
+
+line-length = 88
+target-version = "py311"
+
+[lint]
+select = ["F", "E", "W", "UP", "B", "SIM", "ARG", "C4", "RET", "PIE"]
+
+ignore = [
+    # Glyph art, generated tables and quoted firmware source run long, and
+    # rewrapping any of them makes them harder to read, not easier.
+    "E501",
+    # Several tools are runnable as scripts and bootstrap sys.path before
+    # importing their siblings, so those imports cannot be at the top of the
+    # file. That bootstrap is the point, not an oversight.
+    "E402",
+    # `from __future__ import annotations` is present everywhere, so quoted
+    # and PEP-604 annotations are both fine.
+    "UP037",
+]
+
+[lint.per-file-ignores]
+# The generators are long literal tables of ASCII art by design.
+"tools/gen_sketches_*.py" = ["E741"]
+
+[lint.isort]
+known-first-party = ["glyphs"]

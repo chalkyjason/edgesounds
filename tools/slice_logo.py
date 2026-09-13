@@ -23,14 +23,14 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-from typing import Sequence
+from collections.abc import Sequence
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from PIL import Image
 
-from mcm_encode import BLACK, GLYPH_HEIGHT, GLYPH_WIDTH, TRANSPARENT, WHITE, Glyph
+from mcm_encode import GLYPH_HEIGHT, GLYPH_WIDTH, TRANSPARENT, Glyph
 from render import UPLOAD_PALETTE
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -112,11 +112,8 @@ def wordmark_run(tiles: Sequence[Glyph], row: int = WORDMARK_ROW) -> list[int]:
     if not inked:
         raise LogoError(f"tile row {row} is empty -- no wordmark to point at")
     first, last = inked[0], inked[-1]
-    gaps = [p for p in range(first, last + 1) if p not in inked]
-    if gaps:
-        # Interior blanks are fine (word spacing); they are still part of
-        # the run and must be included so the element stays contiguous.
-        pass
+    # Interior blanks are fine -- that is the space in "ARMY JAY". They stay
+    # inside the run so the element remains one contiguous block.
     return [LOGO_START + position for position in range(first, last + 1)]
 
 

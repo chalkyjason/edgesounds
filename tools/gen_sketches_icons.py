@@ -18,7 +18,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from outline_art import outline, place  # noqa: E402
 
 OUT = Path(__file__).resolve().parent.parent / "glyphs"
-W, H = 12, 18
+
+#: A fully transparent cell, for indexes that are deliberately blank.
+BLANK = "\n".join(["." * 12] * 18)
 
 # --------------------------------------------------------------------------
 # Bitmap fonts for composed labels
@@ -306,24 +308,6 @@ def arrow_sketch(bearing_deg):
 # Pictograms
 # --------------------------------------------------------------------------
 
-RSSI = """
-.......##.
-.......##.
-....##.##.
-....##.##.
-.##.##.##.
-.##.##.##.
-"""
-
-ANTENNA = """
-.........#
-.........#
-......#..#
-......#..#
-...#..#..#
-...#..#..#
-"""
-
 SKETCHES = {}
 
 SKETCHES[0x01] = art("""
@@ -419,7 +403,7 @@ SKETCHES[0x11] = art("""
 ##......
 """, origin_y=4)
 
-SKETCHES[0x12] = "\n".join(["." * W] * H)  # unassigned
+SKETCHES[0x12] = BLANK  # unassigned
 
 # AH side decoration: a bracket tick on the left edge.
 SKETCHES[0x13] = art("""
@@ -468,7 +452,7 @@ SAT_24 = [
 SKETCHES[0x1E] = art("\n".join(row[:12] for row in SAT_24), origin_x=0, origin_y=4)
 SKETCHES[0x1F] = art("\n".join(row[12:] for row in SAT_24), origin_x=0, origin_y=4)
 
-SKETCHES[0x20] = "\n".join(["." * W] * H)  # space
+SKETCHES[0x20] = BLANK  # space
 
 for offset in range(16):
     SKETCHES[0x60 + offset] = art(
@@ -526,8 +510,8 @@ SKETCHES[0x77] = art("""
 ##....
 """, origin_y=6)
 
-SKETCHES[0x78] = "\n".join(["." * W] * H)  # unassigned
-SKETCHES[0x79] = "\n".join(["." * W] * H)  # blank in stock; kept blank
+SKETCHES[0x78] = BLANK  # unassigned
+SKETCHES[0x79] = BLANK  # blank in stock; kept blank
 
 # Thermometer.
 SKETCHES[0x7A] = art("""

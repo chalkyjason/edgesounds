@@ -11,7 +11,7 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-from typing import Sequence
+from collections.abc import Sequence
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -27,15 +27,6 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_FONT = REPO_ROOT / "fonts" / "armyjay_full.mcm"
 DEFAULT_STOCK = REPO_ROOT / "assets" / "references" / "stock" / "default_v2.mcm"
 DEFAULT_OUTPUT = REPO_ROOT / "MODIFIED_INDEXES.md"
-
-ART_SOURCE = {
-    "ascii": "glyphs/letters.py, numbers.py, punctuation.py",
-    "icon": "glyphs/icons.py",
-    "arrow": "glyphs/icons.py",
-    "logo": "glyphs/logo.py (sliced from assets/logo_288x72.png)",
-    "protected": "stock font, copied verbatim",
-}
-
 
 def is_blank(glyph: Glyph) -> bool:
     return all(char == TRANSPARENT for row in glyph.rows for char in row)
@@ -152,7 +143,7 @@ def build_document(
     slots = list(CRAFT_NAME_SLOTS)[: len(WORDMARK_INDEXES)]
     add("| Sacrificed index | Character | Receives tile |")
     add("|---|---|---|")
-    for (slot_index, char), tile in zip(slots, WORDMARK_INDEXES):
+    for (slot_index, char), tile in zip(slots, WORDMARK_INDEXES, strict=True):
         add(f"| `0x{slot_index:02X}` | `{char}` | `0x{tile:02X}` |")
     add("")
     add(

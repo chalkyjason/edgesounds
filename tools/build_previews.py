@@ -24,7 +24,7 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-from typing import Iterable, Sequence
+from collections.abc import Iterable, Sequence
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -36,7 +36,6 @@ from mcm_decode import read_font
 from mcm_encode import GLYPH_HEIGHT, GLYPH_WIDTH, Glyph
 from render import (
     SCREEN_PALETTE,
-    glyph_to_image,
     glyph_to_rgba,
     render_glyph_sheet,
     render_tiles,

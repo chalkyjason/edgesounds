@@ -231,13 +231,14 @@ Python 3.11+. Pillow is the only dependency, and only for rendering — the
 encode, decode and validate path is stdlib-only.
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-dev.txt   # or requirements.txt to skip the linter
 
 python tools/build_font.py --craft-name    # fonts/*.mcm
 python tools/validate.py fonts/*.mcm       # acceptance checks
 python tools/build_previews.py             # previews/*.png
 python tools/gen_modified_indexes.py       # MODIFIED_INDEXES.md
 python -m unittest discover -s tests       # 65 tests
+ruff check .                               # lint (config in ruff.toml)
 
 # Verify against Betaflight Configurator's own parser (see below)
 python tools/crosscheck_configurator.py

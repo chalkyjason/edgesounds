@@ -11,7 +11,6 @@ from __future__ import annotations
 import importlib
 import math
 import sys
-import tempfile
 import unittest
 from pathlib import Path
 
@@ -245,13 +244,13 @@ class TestBuildPipeline(unittest.TestCase):
         )
 
     def assemble(self, **kwargs):
-        params = dict(
-            text_set="standard",
-            icon_overrides=[],
-            logo_module="glyphs.logo",
-            extra_outline=0,
-            stock=self.stock,
-        )
+        params = {
+            "text_set": "standard",
+            "icon_overrides": [],
+            "logo_module": "glyphs.logo",
+            "extra_outline": 0,
+            "stock": self.stock,
+        }
         params.update(kwargs)
         return build_font.assemble(**params)
 
@@ -319,7 +318,7 @@ class TestBuildPipeline(unittest.TestCase):
             glyphs, "glyphs.logo"
         )
         self.assertEqual(len(craft_text), len(WORDMARK_INDEXES))
-        for (slot_index, _), tile_index in zip(slots, WORDMARK_INDEXES):
+        for (slot_index, _), tile_index in zip(slots, WORDMARK_INDEXES, strict=True):
             self.assertEqual(patched[slot_index], glyphs[tile_index])
         # Everything outside the sacrificed slots is untouched.
         sacrificed = {i for i, _ in slots}
@@ -335,28 +334,26 @@ class TestBuildPipeline(unittest.TestCase):
     def test_committed_fonts_match_a_fresh_build(self):
         """The .mcm files in fonts/ are the deliverable; they must not
         drift from the sources that produced them."""
+        import tomllib
+
         config = REPO_ROOT / "variants.toml"
         if not config.exists():
             self.skipTest("variants.toml missing")
-        with tempfile.TemporaryDirectory() as tmp:
-            import tomllib
-
-            spec = tomllib.loads(config.read_text())
-            for name, variant in spec["variants"].items():
-                committed = REPO_ROOT / "fonts" / variant["output"]
-                if not committed.exists():
-                    self.skipTest(f"{committed.name} not built yet")
-                glyphs = self.assemble(
-                    icon_overrides=variant.get("icon_overrides", []),
-                    extra_outline=int(variant.get("extra_outline", 0)),
+        spec = tomllib.loads(config.read_text())
+        for name, variant in spec["variants"].items():
+            committed = REPO_ROOT / "fonts" / variant["output"]
+            if not committed.exists():
+                self.skipTest(f"{committed.name} not built yet")
+            glyphs = self.assemble(
+                icon_overrides=variant.get("icon_overrides", []),
+                extra_outline=int(variant.get("extra_outline", 0)),
+            )
+            with self.subTest(variant=name):
+                self.assertEqual(
+                    encode_font(glyphs),
+                    committed.read_text(encoding="ascii"),
+                    f"{committed.name} is stale; re-run tools/build_font.py",
                 )
-                with self.subTest(variant=name):
-                    self.assertEqual(
-                        encode_font(glyphs),
-                        committed.read_text(encoding="ascii"),
-                        f"{committed.name} is stale; re-run tools/build_font.py",
-                    )
-            _ = tmp
 
 
 if __name__ == "__main__":

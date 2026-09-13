@@ -23,14 +23,14 @@ import importlib
 import sys
 import tomllib
 from pathlib import Path
-from typing import Sequence
+from collections.abc import Sequence
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from mcm_decode import read_font
-from mcm_encode import GLYPH_COUNT, Glyph, GlyphError, encode_font, write_font
+from mcm_encode import GLYPH_COUNT, Glyph, GlyphError, write_font
 from outline_art import outline
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -166,7 +166,7 @@ def apply_craft_name(
             f"{len(slots)} are defined"
         )
     out = list(glyphs)
-    for (slot_index, _), tile_index in zip(slots, wordmark):
+    for (slot_index, _), tile_index in zip(slots, wordmark, strict=True):
         out[slot_index] = glyphs[tile_index]
     return out, "".join(char for _, char in slots), slots
 

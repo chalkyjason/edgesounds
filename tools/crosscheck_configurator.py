@@ -23,14 +23,14 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from typing import Sequence
+from collections.abc import Sequence
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from mcm_decode import read_font, read_font_raw
-from mcm_encode import BLACK, DATA_BYTES_PER_GLYPH, GLYPH_COUNT, WHITE, Glyph
+from mcm_encode import BLACK, DATA_BYTES_PER_GLYPH, WHITE, Glyph
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 HARNESS = Path(__file__).resolve().parent / "crosscheck_configurator.mjs"

@@ -20,7 +20,7 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-from typing import Sequence
+from collections.abc import Sequence
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -124,12 +124,11 @@ def read_font_raw(path: Path | str) -> list[bytes]:
 _DUMP_PREFIX = "# glyph "
 
 
-def dump_ascii(glyphs: Sequence[Glyph], labels: Sequence[str] | None = None) -> str:
+def dump_ascii(glyphs: Sequence[Glyph]) -> str:
     """Render a font as an ASCII-art dump."""
     out: list[str] = []
     for index, glyph in enumerate(glyphs):
-        label = f" {labels[index]}" if labels else ""
-        out.append(f"{_DUMP_PREFIX}{index:3d} 0x{index:02X}{label}")
+        out.append(f"{_DUMP_PREFIX}{index:3d} 0x{index:02X}")
         out.extend(glyph.rows)
     return "\n".join(out) + "\n"
 

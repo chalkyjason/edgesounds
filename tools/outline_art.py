@@ -26,7 +26,7 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-from typing import Sequence
+from collections.abc import Sequence
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -115,10 +115,13 @@ def outline(rows: Sequence[str], weight: int = 1) -> str:
                     continue
                 for dx, dy in NEIGHBOURS:
                     nx, ny = x + dx, y + dy
-                    if 0 <= nx < GLYPH_WIDTH and 0 <= ny < GLYPH_HEIGHT:
-                        if grid[ny][nx] in (WHITE, BLACK):
-                            additions.append((x, y))
-                            break
+                    if (
+                        0 <= nx < GLYPH_WIDTH
+                        and 0 <= ny < GLYPH_HEIGHT
+                        and grid[ny][nx] in (WHITE, BLACK)
+                    ):
+                        additions.append((x, y))
+                        break
         for x, y in additions:
             grid[y][x] = BLACK
 

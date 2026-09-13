@@ -30,10 +30,15 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-from typing import Callable, Sequence
+from collections.abc import Callable, Sequence
 
-if __name__ == "__main__" and __package__ is None:
-    sys.path.insert(0, str(Path(__file__).resolve().parent))
+_HERE = Path(__file__).resolve().parent
+# Both paths are needed whether this runs as a script or is imported by the
+# tests: the sibling tools, and the repo root for the `glyphs` package that
+# checks 9 and 10 reach into.
+for _path in (str(_HERE), str(_HERE.parent)):
+    if _path not in sys.path:
+        sys.path.insert(0, _path)
 
 from mcm_decode import (
     McmParseError,
@@ -108,7 +113,7 @@ class Reporter:
 # -- individual checks ---------------------------------------------------
 
 
-def check_structure(text: str, source: str) -> str:
+def check_structure(text: str) -> str:
     lines = split_lines(text)
     if lines[0].strip() != HEADER:
         raise CheckFailure(f"line 1 is {lines[0]!r}, expected {HEADER!r}")
@@ -184,7 +189,7 @@ def check_round_trip(text: str, source: str) -> str:
     canonical = "\n".join(split_lines(text))
     if once != canonical:
         # Locate the first divergence so the failure is actionable.
-        for offset, (a, b) in enumerate(zip(canonical.split("\n"), once.split("\n"))):
+        for offset, (a, b) in enumerate(zip(canonical.split("\n"), once.split("\n"), strict=True)):
             if a != b:
                 raise CheckFailure(
                     f"re-encoding the file does not reproduce it; first "
@@ -199,7 +204,7 @@ def check_rerender(glyphs: Sequence[Glyph], source: str) -> str:
     reparsed = parse_ascii_dump(dump_ascii(glyphs), source=f"{source} (ascii)")
     mismatched = [
         index
-        for index, (a, b) in enumerate(zip(glyphs, reparsed))
+        for index, (a, b) in enumerate(zip(glyphs, reparsed, strict=True))
         if a.rows != b.rows
     ]
     if mismatched:
@@ -284,7 +289,6 @@ def check_logo_ranges(glyphs: Sequence[Glyph]) -> str:
             f"({LOGO_TILE_COUNT} tiles)"
         )
 
-    sys.path.insert(0, str(REPO_ROOT))
     from glyphs.logo import WORDMARK_INDEXES  # noqa: PLC0415
 
     splash = range(LOGO_START, LOGO_START + LOGO_TILE_COUNT)
@@ -348,7 +352,6 @@ def check_outline_integrity(glyphs: Sequence[Glyph]) -> str:
     exempt: glyphs butt up against their neighbours, so there is nowhere to
     put the black and none is needed.
     """
-    sys.path.insert(0, str(REPO_ROOT / "tools"))
     from outline_art import missing_outline  # noqa: PLC0415
 
     offenders: list[tuple[int, int]] = []
@@ -455,7 +458,7 @@ def validate_font(path: Path, stock_path: Path, verbose: bool) -> Reporter:
     reporter = Reporter(verbose=verbose)
     text = path.read_text(encoding="ascii")
 
-    reporter.run(1, "structure", lambda: check_structure(text, str(path)))
+    reporter.run(1, "structure", lambda: check_structure(text))
     if reporter.failures:
         # Every later check assumes a parseable file.
         print("          (remaining checks skipped: file is unparseable)")
@@ -539,9 +542,11 @@ def _main(argv: Sequence[str] | None = None) -> int:
         parser.error("no such file: " + ", ".join(str(f) for f in missing))
 
     failures: list[str] = []
+    skipped: list[str] = []
     for font in fonts:
         reporter = validate_font(font, args.stock, args.verbose)
         failures.extend(f"{font}: {failure}" for failure in reporter.failures)
+        skipped.extend(f"{font.name}: {skip}" for skip in reporter.skipped)
 
     print()
     if failures:
@@ -549,7 +554,12 @@ def _main(argv: Sequence[str] | None = None) -> int:
         for failure in failures:
             print(f"  - {failure}")
         return 1
-    print(f"PASSED -- {len(fonts)} font(s) validated")
+    # Skips are not failures, but a silent skip is how a check quietly stops
+    # doing its job, so say how many and which.
+    suffix = f", {len(skipped)} check(s) skipped" if skipped else ""
+    print(f"PASSED -- {len(fonts)} font(s) validated{suffix}")
+    for skip in skipped:
+        print(f"  skipped: {skip}")
     return 0
 
 
