@@ -1,34 +1,136 @@
 # Army Jay OSD
 
 A Betaflight **analog** OSD font in an Army Jay military/tactical pixel-art
-style, built from reviewable ASCII-art sources into valid MAX7456 `.mcm`
-files that upload through Betaflight Configurator's Font Manager.
+style. Bold stencil letterforms, chunky icons, every white shape carrying a
+black outline so it reads over bright sky and dark ground alike.
 
 Primary target is a BetaFPV Air75 (analog, MAX7456-class OSD), but the
 output is plain `.mcm` and works with any Betaflight build that has an
 analog OSD.
 
-> **Build status: step 1 of 7.** The encoder, decoder and validator are
-> done and proven byte-identical against Betaflight's own stock fonts. No
-> glyph art exists yet, so `fonts/` is empty — there is nothing to flash.
-> See [STATUS.md](STATUS.md) for what is done, what was verified, and the
-> one design conflict that needs a decision before step 4.
+![Army Jay OSD preview](previews/armyjay_full_logo_preview.png)
 
 ---
 
-## What this is not
+## Download
+
+Grab one `.mcm` from [`fonts/`](fonts/) and upload it through Betaflight
+Configurator's Font Manager.
+
+| File | Letters & numbers | Icons | Pick this if |
+|---|---|---|---|
+| [`armyjay_full.mcm`](fonts/armyjay_full.mcm) | Army Jay stencil | Army Jay | **Start here.** The flagship look. |
+| [`armyjay_clean.mcm`](fonts/armyjay_clean.mcm) | Army Jay stencil | Close to stock silhouettes | You want the new type but your eyes already know where the stock icons are. |
+| [`armyjay_highreadability.mcm`](fonts/armyjay_highreadability.mcm) | Doubled black surround | Simplified, detail removed | Long range, weak signal, or a lot of noise in the feed. |
+
+Three more files ending `_craftname.mcm` exist for the Betaflight 4.4
+in-flight logo trick. **Do not install one unless you have read
+[In-flight logo](#in-flight-logo) below** — they overwrite ten punctuation
+glyphs.
+
+Per-variant glyph sheets and OSD mock-ups are in [`previews/`](previews/).
+
+### What "high readability" actually changes
+
+It thickens the **black surround** on every letter and digit, not the white
+strokes. At a 12 px cell the counters close if the strokes grow — a filled-in
+`8` or `B` is worse than a thin one. Contrast is what degrades on an analog
+feed, so contrast is what the variant buys. Icons lose internal detail on the
+same reasoning. Nothing is widened in the AH ladder or progress bar, whose
+segments would merge.
+
+---
+
+## Install
+
+1. Connect the flight controller to Betaflight Configurator.
+2. **Props off. Always.**
+3. Some boards need a LiPo connected to power the OSD chip during upload —
+   USB 5 V alone may not bring it up. If Font Manager reports an upload
+   failure or the glyphs come back garbled, this is usually why.
+4. OSD tab → Font Manager → Open Font File → pick the `.mcm` → Upload Font.
+5. Reboot the flight controller.
+
+Nothing about a font upload touches your tune, rates, or modes. It writes
+to the OSD chip's character memory only.
+
+### Backup and recovery
+
+Before you flash anything:
+
+- **Save your config.** CLI tab → `diff all` → copy the output into a file.
+  This does not back up the font (fonts cannot be read back off the chip),
+  but it is the thing you would actually miss.
+- **The stock font is always recoverable.** Font Manager ships the stock
+  presets: pick `default` in the dropdown and upload it to go back. The
+  originals also live in the Configurator repo at `resources/osd/2/`, and a
+  copy is vendored here at
+  [`assets/references/stock/default_v2.mcm`](assets/references/stock/default_v2.mcm).
+- Restoring is the same procedure as installing. There is no state to undo.
+
+If the OSD shows garbage after an upload, re-upload — a partial write is the
+usual cause, and it is not persistent damage.
+
+---
+
+## In-flight logo
+
+The boot splash shows the full `ARMY JAY / TACTICAL OSD` card at power-up.
+To also show the wordmark **while flying**, the method depends on your
+firmware version.
+
+### Betaflight 4.5 and newer — OSD Custom Elements (preferred)
+
+Point a Custom Element straight at the wordmark glyphs. No compromises,
+nothing sacrificed.
+
+The wordmark is glyph indexes **`0xBF` to `0xC8`** (10 tiles). In the OSD
+tab, add a Custom Element and set ten static glyph parts to those indexes in
+order, then place it on screen.
+
+These are splash tiles that already exist, so the in-flight logo costs
+**nothing** — the same tiles draw the boot card and the in-flight wordmark.
+
+### Betaflight 4.4 and earlier — craft name (optional, costs glyphs)
+
+On 4.4 and earlier there are no Custom Elements, and the craft-name field
+can only reach glyphs at *typeable ASCII* indexes. Showing the wordmark
+therefore means moving those tiles onto punctuation slots and giving up
+those characters.
+
+That is what the `*_craftname.mcm` builds do. To use one:
+
+1. Upload `armyjay_full_craftname.mcm` (or the clean / high-readability
+   equivalent).
+2. Set the craft name to exactly:
+
+   ```
+   !"#%&'()*;
+   ```
+
+3. Enable the Craft Name element in the OSD tab and place it.
+
+**You lose these ten glyphs:** `!` `"` `#` `%` `&` `'` `(` `)` `*` `;`.
+They were picked because an OSD almost never needs them, but if you use any
+of them in a warning string or a craft name, pick a different variant. The
+full mapping is in
+[`MODIFIED_INDEXES.md`](MODIFIED_INDEXES.md#craft-name-variant-betaflight-44-and-earlier).
+
+This is a variant, not the default, precisely because it costs something.
+
+---
+
+## Not in scope
 
 HD/digital OSD fonts. DJI, HDZero and msp-osd use 24 × 36 BMP or `.bin`
-formats — a different problem entirely, and out of scope here.
+formats — a different problem entirely.
 
 ---
 
 ## The format
 
-Everything below was verified against the stock fonts vendored in
-`assets/references/stock/`, not taken on faith.
-
-**File structure (`.mcm`)**
+Verified against the stock fonts vendored in `assets/references/stock/`,
+not taken on faith.
 
 | | |
 |---|---|
@@ -38,140 +140,124 @@ Everything below was verified against the stock fonts vendored in
 | Total | 256 glyphs × 64 bytes = 16,384 bytes |
 | Trailing newline | none — the final byte line is unterminated |
 
-A stock font is 147,463 bytes. Note that `wc -l` reports **16384**, not
-16385, because it counts newlines and the last line has none.
+A stock font is 147,463 bytes. `wc -l` reports **16384**, not 16385, because
+it counts newlines and the last line has none.
 
-**Glyph geometry**
-
-- 12 px wide × 18 px tall = 216 pixels, left-to-right, top-to-bottom.
-- 2 bits per pixel, 4 pixels per byte → **54 bytes of real data**.
-- Padded from 54 to 64 bytes; the 10 padding bytes are `0x55`
-  (`01010101`).
-
-**Pixel encoding**
+**Glyph geometry.** 12 px wide × 18 px tall = 216 pixels, left-to-right,
+top-to-bottom. 2 bits per pixel, 4 pixels per byte → 54 bytes of real data,
+padded to 64 with `0x55`.
 
 | Bits | Meaning | ASCII art |
 |---|---|---|
 | `00` | black | `-` |
 | `10` | white | `#` |
 | `01` | transparent | `.` |
-| `11` | transparent | — accepted on read, never emitted |
-
----
-
-## Glyph sources
-
-Glyphs are authored as 12 × 18 ASCII art in Python modules under `glyphs/`,
-never as hand-placed binary. Every glyph string is validated as exactly 18
-rows of 12 legal characters at import time, so the whole font stays
-diffable and reviewable in a terminal:
-
-```python
-GLYPH_BATTERY_FULL = """
-............
-.##########.
-.#--------#.
-.#-######-#.
-...
-"""
-```
-
----
-
-## Tooling
-
-No third-party dependencies — Python 3.11+ and the standard library.
-
-```bash
-# Run the full acceptance suite against the vendored stock fonts
-python tools/validate.py --verbose
-
-# Validate specific fonts (this is what CI runs on fonts/*.mcm)
-python tools/validate.py fonts/armyjay_full.mcm
-
-# Decode a font to reviewable ASCII art
-python tools/mcm_decode.py assets/references/stock/default_v2.mcm -o /tmp/stock.txt
-
-# Decode a single glyph ('A' is 0x41)
-python tools/mcm_decode.py assets/references/stock/default_v2.mcm -i 0x41
-
-# Re-encode an ASCII dump back to .mcm
-python tools/mcm_encode.py /tmp/stock.txt /tmp/rebuilt.mcm
-
-# Unit tests
-python -m unittest discover -s tests -v
-```
-
-### Acceptance checks
-
-`tools/validate.py` runs these and exits non-zero if any fail:
-
-| # | Check | Status |
-|---|---|---|
-| 1 | 16,385 lines, `MAX7456` header, 8 binary chars per line | implemented |
-| 2 | All 256 indexes defined; coverage table printed | implemented |
-| 3 | Padding bytes are `0x55` for every glyph | implemented |
-| 4 | No `11` pixel pairs emitted | implemented |
-| 5 | encode → decode → encode is byte-identical | implemented |
-| 6 | Decoded ASCII art re-renders to the same pixels | implemented |
-| 7 | `0x00` and `0xFF` match stock | implemented |
-| 8 | Stock diff matches `MODIFIED_INDEXES.md` | implemented; reports only until that file exists |
-| 9 | Boot splash and in-flight tile ranges do not overlap | **skipped** until `glyphs/logo.py` exists (step 4) |
+| `11` | transparent | accepted on read, never emitted |
 
 ---
 
 ## Glyph map policy
 
-- Targets the **latest** Betaflight glyph map. Newer maps are effectively
-  supersets — older firmware simply never references the newer indexes — so
-  targeting latest maximizes compatibility.
-- All 256 indexes must be explicitly defined. The build fails loudly on any
-  undefined index rather than silently shipping a blank glyph.
-- `assets/references/stock/` is a shape and meaning reference only. It is
-  never the build base for `armyjay_full` or `armyjay_highreadability`.
+Targets the latest Betaflight glyph map. Newer maps are supersets — older
+firmware simply never references the newer indexes — so targeting latest
+maximizes compatibility. All 256 indexes are explicitly defined; the build
+fails loudly on any undefined index rather than silently shipping a blank.
 
-**Protected indexes — never write custom art here**
+**Protected indexes**, copied verbatim from stock and never drawn on:
 
 | Index | Why |
 |---|---|
 | `0x00` | blanks the screen on video initialization |
-| `0xFF` | reserved / special use |
-| `0x20`–`0x7E` | must retain their ASCII meanings (the art changes; the mapping does not) |
+| `0xFF` | reserved (`SYM_END_OF_FONT`) |
+
+**Two places the handoff spec met reality and reality won.** Both are
+recorded in [`glyphs/glyph_map.py`](glyphs/glyph_map.py):
+
+- **`0x60`–`0x7E` are not lowercase ASCII.** Betaflight's analog OSD is
+  uppercase-only; that whole block is direction arrows and unit icons in
+  every stock font. "Keep ASCII meanings through `0x7E`" cannot be applied
+  literally without breaking the firmware. ASCII is preserved through
+  `0x5F`, where Betaflight preserves it.
+- **`0x24` draws `MAX`, not a checkered flag.** The firmware header calls it
+  `SYM_CHECKERED_FLAG`, but every stock font draws the word `MAX` there, so
+  that is what pilots see. The art follows stock.
+
+The complete 256-index table is in
+[`MODIFIED_INDEXES.md`](MODIFIED_INDEXES.md).
 
 ---
 
-## Variants
+## Building from source
 
-One glyph source set, one pipeline, driven by `variants.toml`:
+Python 3.11+. Pillow is the only dependency, and only for rendering — the
+encode, decode and validate path is stdlib-only.
 
-| File | Letters/Numbers | Icons | Notes |
-|---|---|---|---|
-| `armyjay_full.mcm` | Custom Army Jay | Custom Army Jay | Flagship |
-| `armyjay_clean.mcm` | Custom Army Jay | Close to stock silhouettes | For pilots who want familiar icons |
-| `armyjay_highreadability.mcm` | Heavier weight, wider spacing | Custom, simplified | Max legibility on degraded analog |
+```bash
+pip install -r requirements.txt
 
-None of these are built yet.
+python tools/build_font.py --craft-name    # fonts/*.mcm
+python tools/validate.py fonts/*.mcm       # acceptance checks
+python tools/build_previews.py             # previews/*.png
+python tools/gen_modified_indexes.py       # MODIFIED_INDEXES.md
+python -m unittest discover -s tests       # 63 tests
+```
 
----
+Other useful entry points:
 
-## Installing (once fonts ship)
+```bash
+# Decode any font to reviewable ASCII art, or to PNGs
+python tools/mcm_decode.py fonts/armyjay_full.mcm -i 0x41
+python tools/mcm_decode.py fonts/armyjay_full.mcm --png out/ --sheet sheet.png
 
-1. Connect the flight controller to Betaflight Configurator.
-2. **Props off. Always.** Some boards need a LiPo connected to power the OSD
-   chip during upload — the 5 V from USB alone may not bring it up.
-3. OSD tab → Font Manager → select the `.mcm` → Upload → reboot.
+# Redraw the boot splash, then re-slice it into tiles
+python tools/make_logo.py
+python tools/slice_logo.py
+```
 
-### Backup and recovery
+### How the art is authored
 
-Before you flash anything:
+Glyphs are 12 × 18 ASCII art in Python modules — `.` transparent, `#` white,
+`-` black — so the whole font is diffable and reviewable in a terminal:
 
-- Save your current config: CLI tab → `diff all` → copy the output to a file.
-- The stock font is always recoverable. Font Manager ships the stock presets,
-  and the originals live in the Configurator repo at
-  `resources/osd/2/default.mcm`. A copy is vendored here at
-  `assets/references/stock/default_v2.mcm`.
-- Restoring is the same procedure as installing: pick the stock font, upload,
-  reboot. Nothing about a font upload touches your tune or rates.
+```python
+0x41: """
+............
+....-##-....
+...-####-...
+..-##--##-..
+...
+"""
+```
+
+Shapes are sketched **white-only** and outlined by `tools/outline_art.py`;
+the outlined result is what gets committed, so the shipped art is the
+reviewable art. Check 10 enforces that every white pixel keeps its black
+surround, so a later hand-edit cannot quietly break the rule.
+
+`glyphs/numbers.py` shadows the standard library's `numbers` module if
+`glyphs/` is ever put directly on `sys.path`, which breaks `decimal`,
+`fractions` and Pillow. Always import it as `glyphs.numbers`. There is a
+test for this.
+
+### Acceptance checks
+
+`tools/validate.py` exits non-zero if any fail, so it drops straight into CI.
+
+| # | Check |
+|---|---|
+| 1 | 16,385 lines, `MAX7456` header, 8 binary chars per line |
+| 2 | All 256 indexes defined; coverage table printed |
+| 3 | Padding bytes are `0x55` for every glyph |
+| 4 | No `11` pixel pairs emitted |
+| 5 | encode → decode → encode is byte-identical |
+| 6 | Decoded ASCII art re-renders to the same pixels |
+| 7 | `0x00` and `0xFF` match stock |
+| 8 | Changed indexes match what `MODIFIED_INDEXES.md` declares |
+| 9 | In-flight tile range is nested in the splash block and clear of `0xFF` |
+| 10 | House style: no white pixel touches transparent |
+
+The vendored stock fonts are third-party art: they are held to the format
+checks but exempt from 8 and 10.
 
 ---
 
@@ -179,52 +265,50 @@ Before you flash anything:
 
 ```
 .
-├── README.md
-├── STATUS.md              build progress and verified findings
-├── MODIFIED_INDEXES.md    (step 7) every index, its meaning, what was drawn
-├── variants.toml          (step 5) variant definitions
-├── fonts/                 (step 5) built .mcm outputs — the deliverable
-├── glyphs/                (step 3) ASCII-art glyph sources
+├── fonts/                 built .mcm files — the deliverable
+├── glyphs/                ASCII-art glyph sources
+│   ├── glyph_map.py       all 256 indexes, named and described
+│   ├── letters.py numbers.py punctuation.py icons.py
+│   ├── icons_clean.py icons_simplified.py    variant overrides
+│   └── logo.py            boot splash tiles, sliced from the raster
 ├── assets/
-│   ├── logo_288x72.png    (step 4) boot splash raster
-│   └── references/stock/  decoded stock fonts, reference only
-├── previews/              (step 6) glyph sheets and logo previews
-├── tests/                 round-trip and format tests
-└── tools/
-    ├── mcm_encode.py      glyph model + encoder (owns the format spec)
-    ├── mcm_decode.py      parser + ASCII dump
-    ├── validate.py        acceptance checks
-    ├── slice_logo.py      (step 4) 288×72 → 12×18 tiles
-    └── build_font.py      (step 5) variants.toml → fonts/*.mcm
+│   ├── logo_288x72.png    boot splash source raster
+│   └── references/        decoded stock fonts, reference only
+├── previews/              glyph sheets and OSD mock-ups
+├── tests/                 63 tests
+├── tools/
+│   ├── mcm_encode.py      glyph model + encoder (owns the format spec)
+│   ├── mcm_decode.py      parser, ASCII dump, PNG export
+│   ├── validate.py        acceptance checks
+│   ├── build_font.py      variants.toml → fonts/*.mcm
+│   ├── make_logo.py       draws assets/logo_288x72.png
+│   ├── slice_logo.py      raster → glyphs/logo.py
+│   ├── outline_art.py     white sketch → outlined art
+│   ├── render.py          shared rasterisation
+│   ├── build_previews.py  previews/*.png
+│   └── gen_*.py           regenerate the glyph modules and the index table
+├── variants.toml          variant definitions
+├── MODIFIED_INDEXES.md    generated: every index and what was drawn
+└── STATUS.md              build notes and verified findings
 ```
 
 ---
 
-## Order of work
-
-1. ✅ `mcm_encode.py` / `mcm_decode.py` + `validate.py`, proven against the
-   stock font.
-2. ⬜ Decode stock to `assets/references/` as 256 PNGs.
-3. ⬜ ASCII-art glyph modules: numbers, letters, punctuation, then icons.
-4. ⬜ Logo raster + `slice_logo.py` + index allocation.
-5. ⬜ `variants.toml` + `build_font.py` → three `.mcm` outputs.
-6. ⬜ Previews.
-7. ⬜ `MODIFIED_INDEXES.md` + pilot-facing README sections.
-
----
-
-## Attribution
+## Attribution and license
 
 `assets/references/stock/*.mcm` are the stock analog OSD fonts from
 [betaflight-configurator](https://github.com/betaflight/betaflight-configurator)
 (`resources/osd/1/default.mcm` and `resources/osd/2/default.mcm`, commit
 `505bd6d`), vendored unmodified so the round-trip tests are reproducible
 offline. Betaflight Configurator is GPL-3.0; those two files are the
-project's, not this one's, and are included as a reference and test fixture.
+Betaflight project's, not this one's, and are included as a reference and
+test fixture. No stock glyph art is used as a build base — the only bytes
+that reach a built font from stock are the two protected indexes.
 
-## License
+The Army Jay glyph art, the boot splash and the tooling in this repository
+are original work. **Licensing is not settled yet** — decide before
+redistributing. Until then, treat it as all rights reserved by the author.
 
 This repository previously held **EdgeSounds**, an in-browser EdgeTX `.wav`
-converter, which was MIT licensed. That project's full history is preserved
-in git — see commits up to `7c66ca0`. Licensing for the font itself is not
-settled yet and is a step-7 deliverable.
+converter, which was MIT licensed. Its full history is preserved in git —
+see commits up to `7c66ca0`.

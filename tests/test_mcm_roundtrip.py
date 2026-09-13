@@ -284,9 +284,24 @@ class TestValidatorCatchesCorruption(unittest.TestCase):
             path, validate.DEFAULT_STOCK, verbose=False
         ).failures
 
-    def test_clean_font_passes(self):
-        path = self.write("clean.mcm", encode_font(read_font(validate.DEFAULT_STOCK)))
-        self.assertEqual(self.run_checks(path), [])
+    def test_a_built_font_passes_every_check(self):
+        built = REPO_ROOT / "fonts" / "armyjay_full.mcm"
+        if not built.exists():
+            self.skipTest("fonts/armyjay_full.mcm not built yet")
+        self.assertEqual(self.run_checks(built), [])
+
+    def test_stock_font_fails_the_house_outline_rule(self):
+        """Check 10 is stricter than stock, deliberately.
+
+        Stock leaves plenty of white touching transparent. That is why the
+        vendored references are exempt -- and why the exemption must be
+        path-based rather than an unconditional pass.
+        """
+        path = self.write("stocklike.mcm", encode_font(read_font(validate.DEFAULT_STOCK)))
+        failures = self.run_checks(path)
+        self.assertTrue(any("outline integrity" in f for f in failures), failures)
+        self.assertTrue(validate.is_vendored(validate.DEFAULT_STOCK))
+        self.assertFalse(validate.is_vendored(path))
 
     def test_bad_padding_is_caught(self):
         lines = encode_font(synthetic_font()).split("\n")

@@ -14,18 +14,26 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Unit tests (round trip, parser, validator)
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Unit tests
         run: python -m unittest discover -s tests -v
 
       - name: Validate vendored stock fonts
         run: python tools/validate.py --verbose
 
-      - name: Validate built fonts
+      - name: Rebuild fonts and confirm the committed ones are current
         run: |
-          shopt -s nullglob
-          fonts=(fonts/*.mcm)
-          if [ ${#fonts[@]} -eq 0 ]; then
-            echo "No fonts built yet (handoff steps 3-5 outstanding); skipping."
-            exit 0
-          fi
-          python tools/validate.py --verbose "${fonts[@]}"
+          python tools/build_font.py --craft-name
+          git diff --exit-code -- fonts/ \
+            || { echo "::error::fonts/ is stale -- run tools/build_font.py --craft-name and commit"; exit 1; }
+
+      - name: Validate built fonts
+        run: python tools/validate.py --verbose fonts/*.mcm
+
+      - name: Confirm MODIFIED_INDEXES.md is current
+        run: |
+          python tools/gen_modified_indexes.py
+          git diff --exit-code -- MODIFIED_INDEXES.md \
+            || { echo "::error::MODIFIED_INDEXES.md is stale -- run tools/gen_modified_indexes.py and commit"; exit 1; }

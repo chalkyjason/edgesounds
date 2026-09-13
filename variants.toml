@@ -1,0 +1,67 @@
+# Army Jay OSD font variants.
+#
+# One glyph source set, one pipeline (tools/build_font.py), three outputs.
+# A variant is a set of deliberate differences from the base art, never a
+# second copy of the font.
+#
+#   text_set        which letter/digit/punctuation art to use
+#   icon_overrides  extra icon modules layered over glyphs/icons.py, in order
+#   extra_outline   additional rings of black around the ASCII block (0x20-0x5F)
+#
+# `extra_outline` is how the high-readability variant gets its weight. It
+# thickens the black surround rather than the white strokes: at a 12px cell
+# the counters close if the strokes grow, and a filled-in 8 or B is worse
+# than a thin one. Contrast is what degrades on an analog feed, so contrast
+# is what the variant buys. It applies only to the ASCII block -- widening
+# the AH ladder or the progress bar would merge their segments.
+
+[meta]
+protected_source = "assets/references/stock/default_v2.mcm"
+output_dir = "fonts"
+
+# The boot splash, and with it the in-flight wordmark, is identical in
+# every variant: it is the brand, and a pilot swapping variants should not
+# get a different logo.
+logo_module = "glyphs.logo"
+
+
+[variants.armyjay_full]
+description = "Flagship. Custom Army Jay letterforms and custom Army Jay icons."
+output = "armyjay_full.mcm"
+text_set = "standard"
+icon_overrides = []
+extra_outline = 0
+
+[variants.armyjay_clean]
+description = """\
+Custom Army Jay letterforms with icons drawn close to the stock \
+silhouettes, for pilots who want familiar iconography."""
+output = "armyjay_clean.mcm"
+text_set = "standard"
+icon_overrides = ["glyphs.icons_clean"]
+extra_outline = 0
+
+[variants.armyjay_highreadability]
+description = """\
+Maximum legibility on a degraded analog feed: a doubled black surround on \
+every letter and digit, and icons stripped of internal detail."""
+output = "armyjay_highreadability.mcm"
+text_set = "standard"
+icon_overrides = ["glyphs.icons_simplified"]
+extra_outline = 1
+
+
+# Optional, and off by default. Betaflight 4.4 and earlier can only reach
+# glyphs at typeable ASCII indexes through the craft-name field, so showing
+# the wordmark in flight on those versions means copying the wordmark tiles
+# onto sacrificial punctuation slots. That costs those glyphs, which is why
+# it is a variant and not the default. 4.5+ uses OSD Custom Elements and
+# needs none of this.
+#
+# Build with:  python tools/build_font.py --craft-name
+#
+# The slots and the craft name to type are emitted into the build log and
+# into MODIFIED_INDEXES.md.
+[craft_name]
+enabled = false
+suffix = "_craftname"
