@@ -189,9 +189,49 @@ def _main(argv: Sequence[str] | None = None) -> int:
         action="append",
         help="decode only this glyph index (repeatable; accepts 0x41)",
     )
+    parser.add_argument(
+        "--png",
+        type=Path,
+        metavar="DIR",
+        help="also write one PNG per glyph into DIR (requires Pillow)",
+    )
+    parser.add_argument(
+        "--sheet",
+        type=Path,
+        metavar="FILE",
+        help="also write a labelled 16x16 contact sheet (requires Pillow)",
+    )
+    parser.add_argument(
+        "--scale",
+        type=int,
+        default=1,
+        help="pixel scale for --png (default 1, i.e. 12x18)",
+    )
     args = parser.parse_args(argv)
 
     glyphs = read_font(args.font)
+
+    if args.png or args.sheet:
+        # Imported here so the encode/decode path stays dependency-free.
+        from render import render_glyph_sheet, save
+
+        if args.png:
+            from render import glyph_to_image
+
+            for index, glyph in enumerate(glyphs):
+                save(
+                    glyph_to_image(glyph, scale=args.scale),
+                    args.png / f"{index:03d}_0x{index:02X}.png",
+                )
+            print(f"wrote {GLYPH_COUNT} PNGs to {args.png}")
+        if args.sheet:
+            save(
+                render_glyph_sheet(glyphs, title=args.font.name),
+                args.sheet,
+            )
+            print(f"wrote {args.sheet}")
+        if not args.index:
+            return 0
     if args.index:
         for index in args.index:
             if not 0 <= index < GLYPH_COUNT:
