@@ -5,9 +5,12 @@ deliberate differences, not a second font:
 
 ``glyphs/icons_clean.py``
     For pilots who want familiar iconography. Only the icons whose Army Jay
-    silhouette differs *in kind* from stock are overridden; the rest (RSSI
-    bars, house, thermometer, crosshair, progress bar, battery states,
-    arrows, AH ladder) are already stock-shaped and are left alone.
+    silhouette differs *in kind* from stock are overridden -- six of them.
+    The rest (RSSI bars, house, thermometer, crosshair, progress bar,
+    battery states, arrows, AH ladder) already follow the stock silhouette
+    and are left alone, so they remain Army Jay art rather than becoming
+    copies of stock. The variant is six glyphs, not a second icon set;
+    ``tests/test_glyphs_and_build.py`` asserts both halves of that.
 
 ``glyphs/icons_simplified.py``
     For the high-readability variant. Drops internal detail from the

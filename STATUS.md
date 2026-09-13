@@ -7,7 +7,7 @@ craft-name builds, and all six pass every acceptance check.
 
 ```
 $ python -m unittest discover -s tests
-Ran 65 tests ... OK
+Ran 68 tests ... OK
 
 $ python tools/validate.py fonts/*.mcm
 PASSED -- 6 font(s) validated
@@ -207,6 +207,19 @@ fixtures only, and no stock art is a build base.
 
 Community defaults, not legal advice — editing `LICENSE` is all it takes to
 change them, and nothing in the build depends on the choice.
+
+### What the `clean` variant actually is
+
+Measured after the fact, because the description had drifted ahead of the
+build: `clean` differs from the flagship at **6 of 256 glyphs**. All six
+overrides are genuinely closer to stock (the test now asserts it
+per-glyph), but across the whole icon block the variant is only about 1.7%
+nearer stock than the flagship is -- 6,341 differing pixels against 6,449.
+
+Calling it "icons drawn close to stock silhouettes" oversold that. The
+honest version, now in the README: six marks redrawn to the stock shape,
+and 73 icons that already followed the stock silhouette left as Army Jay
+art. No variant here ships pixel-identical stock icons, and none claims to.
 
 ### "Heavier weight" means heavier black
 

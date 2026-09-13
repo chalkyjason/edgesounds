@@ -34,8 +34,10 @@ extra_outline = 0
 
 [variants.armyjay_clean]
 description = """\
-Custom Army Jay letterforms with icons drawn close to the stock \
-silhouettes, for pilots who want familiar iconography."""
+Custom Army Jay letterforms, with the six icons whose silhouette departs \
+most from stock redrawn to match it. Differs from the flagship at 6 of 256 \
+glyphs -- the other icons are unchanged Army Jay art that already follows \
+the stock shape."""
 output = "armyjay_clean.mcm"
 text_set = "standard"
 icon_overrides = ["glyphs.icons_clean"]

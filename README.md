@@ -20,7 +20,7 @@ Configurator's Font Manager.
 | File | Letters & numbers | Icons | Pick this if |
 |---|---|---|---|
 | [`armyjay_full.mcm`](fonts/armyjay_full.mcm) | Army Jay stencil | Army Jay | **Start here.** The flagship look. |
-| [`armyjay_clean.mcm`](fonts/armyjay_clean.mcm) | Army Jay stencil | Close to stock silhouettes | You want the new type but your eyes already know where the stock icons are. |
+| [`armyjay_clean.mcm`](fonts/armyjay_clean.mcm) | Army Jay stencil | Six redrawn to match stock | The throttle, home flag, speed, distance and battery marks read like the stock ones. |
 | [`armyjay_highreadability.mcm`](fonts/armyjay_highreadability.mcm) | Doubled black surround | Simplified, detail removed | Long range, weak signal, or a lot of noise in the feed. |
 
 Three more files ending `_craftname.mcm` exist for showing the wordmark
@@ -30,10 +30,27 @@ glyphs.
 
 Per-variant glyph sheets and OSD mock-ups are in [`previews/`](previews/).
 
+### What "clean" actually changes
+
+Six icons, and nothing else. `armyjay_clean.mcm` differs from the flagship
+at **6 of 256 glyphs** — `0x04` throttle, `0x11` home flag, `0x13` AH
+decoration, `0x70` speed, `0x71` distance, `0x97` main battery. Those are
+the marks whose Army Jay silhouette departs from stock *in kind*, so they
+are redrawn to the stock shape.
+
+The other 73 icons are unchanged Army Jay art. They were left alone because
+they already follow the stock silhouette — RSSI bars are bars, the battery
+is a battery, the arrows are arrows — but they are still this font's
+drawings, not stock ones. If you want icons pixel-identical to stock, this
+is not that; no variant here is. Three tests keep the claim honest: each
+override must measure closer to stock than the flagship's version, and the
+set of differing glyphs must equal the set of declared overrides.
+
 ### What "high readability" actually changes
 
 It thickens the **black surround** on every letter and digit, not the white
-strokes. At a 12 px cell the counters close if the strokes grow — a filled-in
+strokes — 63 of the 64 ASCII glyphs gain black (the 64th is the space), and
+the white strokes do not move by a single pixel. At a 12 px cell the counters close if the strokes grow — a filled-in
 `8` or `B` is worse than a thin one. Contrast is what degrades on an analog
 feed, so contrast is what the variant buys. Icons lose internal detail on the
 same reasoning. Nothing is widened in the AH ladder or progress bar, whose

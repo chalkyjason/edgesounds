@@ -326,6 +326,64 @@ class TestBuildPipeline(unittest.TestCase):
             if index not in sacrificed:
                 self.assertEqual(glyphs[index], patched[index])
 
+    def test_clean_overrides_are_each_closer_to_stock(self):
+        """The `clean` variant's selling point, made checkable.
+
+        Every icon it overrides must be measurably nearer the stock art
+        than the flagship's version is. Without this the variant could
+        drift into being merely *different* while still claiming to be
+        familiar.
+        """
+        full = self.assemble()
+        clean = self.assemble(icon_overrides=["glyphs.icons_clean"])
+        overridden = importlib.import_module("glyphs.icons_clean").ICONS_CLEAN
+
+        def distance(a: Glyph, b: Glyph) -> int:
+            return sum(
+                1
+                for ra, rb in zip(a.rows, b.rows, strict=True)
+                for x, y in zip(ra, rb, strict=True)
+                if x != y
+            )
+
+        for index in overridden:
+            with self.subTest(index=f"0x{index:02X}"):
+                self.assertLess(
+                    distance(clean[index], self.stock[index]),
+                    distance(full[index], self.stock[index]),
+                    f"0x{index:02X}: the clean override is not closer to stock",
+                )
+
+    def test_clean_differs_from_flagship_only_where_declared(self):
+        """`clean` is a handful of overrides, not a second icon set.
+
+        The README says so in as many words; this keeps the two honest
+        about each other if someone adds an override without updating it.
+        """
+        full = self.assemble()
+        clean = self.assemble(icon_overrides=["glyphs.icons_clean"])
+        overridden = set(importlib.import_module("glyphs.icons_clean").ICONS_CLEAN)
+        differing = {i for i in range(GLYPH_COUNT) if full[i] != clean[i]}
+        self.assertEqual(differing, overridden)
+
+    def test_high_readability_adds_black_and_no_white(self):
+        """Its whole premise: more contrast, identical letterforms."""
+        full = self.assemble()
+        heavy = self.assemble(extra_outline=1)
+        ascii_block = [i for i in build_font.ASCII_BLOCK if i not in PROTECTED]
+
+        def count(glyphs, index, char):
+            return sum(row.count(char) for row in glyphs[index].rows)
+
+        added_black = sum(
+            count(heavy, i, "-") - count(full, i, "-") for i in ascii_block
+        )
+        added_white = sum(
+            count(heavy, i, "#") - count(full, i, "#") for i in ascii_block
+        )
+        self.assertGreater(added_black, 0, "no extra black surround")
+        self.assertEqual(added_white, 0, "white strokes moved; they must not")
+
     def test_build_is_deterministic(self):
         first = encode_font(self.assemble())
         second = encode_font(self.assemble())
