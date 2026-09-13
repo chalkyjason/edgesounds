@@ -1,108 +1,230 @@
-# EdgeSounds
+# Army Jay OSD
 
-A single-page web app for FPV pilots that converts any audio file to EdgeTX-compatible `.wav` format — entirely in the browser — and hosts a curated library of pre-converted, ready-to-download sounds.
+A Betaflight **analog** OSD font in an Army Jay military/tactical pixel-art
+style, built from reviewable ASCII-art sources into valid MAX7456 `.mcm`
+files that upload through Betaflight Configurator's Font Manager.
 
-> Make your FPV radio talk back.
+Primary target is a BetaFPV Air75 (analog, MAX7456-class OSD), but the
+output is plain `.mcm` and works with any Betaflight build that has an
+analog OSD.
 
-## What it does
+> **Build status: step 1 of 7.** The encoder, decoder and validator are
+> done and proven byte-identical against Betaflight's own stock fonts. No
+> glyph art exists yet, so `fonts/` is empty — there is nothing to flash.
+> See [STATUS.md](STATUS.md) for what is done, what was verified, and the
+> one design conflict that needs a decision before step 4.
 
-- **Convert** mp3 / m4a / wav / ogg / flac → 32 kHz mono 16-bit PCM `.wav` (the format EdgeTX actually wants), all client-side via [`ffmpeg.wasm`](https://github.com/ffmpegwasm/ffmpeg.wasm). No upload, no server.
-- **Library** of pre-converted sounds organised by category (callouts, memes, movies, TV, games, warnings) — preview, single download, or bundle multiple files into a ZIP.
-- **Setup guide** with auto-trigger filenames (`armed.wav`, `dsarmd.wav`, …), Special Functions walkthrough, and the gotchas that bite first-timers.
+---
 
-## Why these constraints
+## What this is not
 
-EdgeTX silently rejects sounds that don't meet its format. The radio just stays quiet — there's no error to debug. Every output produced here is locked to:
+HD/digital OSD fonts. DJI, HDZero and msp-osd use 24 × 36 BMP or `.bin`
+formats — a different problem entirely, and out of scope here.
 
-| Property        | Value                              |
-|-----------------|------------------------------------|
-| Container       | RIFF `.wav`                        |
-| Codec           | PCM signed 16-bit little-endian    |
-| Sample rate     | 32000 Hz                           |
-| Channels        | 1 (mono)                           |
-| Filename        | ≤6 chars + `.wav`, ASCII letters/digits/underscores only |
+---
 
-## Local development
+## The format
+
+Everything below was verified against the stock fonts vendored in
+`assets/references/stock/`, not taken on faith.
+
+**File structure (`.mcm`)**
+
+| | |
+|---|---|
+| Encoding | plain ASCII, LF line endings |
+| Line 1 | `MAX7456` |
+| Lines 2–16385 | 16,384 lines of exactly 8 `0`/`1` characters, one byte each |
+| Total | 256 glyphs × 64 bytes = 16,384 bytes |
+| Trailing newline | none — the final byte line is unterminated |
+
+A stock font is 147,463 bytes. Note that `wc -l` reports **16384**, not
+16385, because it counts newlines and the last line has none.
+
+**Glyph geometry**
+
+- 12 px wide × 18 px tall = 216 pixels, left-to-right, top-to-bottom.
+- 2 bits per pixel, 4 pixels per byte → **54 bytes of real data**.
+- Padded from 54 to 64 bytes; the 10 padding bytes are `0x55`
+  (`01010101`).
+
+**Pixel encoding**
+
+| Bits | Meaning | ASCII art |
+|---|---|---|
+| `00` | black | `-` |
+| `10` | white | `#` |
+| `01` | transparent | `.` |
+| `11` | transparent | — accepted on read, never emitted |
+
+---
+
+## Glyph sources
+
+Glyphs are authored as 12 × 18 ASCII art in Python modules under `glyphs/`,
+never as hand-placed binary. Every glyph string is validated as exactly 18
+rows of 12 legal characters at import time, so the whole font stays
+diffable and reviewable in a terminal:
+
+```python
+GLYPH_BATTERY_FULL = """
+............
+.##########.
+.#--------#.
+.#-######-#.
+...
+"""
+```
+
+---
+
+## Tooling
+
+No third-party dependencies — Python 3.11+ and the standard library.
 
 ```bash
-npm install
-npm run dev
+# Run the full acceptance suite against the vendored stock fonts
+python tools/validate.py --verbose
+
+# Validate specific fonts (this is what CI runs on fonts/*.mcm)
+python tools/validate.py fonts/armyjay_full.mcm
+
+# Decode a font to reviewable ASCII art
+python tools/mcm_decode.py assets/references/stock/default_v2.mcm -o /tmp/stock.txt
+
+# Decode a single glyph ('A' is 0x41)
+python tools/mcm_decode.py assets/references/stock/default_v2.mcm -i 0x41
+
+# Re-encode an ASCII dump back to .mcm
+python tools/mcm_encode.py /tmp/stock.txt /tmp/rebuilt.mcm
+
+# Unit tests
+python -m unittest discover -s tests -v
 ```
 
-The dev server applies the cross-origin headers required by `ffmpeg.wasm` (`SharedArrayBuffer` needs them):
+### Acceptance checks
+
+`tools/validate.py` runs these and exits non-zero if any fail:
+
+| # | Check | Status |
+|---|---|---|
+| 1 | 16,385 lines, `MAX7456` header, 8 binary chars per line | implemented |
+| 2 | All 256 indexes defined; coverage table printed | implemented |
+| 3 | Padding bytes are `0x55` for every glyph | implemented |
+| 4 | No `11` pixel pairs emitted | implemented |
+| 5 | encode → decode → encode is byte-identical | implemented |
+| 6 | Decoded ASCII art re-renders to the same pixels | implemented |
+| 7 | `0x00` and `0xFF` match stock | implemented |
+| 8 | Stock diff matches `MODIFIED_INDEXES.md` | implemented; reports only until that file exists |
+| 9 | Boot splash and in-flight tile ranges do not overlap | **skipped** until `glyphs/logo.py` exists (step 4) |
+
+---
+
+## Glyph map policy
+
+- Targets the **latest** Betaflight glyph map. Newer maps are effectively
+  supersets — older firmware simply never references the newer indexes — so
+  targeting latest maximizes compatibility.
+- All 256 indexes must be explicitly defined. The build fails loudly on any
+  undefined index rather than silently shipping a blank glyph.
+- `assets/references/stock/` is a shape and meaning reference only. It is
+  never the build base for `armyjay_full` or `armyjay_highreadability`.
+
+**Protected indexes — never write custom art here**
+
+| Index | Why |
+|---|---|
+| `0x00` | blanks the screen on video initialization |
+| `0xFF` | reserved / special use |
+| `0x20`–`0x7E` | must retain their ASCII meanings (the art changes; the mapping does not) |
+
+---
+
+## Variants
+
+One glyph source set, one pipeline, driven by `variants.toml`:
+
+| File | Letters/Numbers | Icons | Notes |
+|---|---|---|---|
+| `armyjay_full.mcm` | Custom Army Jay | Custom Army Jay | Flagship |
+| `armyjay_clean.mcm` | Custom Army Jay | Close to stock silhouettes | For pilots who want familiar icons |
+| `armyjay_highreadability.mcm` | Heavier weight, wider spacing | Custom, simplified | Max legibility on degraded analog |
+
+None of these are built yet.
+
+---
+
+## Installing (once fonts ship)
+
+1. Connect the flight controller to Betaflight Configurator.
+2. **Props off. Always.** Some boards need a LiPo connected to power the OSD
+   chip during upload — the 5 V from USB alone may not bring it up.
+3. OSD tab → Font Manager → select the `.mcm` → Upload → reboot.
+
+### Backup and recovery
+
+Before you flash anything:
+
+- Save your current config: CLI tab → `diff all` → copy the output to a file.
+- The stock font is always recoverable. Font Manager ships the stock presets,
+  and the originals live in the Configurator repo at
+  `resources/osd/2/default.mcm`. A copy is vendored here at
+  `assets/references/stock/default_v2.mcm`.
+- Restoring is the same procedure as installing: pick the stock font, upload,
+  reboot. Nothing about a font upload touches your tune or rates.
+
+---
+
+## Repo layout
 
 ```
-Cross-Origin-Opener-Policy: same-origin
-Cross-Origin-Embedder-Policy: require-corp
+.
+├── README.md
+├── STATUS.md              build progress and verified findings
+├── MODIFIED_INDEXES.md    (step 7) every index, its meaning, what was drawn
+├── variants.toml          (step 5) variant definitions
+├── fonts/                 (step 5) built .mcm outputs — the deliverable
+├── glyphs/                (step 3) ASCII-art glyph sources
+├── assets/
+│   ├── logo_288x72.png    (step 4) boot splash raster
+│   └── references/stock/  decoded stock fonts, reference only
+├── previews/              (step 6) glyph sheets and logo previews
+├── tests/                 round-trip and format tests
+└── tools/
+    ├── mcm_encode.py      glyph model + encoder (owns the format spec)
+    ├── mcm_decode.py      parser + ASCII dump
+    ├── validate.py        acceptance checks
+    ├── slice_logo.py      (step 4) 288×72 → 12×18 tiles
+    └── build_font.py      (step 5) variants.toml → fonts/*.mcm
 ```
 
-If you're proxying behind another server, mirror those headers or the audio engine won't load.
+---
 
-## Build
+## Order of work
 
-```bash
-npm run build
-npm run preview
-```
+1. ✅ `mcm_encode.py` / `mcm_decode.py` + `validate.py`, proven against the
+   stock font.
+2. ⬜ Decode stock to `assets/references/` as 256 PNGs.
+3. ⬜ ASCII-art glyph modules: numbers, letters, punctuation, then icons.
+4. ⬜ Logo raster + `slice_logo.py` + index allocation.
+5. ⬜ `variants.toml` + `build_font.py` → three `.mcm` outputs.
+6. ⬜ Previews.
+7. ⬜ `MODIFIED_INDEXES.md` + pilot-facing README sections.
 
-The preview server reproduces the COOP/COEP headers so you can test the full conversion flow against the production bundle.
+---
 
-## Adding sounds to the library
+## Attribution
 
-The library is data + files in the repo. No backend.
-
-1. Drop your `.wav` in `public/sounds/<category>/`. Use the EdgeTX-expected filename (max 6 chars + `.wav`).
-2. Edit `public/library.json` and append an entry to the right category:
-   ```json
-   {
-     "id": "armed-topgun",
-     "filename": "armed.wav",
-     "displayName": "Top Gun — I feel the need for speed",
-     "trigger": "armed",
-     "duration": 2.4,
-     "tags": ["movie", "armed", "topgun"],
-     "path": "/sounds/callouts/armed-topgun.wav",
-     "credit": "Top Gun (1986)",
-     "license": "fair-use-personal"
-   }
-   ```
-3. PR. The site picks up the change on next deploy.
-
-## Deploy
-
-Designed for static hosts (Vercel, Cloudflare Pages, Netlify). `vercel.json` is included with the COOP/COEP headers and a SPA rewrite rule.
-
-For Cloudflare Pages, set the same headers in `_headers`:
-
-```
-/*
-  Cross-Origin-Opener-Policy: same-origin
-  Cross-Origin-Embedder-Policy: require-corp
-```
-
-## Stack
-
-- React 19 + TypeScript + Vite
-- Tailwind CSS 3 (electric-green accent on a zinc dark base)
-- `@ffmpeg/ffmpeg` 0.12 + `@ffmpeg/util` (modular API, lazy-loaded only on `/convert`)
-- `react-router-dom` v7 for routing
-- `lucide-react` icons
-- `JSZip` for "download multiple as ZIP"
-
-## Project layout
-
-```
-src/
-├── components/    Layout, Nav, Footer, Converter, SoundCard, etc.
-├── hooks/         FFmpeg singleton, conversion, library, shared audio, toasts
-├── pages/         Home, Library, Convert, Setup
-├── types/         SoundEntry, ConversionResult, …
-└── utils/         filename sanitization, audio validation, trigger presets
-public/
-├── library.json   Library metadata (categories + sounds)
-└── sounds/        Library audio files, organised by category
-```
+`assets/references/stock/*.mcm` are the stock analog OSD fonts from
+[betaflight-configurator](https://github.com/betaflight/betaflight-configurator)
+(`resources/osd/1/default.mcm` and `resources/osd/2/default.mcm`, commit
+`505bd6d`), vendored unmodified so the round-trip tests are reproducible
+offline. Betaflight Configurator is GPL-3.0; those two files are the
+project's, not this one's, and are included as a reference and test fixture.
 
 ## License
 
-MIT.
+This repository previously held **EdgeSounds**, an in-browser EdgeTX `.wav`
+converter, which was MIT licensed. That project's full history is preserved
+in git — see commits up to `7c66ca0`. Licensing for the font itself is not
+settled yet and is a step-7 deliverable.
