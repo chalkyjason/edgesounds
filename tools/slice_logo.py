@@ -166,13 +166,28 @@ def render_module(tiles: Sequence[Glyph], wordmark: Sequence[int]) -> str:
     return "".join(lines)
 
 
+#: Characters that cannot appear in a craft name set over the CLI.
+#: Betaflight strips everything from '#' onward as a comment before the
+#: line is parsed (src/main/cli/cli.c, "Strip comment starting with # from
+#: line"), so a name containing one is silently truncated. None of the
+#: slots below use it.
+CLI_HAZARDOUS = frozenset("#")
+
 #: Punctuation that an OSD almost never needs, offered up so the 4.4
-#: craft-name path has somewhere to put the wordmark.
+#: craft-name path has somewhere to put the wordmark. Order matters: the
+#: first N are consumed, and their characters in order are the craft name
+#: the pilot types.
 _SACRIFICIAL = [
-    (0x21, "!"), (0x22, '"'), (0x23, "#"), (0x25, "%"), (0x26, "&"),
-    (0x27, "'"), (0x28, "("), (0x29, ")"), (0x2A, "*"), (0x3B, ";"),
-    (0x3C, "<"), (0x3E, ">"),
+    (0x21, "!"), (0x22, '"'), (0x25, "%"), (0x26, "&"), (0x27, "'"),
+    (0x28, "("), (0x29, ")"), (0x2A, "*"), (0x3C, "<"), (0x3E, ">"),
+    (0x5B, "["), (0x5D, "]"),
 ]
+
+_hazards = {c for _, c in _SACRIFICIAL} & CLI_HAZARDOUS
+if _hazards:  # pragma: no cover - guards the table above
+    raise AssertionError(
+        f"sacrificial slots use CLI-hazardous characters: {sorted(_hazards)}"
+    )
 
 
 def craft_name_slots(count: int) -> list[tuple[int, str]]:

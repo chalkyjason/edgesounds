@@ -29,14 +29,14 @@ WORDMARK_INDEXES = tuple(range(0xBF, 0xC9))
 CRAFT_NAME_SLOTS = (
     (0x21, '!'),
     (0x22, '"'),
-    (0x23, '#'),
     (0x25, '%'),
     (0x26, '&'),
     (0x27, "'"),
     (0x28, '('),
     (0x29, ')'),
     (0x2A, '*'),
-    (0x3B, ';'),
+    (0x3C, '<'),
+    (0x3E, '>'),
 )
 
 LOGO_TILES: dict[int, str] = {

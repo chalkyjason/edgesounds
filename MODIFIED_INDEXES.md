@@ -31,16 +31,16 @@ The optional `*_craftname.mcm` builds copy the wordmark tiles onto typeable ASCI
 |---|---|---|
 | `0x21` | `!` | `0xBF` |
 | `0x22` | `"` | `0xC0` |
-| `0x23` | `#` | `0xC1` |
-| `0x25` | `%` | `0xC2` |
-| `0x26` | `&` | `0xC3` |
-| `0x27` | `'` | `0xC4` |
-| `0x28` | `(` | `0xC5` |
-| `0x29` | `)` | `0xC6` |
-| `0x2A` | `*` | `0xC7` |
-| `0x3B` | `;` | `0xC8` |
+| `0x25` | `%` | `0xC1` |
+| `0x26` | `&` | `0xC2` |
+| `0x27` | `'` | `0xC3` |
+| `0x28` | `(` | `0xC4` |
+| `0x29` | `)` | `0xC5` |
+| `0x2A` | `*` | `0xC6` |
+| `0x3C` | `<` | `0xC7` |
+| `0x3E` | `>` | `0xC8` |
 
-Craft name to type in Configurator: `!"#%&'()*;`
+Craft name to type in Configurator: `!"%&'()*<>`
 
 ## Summary of changes
 

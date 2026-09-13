@@ -105,16 +105,21 @@ That is what the `*_craftname.mcm` builds do. To use one:
 2. Set the craft name to exactly:
 
    ```
-   !"#%&'()*;
+   !"%&'()*<>
    ```
 
 3. Enable the Craft Name element in the OSD tab and place it.
 
-**You lose these ten glyphs:** `!` `"` `#` `%` `&` `'` `(` `)` `*` `;`.
+**You lose these ten glyphs:** `!` `"` `%` `&` `'` `(` `)` `*` `<` `>`.
 They were picked because an OSD almost never needs them, but if you use any
 of them in a warning string or a craft name, pick a different variant. The
 full mapping is in
 [`MODIFIED_INDEXES.md`](MODIFIED_INDEXES.md#craft-name-variant-betaflight-44-and-earlier).
+
+> **Why no `#`?** Betaflight's CLI strips everything from a `#` onward as a
+> comment before parsing the line, so `set craft_name = ...#...` is silently
+> truncated. The slots deliberately avoid it, and a test enforces that. The
+> name above is safe either way — Configuration tab or CLI.
 
 This is a variant, not the default, precisely because it costs something.
 

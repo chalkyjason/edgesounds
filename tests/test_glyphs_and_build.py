@@ -216,6 +216,27 @@ class TestLogoAllocation(unittest.TestCase):
             self.assertTrue(0x20 <= index <= 0x7E, f"0x{index:02X} not typeable")
             self.assertEqual(ord(char), index)
 
+    def test_craft_name_avoids_cli_hazardous_characters(self):
+        """The craft name must survive being set over the CLI.
+
+        Betaflight strips everything from '#' onward as a comment before
+        parsing the line, so a craft name containing one is silently
+        truncated -- the OSD would show a fragment of the wordmark and the
+        pilot would have no idea why.
+        """
+        import slice_logo
+
+        self.assertIn("#", slice_logo.CLI_HAZARDOUS)
+        name = "".join(c for _, c in CRAFT_NAME_SLOTS[: len(WORDMARK_INDEXES)])
+        for char in slice_logo.CLI_HAZARDOUS:
+            self.assertNotIn(char, name, f"{char!r} truncates the craft name")
+
+    def test_craft_name_fits_betaflight_name_length(self):
+        # MAX_NAME_LENGTH is 16 in the firmware; Configurator's field is
+        # maxlength=16 to match.
+        name = "".join(c for _, c in CRAFT_NAME_SLOTS[: len(WORDMARK_INDEXES)])
+        self.assertLessEqual(len(name), 16)
+
 
 class TestBuildPipeline(unittest.TestCase):
     def setUp(self):
