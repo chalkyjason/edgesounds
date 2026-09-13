@@ -200,6 +200,9 @@ python tools/validate.py fonts/*.mcm       # acceptance checks
 python tools/build_previews.py             # previews/*.png
 python tools/gen_modified_indexes.py       # MODIFIED_INDEXES.md
 python -m unittest discover -s tests       # 63 tests
+
+# Verify against Betaflight Configurator's own parser (see below)
+python tools/crosscheck_configurator.py
 ```
 
 Other useful entry points:
@@ -259,6 +262,39 @@ test for this.
 The vendored stock fonts are third-party art: they are held to the format
 checks but exempt from 8 and 10.
 
+### Cross-checked against Configurator itself
+
+`tools/validate.py` checks the fonts against *our* understanding of the
+format. That proves consistency, not correctness. So the build also runs
+every font through **Betaflight Configurator's own source** — not a
+reimplementation of it:
+
+```bash
+git clone --depth 1 https://github.com/betaflight/betaflight-configurator
+python tools/crosscheck_configurator.py --configurator betaflight-configurator
+```
+
+It loads `FONT.parseMCMFontFile` and `FONT.msp.encode` from
+`src/js/utils/osdFont.js`, and `imageToCharacter` from
+`src/js/LogoManager.js`, and asserts:
+
+| What | Result |
+|---|---|
+| Configurator parses each font | 256 characters, all six variants |
+| Every pixel, vs our decoder | 216 px × 256 glyphs, exact |
+| `MSP_OSD_CHAR_WRITE` payloads | 256 payloads of 1 + 54 bytes, exact |
+| Padding decodes as transparent | 40 trailing values × 256 |
+| Boot splash PNG re-uploaded through Font Manager | reproduces the 96 tiles in the `.mcm` byte-identically |
+
+That last row is the one worth having: it means uploading
+`assets/logo_288x72.png` through Font Manager's boot-logo uploader produces
+exactly the tiles already baked into the font. The splash and the in-flight
+wordmark cannot disagree.
+
+Two independent implementations agreeing is the strongest verification
+available without a flight controller on the bench. It runs in CI, and it
+skips cleanly if the checkout or Node is missing.
+
 ---
 
 ## Repo layout
@@ -306,8 +342,17 @@ test fixture. No stock glyph art is used as a build base — the only bytes
 that reach a built font from stock are the two protected indexes.
 
 The Army Jay glyph art, the boot splash and the tooling in this repository
-are original work. **Licensing is not settled yet** — decide before
-redistributing. Until then, treat it as all rights reserved by the author.
+are original work, dual-licensed — see [`LICENSE`](LICENSE):
+
+- **Code** (`tools/`, `tests/`, `variants.toml`, CI) — MIT.
+- **Font art** (`glyphs/`, `fonts/*.mcm`, `assets/logo_288x72.png`,
+  `previews/`) — CC BY 4.0. Share it, remix it, ship it commercially; just
+  credit *Army Jay OSD*. Attribution rather than share-alike, so swapping a
+  glyph does not drag a copyleft obligation onto your config.
+
+These are sensible community defaults picked for the project, not legal
+advice, and they are the author's to change — editing `LICENSE` is all it
+takes. Nothing in the build depends on the choice.
 
 This repository previously held **EdgeSounds**, an in-browser EdgeTX `.wav`
 converter, which was MIT licensed. Its full history is preserved in git —

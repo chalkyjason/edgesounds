@@ -1,0 +1,97 @@
+Army Jay OSD — licensing
+========================
+
+This repository contains three kinds of material, under two different
+licences, plus some third-party files that are neither.
+
+If you are a pilot who just wants to fly with this font: use it, share it,
+put it in a pack, remix a glyph. Credit "Army Jay OSD" and you are fine.
+
+
+1. Code — MIT
+-------------
+
+Everything under `tools/` and `tests/`, plus `variants.toml` and the CI
+configuration.
+
+SPDX-License-Identifier: MIT
+
+Copyright (c) 2026 Army Jay
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+
+
+2. Font art — CC BY 4.0
+-----------------------
+
+The glyph art and everything built from it: `glyphs/`, `fonts/*.mcm`,
+`assets/logo_288x72.png`, and `previews/`.
+
+SPDX-License-Identifier: CC-BY-4.0
+
+Copyright (c) 2026 Army Jay
+
+Licensed under the Creative Commons Attribution 4.0 International License.
+Full text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+In short: you may share and adapt this font, including commercially, so
+long as you give appropriate credit. Attribution 4.0 was chosen over a
+share-alike licence deliberately — a pilot who wants to swap one glyph for
+their own should not inherit a copyleft obligation on the rest of their
+config.
+
+Suggested attribution:
+
+    Army Jay OSD font — https://github.com/chalkyjason/edgesounds
+    Licensed CC BY 4.0
+
+
+3. Third-party — not ours to license
+------------------------------------
+
+`assets/references/stock/default_v1.mcm`
+`assets/references/stock/default_v2.mcm`
+`assets/references/png/*`
+
+These are the stock Betaflight analog OSD fonts, taken unmodified from
+betaflight/betaflight-configurator (`resources/osd/1/default.mcm` and
+`resources/osd/2/default.mcm`, commit 505bd6d), and the PNGs are a
+mechanical decode of the second. They are Copyright the Betaflight project
+and its contributors, licensed **GPL-3.0**, and are included here solely as
+a shape reference and as a test fixture for round-trip verification.
+
+  Betaflight Configurator: https://github.com/betaflight/betaflight-configurator
+  GPL-3.0: https://www.gnu.org/licenses/gpl-3.0.txt
+
+No stock glyph art is used as a build base. The only bytes that reach a
+built font from stock are the two protected indexes, `0x00` and `0xFF`,
+both of which are blank.
+
+`tools/crosscheck_configurator.mjs` executes Configurator source from a
+checkout you supply. It does not copy or redistribute any of that source.
+
+
+A note on the licensing choice
+------------------------------
+
+These terms were selected as sensible defaults for an FPV community font,
+not on legal advice. They are the author's to change: edit this file and
+the licence section in README.md. If you would rather the art were
+CC BY-SA, CC0, or the SIL Open Font License, nothing in the build depends
+on this choice.

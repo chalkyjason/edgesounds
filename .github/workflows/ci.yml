@@ -37,3 +37,32 @@ jobs:
           python tools/gen_modified_indexes.py
           git diff --exit-code -- MODIFIED_INDEXES.md \
             || { echo "::error::MODIFIED_INDEXES.md is stale -- run tools/gen_modified_indexes.py and commit"; exit 1; }
+
+  crosscheck:
+    # Runs the built fonts through Betaflight Configurator's own parser and
+    # boot-logo encoder. Two independent implementations agreeing is the
+    # strongest verification available without a flight controller on the
+    # bench.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Clone betaflight-configurator
+        run: |
+          GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 \
+            https://github.com/betaflight/betaflight-configurator \
+            "$RUNNER_TEMP/betaflight-configurator"
+
+      - name: Cross-check against Configurator
+        run: |
+          python tools/crosscheck_configurator.py \
+            --configurator "$RUNNER_TEMP/betaflight-configurator"

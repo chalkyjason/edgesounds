@@ -14,6 +14,9 @@ PASSED -- 6 font(s) validated
 
 $ python tools/validate.py
 PASSED -- 2 font(s) validated        # the vendored stock references
+
+$ python tools/crosscheck_configurator.py
+PASSED -- Configurator's own code agrees with every built font
 ```
 
 | Step | Work | State |
@@ -67,6 +70,38 @@ not magenta. Magenta is only the preview convention.
 
 ---
 
+## Verified against Configurator's own code
+
+`validate.py` checks the fonts against *our* reading of the format, which
+proves consistency rather than correctness. So the build also executes
+Betaflight Configurator's real source over every output —
+`FONT.parseMCMFontFile`, `FONT.msp.encode`, and `LogoManager`'s
+`imageToCharacter` — via `tools/crosscheck_configurator.py`.
+
+Against configurator `505bd6d`, for all six built fonts:
+
+| Check | Result |
+|---|---|
+| Configurator parses the file | 256 characters |
+| Every pixel vs our decoder | 216 px x 256 glyphs, exact |
+| `MSP_OSD_CHAR_WRITE` payloads | 256 payloads of 1 + 54 bytes, exact |
+| Padding decodes as transparent | 40 trailing values x 256 |
+| Splash PNG through Font Manager's uploader | 96 tiles byte-identical to the `.mcm` |
+
+Two things this settled that were previously assumptions:
+
+- **Only 54 of the 64 bytes per glyph are uploaded.** `FONT.msp.encode`
+  slices the padding off before sending, so the `0x55` bytes never reach
+  the OSD chip. They still have to be right in the file — Configurator's
+  parser reads all 64 — but they cannot affect what renders.
+- **Configurator yields 256 pixel values per glyph, not 216.** It decodes
+  the full NVM field; only the first 216 are real pixels and the rest come
+  from padding. The first version of the cross-check compared all 256 and
+  reported every glyph as differing, which was the harness being wrong, not
+  the font.
+
+---
+
 ## Decisions taken
 
 ### The `0xFF` collision — resolved
@@ -101,6 +136,17 @@ real.
 every stock font draws the word `MAX` there. Whatever the header says, a
 pilot on a stock font sees `MAX`, so drawing a flag would change behaviour
 rather than preserve it. The art follows stock.
+
+### Licensing
+
+Set in `LICENSE`: **MIT for the code, CC BY 4.0 for the font art.**
+Attribution rather than share-alike, so a pilot who swaps one glyph does
+not inherit a copyleft obligation. The vendored stock fonts stay GPL-3.0
+and the property of the Betaflight project; they are reference and test
+fixtures only, and no stock art is a build base.
+
+Community defaults, not legal advice — editing `LICENSE` is all it takes to
+change them, and nothing in the build depends on the choice.
 
 ### "Heavier weight" means heavier black
 
@@ -148,11 +194,12 @@ merge their segments.
 - **22.5° arrow steps are near the limit of the cell.** Adjacent headings
   are distinguishable side by side but not obviously so in isolation. Stock
   has the same problem.
-- **Nothing here has been flown.** The art is verified by pixel inspection
-  and the OSD mock-ups in `previews/`, which draw a representative screen
-  from the font itself. It has not been uploaded to a real MAX7456 or seen
-  in goggles with a degraded feed — that is the one test that cannot be run
-  from here, and the high-readability variant in particular deserves it.
+- **Nothing here has been flown.** The files are verified against
+  Configurator's own code (below), so the *format* is not in doubt. What
+  remains unverified is the thing only goggles can answer: whether the art
+  reads well on a degraded analog feed. The high-readability variant in
+  particular is a designed hypothesis about contrast, not a measured
+  result. Fly it before trusting it.
 
 ---
 
