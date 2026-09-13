@@ -6,10 +6,12 @@ reserved ``SYM_END_OF_FONT``, so this tool writes 95 tiles and requires the
 bottom-right tile to be empty -- see STATUS.md for why both rules can hold
 at once.
 
-The same tiles serve the in-flight logo at no extra cost: the run of inked
-tiles in the wordmark row reads correctly on its own, so pointing an OSD
-Custom Element at those indexes draws the wordmark mid-flight without
-sacrificing a single ASCII slot.
+The same tiles serve the in-flight logo: the run of inked tiles in the
+wordmark row reads correctly on its own, so anything that can address raw
+glyph indexes draws the wordmark mid-flight. On Betaflight that means a
+custom message (master only) or, on every version, the craft-name route
+below -- which does cost ASCII slots. See the README; Betaflight has no
+"OSD Custom Elements" feature, whatever the build handoff said.
 
 Input must use exactly the three colours Configurator's uploader defines:
 pure green background, white, black. Anything else is rejected rather than
@@ -143,10 +145,10 @@ def render_module(tiles: Sequence[Glyph], wordmark: Sequence[int]) -> str:
         "#: The in-flight wordmark block, contiguous and inside the splash\n"
         "#: range, so the two allocations cannot conflict.\n",
         f"WORDMARK_INDEXES = tuple(range(0x{first:02X}, 0x{last + 1:02X}))\n\n",
-        "#: Craft-name fallback for Betaflight 4.4 and earlier, where the\n"
-        "#: craft name can only reach typeable ASCII indexes. Built as an\n"
-        "#: optional variant, never the default -- it overwrites these\n"
-        "#: punctuation glyphs with wordmark tiles.\n",
+        "#: Craft-name route, which works on Betaflight 4.4 through\n"
+        "#: current. The craft name reaches only typeable ASCII indexes, so\n"
+        "#: the wordmark has to be copied onto sacrificial punctuation.\n"
+        "#: Built as an optional variant, never the default.\n",
         "CRAFT_NAME_SLOTS = (\n",
     ]
     fallback = craft_name_slots(len(wordmark))

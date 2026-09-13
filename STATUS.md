@@ -7,7 +7,7 @@ craft-name builds, and all six pass every acceptance check.
 
 ```
 $ python -m unittest discover -s tests
-Ran 63 tests ... OK
+Ran 65 tests ... OK
 
 $ python tools/validate.py fonts/*.mcm
 PASSED -- 6 font(s) validated
@@ -99,6 +99,66 @@ Two things this settled that were previously assumptions:
   from padding. The first version of the cross-check compared all 256 and
   reported every glyph as differing, which was the harness being wrong, not
   the font.
+
+---
+
+## A claim in the handoff that is simply false
+
+Section 5b of the build handoff says:
+
+> **Betaflight 4.5+:** OSD Custom Elements — point directly at arbitrary
+> glyph indexes. Preferred; no compromises.
+
+**Betaflight has no such feature.** Checked directly:
+
+- `CUSTOM_ELEMENT` appears nowhere in `src/main/osd/osd_elements.c` on
+  either `4.5-maintenance` or `master`.
+- No `osd_custom_elements.c` exists at any plausible path in 4.5.
+- betaflight-configurator has no UI for it anywhere in `src/`.
+
+It is an **INAV** feature —
+`iNavFlight/inav:src/main/io/osd/custom_elements.h`, which defines
+`CUSTOM_ELEMENT_TYPE_ICON_STATIC` (the "point at a glyph index" type) and
+`CUSTOM_ELEMENTS_PARTS 3`. Even on INAV an element carries three parts, not
+the ten the README originally instructed people to configure.
+
+This was repeated into the README as the *preferred* path and shipped. It
+is the same class of error as the `#` truncation: a pilot-facing
+instruction that no test in this repo can see. Corrected in the README with
+the correction left visible rather than quietly edited out.
+
+What actually works on Betaflight:
+
+| Route | Versions | Cost |
+|---|---|---|
+| Craft name + sacrificial slots | 4.4 → current | ten punctuation glyphs |
+| `OSD_CUSTOM_MSG0`–`3` over MSPv2 | `master` only (not 4.5) | nothing |
+| High bytes straight into the craft name | untested | nothing, if it works |
+
+The third is worth chasing. Both MSP paths Configurator uses encode the
+name with `buffer.push8(config.charCodeAt(i))` — plain 8-bit truncation, no
+UTF-8 — and `toupper()` is identity for bytes >= 0x80 in the C locale. So
+typing U+00BF–U+00C8 should land bytes `0xBF`–`0xC8` in `craftName`, which
+are exactly the wordmark tiles. If that holds on hardware, the
+`_craftname` variants are unnecessary. It stays flagged as untested because
+it cannot be confirmed from here.
+
+### A trap the craft-name route sets
+
+`osd_craftname_msgs` must be **OFF**. With it on, the firmware overwrites
+`craftName` with link-quality and RSSI text every frame:
+
+```c
+// Injects data into the CraftName variable for systems which limit
+// the available MSP data field in their OSD.
+if (osdConfig()->osd_craftname_msgs == true) {
+    ...
+    strncpy(pilotConfigMutable()->craftName, element->buff, MAX_NAME_LENGTH - 1);
+}
+```
+
+The wordmark would be replaced by `LQ 8 -72` with no indication why. Present
+in both 4.5 and master. Documented in the README install steps.
 
 ---
 

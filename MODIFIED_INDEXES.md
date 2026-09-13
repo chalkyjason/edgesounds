@@ -23,9 +23,11 @@ This is the table section 5 of the handoff asks for: proof that the boot splash 
 
 The in-flight block `0xBF`-`0xC8` is a subset of the splash block, so it costs nothing: the same tiles draw the splash at boot and the wordmark in flight. No ASCII slot is sacrificed.
 
-### Craft-name variant (Betaflight 4.4 and earlier)
+### Craft-name variant (Betaflight 4.4 through current)
 
-The optional `*_craftname.mcm` builds copy the wordmark tiles onto typeable ASCII indexes, because the craft-name field cannot reach the splash range on those versions. **These glyphs are lost in that variant only**; the default builds leave them intact.
+The optional `*_craftname.mcm` builds copy the wordmark tiles onto typeable ASCII indexes, because the craft-name field cannot reach the splash range. **These glyphs are lost in that variant only**; the default builds leave them intact.
+
+Betaflight has no "OSD Custom Elements" feature -- that is INAV. On Betaflight `master` a custom message (`OSD_CUSTOM_MSG0`-`3`) can carry raw glyph indexes and needs no sacrifice; on 4.5 and earlier the craft name is the only route. See the README.
 
 | Sacrificed index | Character | Receives tile |
 |---|---|---|

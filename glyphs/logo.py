@@ -22,10 +22,10 @@ RESERVED_INDEX = 0xFF
 #: range, so the two allocations cannot conflict.
 WORDMARK_INDEXES = tuple(range(0xBF, 0xC9))
 
-#: Craft-name fallback for Betaflight 4.4 and earlier, where the
-#: craft name can only reach typeable ASCII indexes. Built as an
-#: optional variant, never the default -- it overwrites these
-#: punctuation glyphs with wordmark tiles.
+#: Craft-name route, which works on Betaflight 4.4 through
+#: current. The craft name reaches only typeable ASCII indexes, so
+#: the wordmark has to be copied onto sacrificial punctuation.
+#: Built as an optional variant, never the default.
 CRAFT_NAME_SLOTS = (
     (0x21, '!'),
     (0x22, '"'),

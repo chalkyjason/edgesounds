@@ -151,10 +151,11 @@ def apply_craft_name(
 ) -> tuple[list[Glyph], str, list[tuple[int, str]]]:
     """Copy the wordmark tiles onto sacrificial ASCII slots.
 
-    The Betaflight 4.4 and earlier path: the craft-name field can only
-    reach typeable ASCII indexes, so the only way to show the wordmark in
-    flight is to overwrite glyphs that live at typeable indexes. Returns
-    the modified glyphs, the craft name to type, and the slots consumed.
+    The craft-name route, which is what works on Betaflight 4.4 through
+    current: the craft-name field reaches only typeable ASCII indexes, so
+    showing the wordmark in flight means overwriting glyphs that live at
+    those indexes. Returns the modified glyphs, the craft name to type, and
+    the slots consumed.
     """
     module = importlib.import_module(logo_module)
     wordmark = list(module.WORDMARK_INDEXES)

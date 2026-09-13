@@ -23,8 +23,8 @@ Configurator's Font Manager.
 | [`armyjay_clean.mcm`](fonts/armyjay_clean.mcm) | Army Jay stencil | Close to stock silhouettes | You want the new type but your eyes already know where the stock icons are. |
 | [`armyjay_highreadability.mcm`](fonts/armyjay_highreadability.mcm) | Doubled black surround | Simplified, detail removed | Long range, weak signal, or a lot of noise in the feed. |
 
-Three more files ending `_craftname.mcm` exist for the Betaflight 4.4
-in-flight logo trick. **Do not install one unless you have read
+Three more files ending `_craftname.mcm` exist for showing the wordmark
+in flight. **Do not install one unless you have read
 [In-flight logo](#in-flight-logo) below** — they overwrite ten punctuation
 glyphs.
 
@@ -76,52 +76,85 @@ usual cause, and it is not persistent damage.
 ## In-flight logo
 
 The boot splash shows the full `ARMY JAY / TACTICAL OSD` card at power-up.
-To also show the wordmark **while flying**, the method depends on your
-firmware version.
+Showing the wordmark **while flying** needs a different mechanism, and on
+Betaflight there is essentially one that works: the craft name.
 
-### Betaflight 4.5 and newer — OSD Custom Elements (preferred)
+> **Correction.** Earlier versions of this README claimed Betaflight 4.5+
+> has "OSD Custom Elements" that point at arbitrary glyph indexes, and
+> recommended that as the no-compromise path. **That feature does not exist
+> in Betaflight.** It is an [INAV](https://github.com/iNavFlight/inav)
+> feature (`src/main/io/osd/custom_elements.h`), and even there an element
+> carries `CUSTOM_ELEMENTS_PARTS 3` — three parts, not ten. Neither
+> `4.5-maintenance` nor `master` contains it, and Configurator has no UI for
+> it. The claim came from the build handoff and was repeated without being
+> checked. It is wrong; what follows is verified against firmware source.
 
-Point a Custom Element straight at the wordmark glyphs. No compromises,
-nothing sacrificed.
-
-The wordmark is glyph indexes **`0xBF` to `0xC8`** (10 tiles). In the OSD
-tab, add a Custom Element and set ten static glyph parts to those indexes in
-order, then place it on screen.
-
-These are splash tiles that already exist, so the in-flight logo costs
-**nothing** — the same tiles draw the boot card and the in-flight wordmark.
-
-### Betaflight 4.4 and earlier — craft name (optional, costs glyphs)
-
-On 4.4 and earlier there are no Custom Elements, and the craft-name field
-can only reach glyphs at *typeable ASCII* indexes. Showing the wordmark
-therefore means moving those tiles onto punctuation slots and giving up
-those characters.
-
-That is what the `*_craftname.mcm` builds do. To use one:
+### The craft-name method — Betaflight 4.4 through current
 
 1. Upload `armyjay_full_craftname.mcm` (or the clean / high-readability
    equivalent).
-2. Set the craft name to exactly:
+2. Configuration tab → Craft Name → set it to exactly:
 
    ```
    !"%&'()*<>
    ```
 
 3. Enable the Craft Name element in the OSD tab and place it.
+4. **In the CLI, check `osd_craftname_msgs`:**
+
+   ```
+   get osd_craftname_msgs
+   set osd_craftname_msgs = OFF
+   save
+   ```
+
+   With it `ON`, the firmware *overwrites* the craft name with link-quality
+   and RSSI text every frame (`osd_elements.c`: "Injects data into the
+   CraftName variable for systems which limit the available MSP data field
+   in their OSD"). Your wordmark would be replaced by `LQ 8 -72` and there
+   would be no obvious reason why.
 
 **You lose these ten glyphs:** `!` `"` `%` `&` `'` `(` `)` `*` `<` `>`.
-They were picked because an OSD almost never needs them, but if you use any
-of them in a warning string or a craft name, pick a different variant. The
-full mapping is in
-[`MODIFIED_INDEXES.md`](MODIFIED_INDEXES.md#craft-name-variant-betaflight-44-and-earlier).
+They were picked because an OSD almost never needs them. The full mapping is
+in
+[`MODIFIED_INDEXES.md`](MODIFIED_INDEXES.md#craft-name-variant-betaflight-44-through-current).
 
 > **Why no `#`?** Betaflight's CLI strips everything from a `#` onward as a
 > comment before parsing the line, so `set craft_name = ...#...` is silently
 > truncated. The slots deliberately avoid it, and a test enforces that. The
 > name above is safe either way — Configuration tab or CLI.
 
-This is a variant, not the default, precisely because it costs something.
+The craft name is uppercased before display (`toUpperCase` in
+`osd_elements.c`), which does not affect punctuation, and is capped at
+`MAX_NAME_LENGTH` = 16 characters. Ten fits.
+
+### Betaflight master (post-4.5) — custom messages
+
+Current `master` adds `OSD_CUSTOM_MSG0`–`OSD_CUSTOM_MSG3`, set over MSPv2
+and copied into the element buffer verbatim with `strncpy`. Because nothing
+transforms them, a custom message can carry raw glyph indexes — so on a
+build that has this, the wordmark can be drawn **without sacrificing any
+glyph**, using the plain `armyjay_full.mcm`.
+
+This is not in 4.5. If you are on a master build and your configurator
+exposes custom messages, prefer it over the craft-name method.
+
+### Untested: high bytes straight into the craft name
+
+There is a plausible route that would need no sacrificed glyphs on *any*
+version, and I could not verify it without hardware.
+
+Both MSP paths Configurator uses to set the craft name encode with
+`buffer.push8(config.charCodeAt(i))` — a plain 8-bit truncation, no UTF-8.
+And `toupper()` leaves bytes ≥ `0x80` alone in the C locale. So typing the
+Latin-1 characters `¿ À Á Â Ã Ä Å Æ Ç È` (U+00BF–U+00C8) into the craft name
+field should place bytes `0xBF`–`0xC8` directly into `craftName` — which are
+exactly the wordmark tiles.
+
+If that works, the plain fonts are all you need and the `_craftname` builds
+are pointless. If you try it, I would like to know. Until someone confirms
+it on a real flight controller, the sacrificial variant is what this repo
+recommends, because it is the version whose mechanism is fully understood.
 
 ---
 
@@ -204,7 +237,7 @@ python tools/build_font.py --craft-name    # fonts/*.mcm
 python tools/validate.py fonts/*.mcm       # acceptance checks
 python tools/build_previews.py             # previews/*.png
 python tools/gen_modified_indexes.py       # MODIFIED_INDEXES.md
-python -m unittest discover -s tests       # 63 tests
+python -m unittest discover -s tests       # 65 tests
 
 # Verify against Betaflight Configurator's own parser (see below)
 python tools/crosscheck_configurator.py
@@ -316,7 +349,7 @@ skips cleanly if the checkout or Node is missing.
 │   ├── logo_288x72.png    boot splash source raster
 │   └── references/        decoded stock fonts, reference only
 ├── previews/              glyph sheets and OSD mock-ups
-├── tests/                 63 tests
+├── tests/                 65 tests
 ├── tools/
 │   ├── mcm_encode.py      glyph model + encoder (owns the format spec)
 │   ├── mcm_decode.py      parser, ASCII dump, PNG export

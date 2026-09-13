@@ -51,12 +51,15 @@ icon_overrides = ["glyphs.icons_simplified"]
 extra_outline = 1
 
 
-# Optional, and off by default. Betaflight 4.4 and earlier can only reach
-# glyphs at typeable ASCII indexes through the craft-name field, so showing
-# the wordmark in flight on those versions means copying the wordmark tiles
-# onto sacrificial punctuation slots. That costs those glyphs, which is why
-# it is a variant and not the default. 4.5+ uses OSD Custom Elements and
-# needs none of this.
+# Optional, and off by default. The craft-name field can only reach glyphs
+# at typeable ASCII indexes, so showing the wordmark in flight through it
+# means copying the wordmark tiles onto sacrificial punctuation slots. That
+# costs those glyphs, which is why it is a variant and not the default.
+#
+# This is the route that works on Betaflight 4.4 through current. Betaflight
+# has no "OSD Custom Elements" feature -- that is INAV, and the build handoff
+# conflated the two. On Betaflight master a custom message can carry raw
+# glyph indexes instead and costs nothing; it does not exist in 4.5.
 #
 # Build with:  python tools/build_font.py --craft-name
 #

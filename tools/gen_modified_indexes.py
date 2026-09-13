@@ -136,12 +136,18 @@ def build_document(
         "is sacrificed.\n"
     )
 
-    add("### Craft-name variant (Betaflight 4.4 and earlier)\n")
+    add("### Craft-name variant (Betaflight 4.4 through current)\n")
     add(
         "The optional `*_craftname.mcm` builds copy the wordmark tiles onto "
         "typeable ASCII indexes, because the craft-name field cannot reach "
-        "the splash range on those versions. **These glyphs are lost in "
-        "that variant only**; the default builds leave them intact.\n"
+        "the splash range. **These glyphs are lost in that variant only**; "
+        "the default builds leave them intact.\n"
+    )
+    add(
+        "Betaflight has no \"OSD Custom Elements\" feature -- that is INAV. "
+        "On Betaflight `master` a custom message (`OSD_CUSTOM_MSG0`-`3`) can "
+        "carry raw glyph indexes and needs no sacrifice; on 4.5 and earlier "
+        "the craft name is the only route. See the README.\n"
     )
     slots = list(CRAFT_NAME_SLOTS)[: len(WORDMARK_INDEXES)]
     add("| Sacrificed index | Character | Receives tile |")
