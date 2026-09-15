@@ -10,6 +10,12 @@
 
 **Spec:** `docs/superpowers/specs/2026-09-15-armyjay-site-merge-design.md`
 
+**Status: complete.** Slice 1 (A+B+C) shipped, and D (glyph editor), E (splash
+upload) and F (persistence) followed in the same session — all six
+sub-projects of the spec's decomposition are done. Verified: 68 Python tests,
+46 web tests, ruff, eslint, the validator, and the Configurator cross-check
+all green, with `fonts/` byte-for-byte unchanged throughout.
+
 ## Global Constraints
 
 - Node 20.19+ or 22.12+ (`.nvmrc` pins 22). Optional deps are engine-gated; an older Node silently skips the rolldown binary and `vite build` dies with MODULE_NOT_FOUND.

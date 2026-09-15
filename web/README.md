@@ -8,7 +8,11 @@ One site, two halves:
   an EdgeTX setup guide.
 - **OSD Fonts** (`/osd/*`) — browses the MAX7456 fonts built by the Python
   pipeline in the parent directory, rendering all 256 glyphs from the `.mcm`
-  itself.
+  itself, and edits them:
+  - `/osd/fonts/:variant` — every glyph, decoded in the browser, plus downloads
+    that serve the **original** bytes.
+  - `/osd/fonts/:variant/edit` — a 12×18 pixel editor for any glyph, with
+    undo/redo, and a 288×72 boot-splash uploader that fills 0xA0–0xFE.
 
 ## Running it
 
@@ -57,6 +61,26 @@ The decoder maps the bit pair `11` to transparent; the encoder never emits
 guaranteed for **valid** fonts only — which is fine, because `validate.py`
 rejects `11` and neither stock font contains one. It reads like a bug. It is
 not. Do not "fix" it, or the two implementations stop agreeing.
+
+## Editing
+
+Edits are a sparse map of glyph index to a replacement pixel array, layered
+over the shipped font, and kept in their own IndexedDB database
+(`armyjay_osd`) so they cannot disturb the saved sounds in `edgesounds`. The
+base font is never mutated, so a rebuilt font shows through for every glyph
+left untouched.
+
+Undo history is in state, not persisted. The editor's re-encode is the only
+place the app writes a `.mcm`; the browse page's download still serves the
+bytes it fetched.
+
+The splash uploader runs `slice_logo.py`'s strict three-colour check first
+(black, white, and **pure green** for transparent — Configurator's palette,
+not magenta). Only if that fails does it offer to snap pixels to the nearest
+colour, and it renders the classified result before applying, so a guess is
+always seen and accepted rather than made silently. `0xFF` is skipped: it
+doubles as `SYM_END_OF_FONT`, so ink in the bottom-right tile is reported
+rather than dropped quietly.
 
 ## Deploy
 
