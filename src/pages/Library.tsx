@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import JSZip from 'jszip'
 import { Download, Loader2, Search } from 'lucide-react'
 import { useLibrary } from '../hooks/useLibrary'
@@ -20,10 +20,7 @@ export function Library() {
   const allSounds = current ? current.sounds : categories.flatMap((c) => c.sounds)
   const filtered = filterSounds(allSounds, query)
 
-  const selectedSounds = useMemo(
-    () => allSounds.filter((s) => selected.has(s.id)),
-    [allSounds, selected]
-  )
+  const selectedSounds = allSounds.filter((s) => selected.has(s.id))
 
   if (lib.state === 'loading') {
     return <p className="text-zinc-400">Loading library…</p>

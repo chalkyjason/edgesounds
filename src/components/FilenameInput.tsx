@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { MAX_FILENAME_LENGTH, sanitizeFilename } from '../utils/sanitizeFilename'
 
 export function FilenameInput({
@@ -10,21 +10,20 @@ export function FilenameInput({
   onChange: (v: string) => void
   placeholder?: string
 }) {
-  const [warning, setWarning] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (value.length === MAX_FILENAME_LENGTH) {
-      setWarning(`Maxed out at ${MAX_FILENAME_LENGTH} chars — EdgeTX won't accept longer.`)
-    } else {
-      setWarning(null)
-    }
-  }, [value])
+  // Only the "we stripped something" notice needs to persist across renders; the
+  // length warning is a pure function of `value`, so derive it instead of storing it.
+  const [stripWarning, setStripWarning] = useState<string | null>(null)
+  const warning =
+    stripWarning ??
+    (value.length === MAX_FILENAME_LENGTH
+      ? `Maxed out at ${MAX_FILENAME_LENGTH} chars — EdgeTX won't accept longer.`
+      : null)
 
   const handleChange = (raw: string) => {
     const cleaned = sanitizeFilename(raw)
-    if (cleaned !== raw) {
-      setWarning('Stripped invalid chars (lowercase a–z, 0–9, _ only).')
-    }
+    setStripWarning(
+      cleaned !== raw ? 'Stripped invalid chars (lowercase a–z, 0–9, _ only).' : null
+    )
     onChange(cleaned)
   }
 
