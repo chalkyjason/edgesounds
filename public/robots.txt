@@ -1,2 +1,7 @@
 User-agent: *
 Allow: /
+
+# /my is per-browser IndexedDB state — nothing there to index.
+Disallow: /my
+
+Sitemap: https://edgesounds.pages.dev/sitemap.xml

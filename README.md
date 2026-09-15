@@ -8,7 +8,7 @@ A single-page web app for FPV pilots that converts any audio file to EdgeTX-comp
 
 - **Convert** mp3 / m4a / wav / ogg / flac → 32 kHz mono 16-bit PCM `.wav` (the format EdgeTX actually wants), all client-side via [`ffmpeg.wasm`](https://github.com/ffmpegwasm/ffmpeg.wasm). No upload, no server.
 - **Library** of pre-converted sounds organised by category (callouts, memes, movies, TV, games, warnings) — preview, single download, or bundle multiple files into a ZIP.
-- **Setup guide** with auto-trigger filenames (`armed.wav`, `dsarmd.wav`, …), Special Functions walkthrough, and the gotchas that bite first-timers.
+- **Setup guide** covering the two things EdgeTX treats differently: firmware-fixed auto-trigger sounds (`thralert.wav`, `telemko.wav`, … in `/SOUNDS/<lang>/SYSTEM/`) and Play Track sounds you bind to a switch yourself (`armed.wav`, `dsarmd.wav`, … in `/SOUNDS/<lang>/`), plus the gotchas that bite first-timers.
 
 ## Why these constraints
 
@@ -20,11 +20,20 @@ EdgeTX silently rejects sounds that don't meet its format. The radio just stays 
 | Codec           | PCM signed 16-bit little-endian    |
 | Sample rate     | 32000 Hz                           |
 | Channels        | 1 (mono)                           |
-| Filename        | ≤6 chars + `.wav`, ASCII letters/digits/underscores only |
+| Filename        | ≤8 chars + `.wav`, ASCII letters/digits/underscores only |
+
+The 8-character limit is `LEN_FUNCTION_NAME` in EdgeTX's `radio/src/dataconstants.h`, which is 8 for every radio variant (colour LCD, 212px, and b&w alike). Auto-trigger filenames are taken from EdgeTX's own sound pack ([`edgetx-sdcard-sounds`](https://github.com/EdgeTX/edgetx-sdcard-sounds), `SOUNDS/en/SYSTEM`) rather than from convention — those names are matched exactly by the firmware, and several of them (`thralert`, `inactiv`, `telemko`) are longer than six characters.
 
 ## Local development
 
+Node 20.19+ or 22.12+ (`.nvmrc` pins 22 — `nvm use`). This isn't cosmetic: Vite 8's
+rolldown binary is an optional dependency gated on that same engine range, and npm
+*silently skips* optional deps whose engines don't match. On an older Node you get a
+successful-looking `npm install` followed by `vite build` dying with
+`Cannot find module './rolldown-binding.darwin-*.node'`.
+
 ```bash
+nvm use
 npm install
 npm run dev
 ```
@@ -51,7 +60,7 @@ The preview server reproduces the COOP/COEP headers so you can test the full con
 
 The library is data + files in the repo. No backend.
 
-1. Drop your `.wav` in `public/sounds/<category>/`. Use the EdgeTX-expected filename (max 6 chars + `.wav`).
+1. Drop your `.wav` in `public/sounds/<category>/`. The file on disk can have a descriptive name — it's the `filename` field below that has to be EdgeTX-legal (max 8 chars + `.wav`), since that's what the download is renamed to.
 2. Edit `public/library.json` and append an entry to the right category:
    ```json
    {
@@ -70,15 +79,23 @@ The library is data + files in the repo. No backend.
 
 ## Deploy
 
-Designed for static hosts (Vercel, Cloudflare Pages, Netlify). `vercel.json` is included with the COOP/COEP headers and a SPA rewrite rule.
+Designed for static hosts that read `_headers` / `_redirects` (Cloudflare Pages, Netlify). Both files live in `public/` and are copied verbatim into `dist/` at build time.
 
-For Cloudflare Pages, set the same headers in `_headers`:
+`public/_headers` carries the cross-origin isolation `ffmpeg.wasm` needs:
 
 ```
 /*
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Embedder-Policy: require-corp
 ```
+
+`public/_redirects` is the SPA fallback. Without it, a direct load or refresh of `/library`, `/convert`, `/my` or `/setup` 404s — react-router only owns those paths once the app has booted:
+
+```
+/*  /index.html  200
+```
+
+On a host that reads neither file (Vercel, S3, nginx), mirror both by hand: the two COOP/COEP headers on every response, and a rewrite of any non-asset path to `/index.html`. Miss the headers and the audio engine never loads; miss the rewrite and every deep link 404s.
 
 ## Stack
 
@@ -100,8 +117,22 @@ src/
 └── utils/         filename sanitization, audio validation, trigger presets
 public/
 ├── library.json   Library metadata (categories + sounds)
-└── sounds/        Library audio files, organised by category
+├── sounds/        Library audio files, organised by category
+├── _headers       COOP/COEP (ffmpeg.wasm needs cross-origin isolation)
+├── _redirects     SPA fallback — without it every deep link 404s
+├── og.png         Social card (regenerate: scripts/generate-og.py)
+└── sitemap.xml    Indexed routes
 ```
+
+## Social card
+
+`public/og.png` (1200x630) is the Open Graph / Twitter card, referenced by the meta tags in `index.html`. It's drawn by a script rather than screenshotted so it stays reproducible:
+
+```bash
+python3 scripts/generate-og.py   # needs Pillow
+```
+
+Edit the copy or palette in that script and re-run it; the palette constants mirror `tailwind.config.js`. The five-bar mark matches `public/favicon.svg`.
 
 ## License
 
