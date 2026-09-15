@@ -14,7 +14,10 @@
     "postinstall": "patch-package && node scripts/sync-ffmpeg.mjs",
     "sync-ffmpeg": "node scripts/sync-ffmpeg.mjs",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "stage-osd": "node scripts/stage-osd-assets.mjs",
+    "prebuild": "node scripts/stage-osd-assets.mjs",
+    "predev": "node scripts/stage-osd-assets.mjs"
   },
   "dependencies": {
     "@ffmpeg/core": "^0.12.10",
