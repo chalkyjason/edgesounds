@@ -26,3 +26,7 @@ web/dist/
 web/public/ffmpeg/
 # OSD assets staged from ../fonts and ../previews at build time
 web/public/osd/
+
+# Playwright MCP scratch output — screenshots and page snapshots
+.playwright-mcp/
+web/.playwright-mcp/
