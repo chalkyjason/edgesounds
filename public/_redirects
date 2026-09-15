@@ -1,0 +1,6 @@
+# SPA fallback. react-router owns /library, /convert, /my and /setup on the client,
+# so any path that isn't a real file has to be served index.html — without this a
+# direct load or refresh of those routes 404s. Existing static assets (/assets/*,
+# /sounds/*, /ffmpeg/*, library.json, …) are matched before redirect rules, so this
+# catch-all never shadows them.
+/*  /index.html  200
