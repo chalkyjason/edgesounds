@@ -44,9 +44,18 @@ export type ConversionStatus =
   | { state: 'done'; result: ConversionResult }
   | { state: 'error'; message: string }
 
+/**
+ * `system` — EdgeTX plays these itself when the event fires. The filename is fixed
+ *   by the firmware and the file belongs in /SOUNDS/<lang>/SYSTEM/.
+ * `track` — an ordinary sound you bind yourself via a Play Track Special Function.
+ *   The name is your choice (<= MAX_FILENAME_LENGTH) and it lives in /SOUNDS/<lang>/.
+ */
+export type TriggerKind = 'system' | 'track'
+
 export interface TriggerPreset {
   id: string
   filename: string
   label: string
   description: string
+  kind: TriggerKind
 }

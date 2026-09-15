@@ -1,9 +1,9 @@
 import { Download, RefreshCw, Wand2 } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useAudioConversion } from '../hooks/useAudioConversion'
 import { useMySounds } from '../hooks/useMySounds'
 import { useToast } from '../hooks/useToast'
-import { TRIGGER_PRESETS } from '../utils/triggerPresets'
+import { SYSTEM_PRESETS, TRACK_PRESETS, TRIGGER_PRESETS } from '../utils/triggerPresets'
 import {
   formatBytes,
   formatDuration,
@@ -19,25 +19,34 @@ export function Converter() {
   const { convert, status, reset } = useAudioConversion()
   const { notify } = useToast()
   const { save: saveMySound } = useMySounds()
-  const [file, setFile] = useState<File | null>(null)
+  const [source, setSource] = useState<{ file: File; previewUrl: string } | null>(null)
   const [duration, setDuration] = useState<number>(0)
   const [start, setStart] = useState(0)
   const [end, setEnd] = useState(0)
   const [filename, setFilename] = useState('')
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+
+  const file = source?.file ?? null
+  const previewUrl = source?.previewUrl ?? null
+  const selectedPreset = TRIGGER_PRESETS.find((p) => p.filename === filename) ?? null
+
+  // The preview URL is created alongside the file in the event handler rather than
+  // in an effect: StrictMode double-invokes effects and state updaters, which would
+  // leak an object URL each time. A ref holds the live URL so we can revoke it.
+  const previewUrlRef = useRef<string | null>(null)
+  const selectFile = (f: File | null) => {
+    if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current)
+    previewUrlRef.current = f ? URL.createObjectURL(f) : null
+    setSource(f && previewUrlRef.current ? { file: f, previewUrl: previewUrlRef.current } : null)
+  }
 
   useEffect(() => {
-    if (!file) {
-      setPreviewUrl(null)
-      return
+    return () => {
+      if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current)
     }
-    const url = URL.createObjectURL(file)
-    setPreviewUrl(url)
-    return () => URL.revokeObjectURL(url)
-  }, [file])
+  }, [])
 
   const handleFile = async (f: File) => {
-    setFile(f)
+    selectFile(f)
     reset()
     try {
       const { duration: d } = await readAudioMetadata(f)
@@ -99,7 +108,7 @@ export function Converter() {
   }, [downloadUrl])
 
   const handleReset = () => {
-    setFile(null)
+    selectFile(null)
     setDuration(0)
     setStart(0)
     setEnd(0)
@@ -152,7 +161,7 @@ export function Converter() {
             <div>
               <label className="mb-1 block text-sm text-zinc-300">Trigger preset</label>
               <select
-                value={TRIGGER_PRESETS.find((p) => p.filename === filename)?.id ?? ''}
+                value={selectedPreset?.id ?? ''}
                 onChange={(e) => {
                   const preset = TRIGGER_PRESETS.find((p) => p.id === e.target.value)
                   if (preset) setFilename(preset.filename)
@@ -160,14 +169,37 @@ export function Converter() {
                 className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-accent"
               >
                 <option value="">— Custom —</option>
-                {TRIGGER_PRESETS.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.label} ({p.filename})
-                  </option>
-                ))}
+                <optgroup label="Played automatically by EdgeTX">
+                  {SYSTEM_PRESETS.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.label} ({p.filename}.wav)
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="Bind yourself with a Special Function">
+                  {TRACK_PRESETS.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.label} ({p.filename}.wav)
+                    </option>
+                  ))}
+                </optgroup>
               </select>
               <p className="mt-1 text-xs text-zinc-500">
-                Auto-fills the EdgeTX-expected filename for that trigger.
+                {selectedPreset?.kind === 'system' ? (
+                  <>
+                    Fixed name — save to{' '}
+                    <code className="font-mono text-zinc-400">/SOUNDS/&lt;lang&gt;/SYSTEM/</code> and
+                    EdgeTX plays it on its own.
+                  </>
+                ) : selectedPreset?.kind === 'track' ? (
+                  <>
+                    Your choice of name — save to{' '}
+                    <code className="font-mono text-zinc-400">/SOUNDS/&lt;lang&gt;/</code> and bind it
+                    with a Play Track Special Function.
+                  </>
+                ) : (
+                  'Auto-fills the filename EdgeTX expects for that event.'
+                )}
               </p>
             </div>
           </div>

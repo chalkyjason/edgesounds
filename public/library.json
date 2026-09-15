@@ -11,7 +11,11 @@
           "displayName": "Armed (TTS)",
           "trigger": "armed",
           "duration": 1.64,
-          "tags": ["callout", "armed", "tts"],
+          "tags": [
+            "callout",
+            "armed",
+            "tts"
+          ],
           "path": "/sounds/callouts/armed.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -22,7 +26,11 @@
           "displayName": "Disarmed (TTS)",
           "trigger": "dsarmd",
           "duration": 1.46,
-          "tags": ["callout", "disarmed", "tts"],
+          "tags": [
+            "callout",
+            "disarmed",
+            "tts"
+          ],
           "path": "/sounds/callouts/dsarmd.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -33,41 +41,60 @@
           "displayName": "Battery Low (TTS)",
           "trigger": "battlw",
           "duration": 1.48,
-          "tags": ["callout", "battery", "warning", "tts"],
+          "tags": [
+            "callout",
+            "battery",
+            "warning",
+            "tts"
+          ],
           "path": "/sounds/callouts/battlw.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
         },
         {
-          "id": "callout-thrwrn",
-          "filename": "thrwrn.wav",
+          "id": "callout-thralert",
+          "filename": "thralert.wav",
           "displayName": "Throttle Warning (TTS)",
-          "trigger": "thrwrn",
+          "trigger": "thralert",
           "duration": 1.77,
-          "tags": ["callout", "throttle", "warning", "tts"],
-          "path": "/sounds/callouts/thrwrn.wav",
+          "tags": [
+            "callout",
+            "throttle",
+            "warning",
+            "tts"
+          ],
+          "path": "/sounds/callouts/thralert.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
         },
         {
-          "id": "callout-swtwrn",
-          "filename": "swtwrn.wav",
+          "id": "callout-swalert",
+          "filename": "swalert.wav",
           "displayName": "Switch Warning (TTS)",
-          "trigger": "swtwrn",
+          "trigger": "swalert",
           "duration": 1.71,
-          "tags": ["callout", "switch", "warning", "tts"],
-          "path": "/sounds/callouts/swtwrn.wav",
+          "tags": [
+            "callout",
+            "switch",
+            "warning",
+            "tts"
+          ],
+          "path": "/sounds/callouts/swalert.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
         },
         {
-          "id": "callout-inacti",
-          "filename": "inacti.wav",
+          "id": "callout-inactiv",
+          "filename": "inactiv.wav",
           "displayName": "Radio Inactivity (TTS)",
-          "trigger": "inacti",
+          "trigger": "inactiv",
           "duration": 2.03,
-          "tags": ["callout", "inactivity", "tts"],
-          "path": "/sounds/callouts/inacti.wav",
+          "tags": [
+            "callout",
+            "inactivity",
+            "tts"
+          ],
+          "path": "/sounds/callouts/inactiv.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
         },
@@ -77,30 +104,44 @@
           "displayName": "Telemetry Recovered (TTS)",
           "trigger": "telemok",
           "duration": 1.99,
-          "tags": ["callout", "telemetry", "tts"],
+          "tags": [
+            "callout",
+            "telemetry",
+            "tts"
+          ],
           "path": "/sounds/callouts/telemok.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
         },
         {
-          "id": "callout-tellst",
-          "filename": "tellst.wav",
+          "id": "callout-telemko",
+          "filename": "telemko.wav",
           "displayName": "Telemetry Lost (TTS)",
-          "trigger": "tellst",
+          "trigger": "telemko",
           "duration": 1.92,
-          "tags": ["callout", "telemetry", "warning", "tts"],
-          "path": "/sounds/callouts/tellst.wav",
+          "tags": [
+            "callout",
+            "telemetry",
+            "warning",
+            "tts"
+          ],
+          "path": "/sounds/callouts/telemko.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
         },
         {
-          "id": "callout-lowbat",
-          "filename": "lowbat.wav",
+          "id": "callout-lowbatt",
+          "filename": "lowbatt.wav",
           "displayName": "TX Battery Low (TTS)",
-          "trigger": "lowbat",
+          "trigger": "lowbatt",
           "duration": 2.14,
-          "tags": ["callout", "battery", "transmitter", "tts"],
-          "path": "/sounds/callouts/lowbat.wav",
+          "tags": [
+            "callout",
+            "battery",
+            "transmitter",
+            "tts"
+          ],
+          "path": "/sounds/callouts/lowbatt.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
         }
@@ -116,7 +157,11 @@
           "filename": "crashd.wav",
           "displayName": "Crashed. Again. (TTS)",
           "duration": 2.88,
-          "tags": ["flight", "crash", "tts"],
+          "tags": [
+            "flight",
+            "crash",
+            "tts"
+          ],
           "path": "/sounds/flight/crashd.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -126,7 +171,11 @@
           "filename": "gohome.wav",
           "displayName": "Returning Home (TTS)",
           "duration": 1.77,
-          "tags": ["flight", "rth", "tts"],
+          "tags": [
+            "flight",
+            "rth",
+            "tts"
+          ],
           "path": "/sounds/flight/gohome.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -135,8 +184,12 @@
           "id": "flight-punch",
           "filename": "punch.wav",
           "displayName": "Punch Out (TTS)",
-          "duration": 1.50,
-          "tags": ["flight", "throttle", "tts"],
+          "duration": 1.5,
+          "tags": [
+            "flight",
+            "throttle",
+            "tts"
+          ],
           "path": "/sounds/flight/punch.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -146,7 +199,11 @@
           "filename": "dive.wav",
           "displayName": "Diving (TTS)",
           "duration": 1.44,
-          "tags": ["flight", "dive", "tts"],
+          "tags": [
+            "flight",
+            "dive",
+            "tts"
+          ],
           "path": "/sounds/flight/dive.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -156,7 +213,12 @@
           "filename": "recon.wav",
           "displayName": "Recording On (TTS)",
           "duration": 1.74,
-          "tags": ["flight", "dvr", "recording", "tts"],
+          "tags": [
+            "flight",
+            "dvr",
+            "recording",
+            "tts"
+          ],
           "path": "/sounds/flight/recon.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -166,7 +228,12 @@
           "filename": "recoff.wav",
           "displayName": "Recording Off (TTS)",
           "duration": 1.74,
-          "tags": ["flight", "dvr", "recording", "tts"],
+          "tags": [
+            "flight",
+            "dvr",
+            "recording",
+            "tts"
+          ],
           "path": "/sounds/flight/recoff.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -176,7 +243,12 @@
           "filename": "acro.wav",
           "displayName": "Acro Mode (TTS)",
           "duration": 1.55,
-          "tags": ["flight", "mode", "acro", "tts"],
+          "tags": [
+            "flight",
+            "mode",
+            "acro",
+            "tts"
+          ],
           "path": "/sounds/flight/acro.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -186,7 +258,12 @@
           "filename": "angle.wav",
           "displayName": "Angle Mode (TTS)",
           "duration": 1.56,
-          "tags": ["flight", "mode", "angle", "tts"],
+          "tags": [
+            "flight",
+            "mode",
+            "angle",
+            "tts"
+          ],
           "path": "/sounds/flight/angle.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -195,8 +272,13 @@
           "id": "flight-horizon",
           "filename": "horizn.wav",
           "displayName": "Horizon Mode (TTS)",
-          "duration": 1.70,
-          "tags": ["flight", "mode", "horizon", "tts"],
+          "duration": 1.7,
+          "tags": [
+            "flight",
+            "mode",
+            "horizon",
+            "tts"
+          ],
           "path": "/sounds/flight/horizn.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -206,7 +288,12 @@
           "filename": "failsf.wav",
           "displayName": "Failsafe (TTS)",
           "duration": 1.77,
-          "tags": ["flight", "failsafe", "warning", "tts"],
+          "tags": [
+            "flight",
+            "failsafe",
+            "warning",
+            "tts"
+          ],
           "path": "/sounds/flight/failsf.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -216,7 +303,11 @@
           "filename": "beeper.wav",
           "displayName": "Beeper On (TTS)",
           "duration": 1.53,
-          "tags": ["flight", "beeper", "tts"],
+          "tags": [
+            "flight",
+            "beeper",
+            "tts"
+          ],
           "path": "/sounds/flight/beeper.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -226,7 +317,12 @@
           "filename": "turtle.wav",
           "displayName": "Turtle Mode (TTS)",
           "duration": 1.54,
-          "tags": ["flight", "mode", "turtle", "tts"],
+          "tags": [
+            "flight",
+            "mode",
+            "turtle",
+            "tts"
+          ],
           "path": "/sounds/flight/turtle.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
           "license": "generated-original"
@@ -243,7 +339,12 @@
           "filename": "boom.wav",
           "displayName": "Sub-Bass Boom",
           "duration": 0.9,
-          "tags": ["bass", "boom", "impact", "synth"],
+          "tags": [
+            "bass",
+            "boom",
+            "impact",
+            "synth"
+          ],
           "path": "/sounds/memes/boom.wav",
           "credit": "Synthesized locally (sub-bass thump, original)",
           "license": "generated-original"
@@ -253,7 +354,12 @@
           "filename": "horn.wav",
           "displayName": "Chord Horn Blast",
           "duration": 1.4,
-          "tags": ["horn", "chord", "synth", "alert"],
+          "tags": [
+            "horn",
+            "chord",
+            "synth",
+            "alert"
+          ],
           "path": "/sounds/memes/horn.wav",
           "credit": "Synthesized locally (sawtooth chord, original)",
           "license": "generated-original"
@@ -263,7 +369,11 @@
           "filename": "vboom.wav",
           "displayName": "Vine Boom",
           "duration": 1.25,
-          "tags": ["meme", "boom", "impact"],
+          "tags": [
+            "meme",
+            "boom",
+            "impact"
+          ],
           "path": "/sounds/memes/meme-vine-boom.wav",
           "credit": "Vine app · via Myinstants",
           "license": "fair-use-personal"
@@ -273,7 +383,11 @@
           "filename": "mlghrn.wav",
           "displayName": "MLG Airhorn",
           "duration": 1.58,
-          "tags": ["meme", "airhorn", "mlg"],
+          "tags": [
+            "meme",
+            "airhorn",
+            "mlg"
+          ],
           "path": "/sounds/memes/meme-mlg-airhorn.wav",
           "credit": "via Myinstants",
           "license": "fair-use-personal"
@@ -283,7 +397,10 @@
           "filename": "bruh.wav",
           "displayName": "Bruh Sound Effect",
           "duration": 0.82,
-          "tags": ["meme", "bruh"],
+          "tags": [
+            "meme",
+            "bruh"
+          ],
           "path": "/sounds/memes/meme-bruh.wav",
           "credit": "via Myinstants",
           "license": "fair-use-personal"
@@ -293,7 +410,11 @@
           "filename": "oof.wav",
           "displayName": "Roblox Oof",
           "duration": 1,
-          "tags": ["meme", "oof", "roblox"],
+          "tags": [
+            "meme",
+            "oof",
+            "roblox"
+          ],
           "path": "/sounds/memes/meme-roblox-oof.wav",
           "credit": "Roblox · via Myinstants",
           "license": "fair-use-personal"
@@ -303,7 +424,11 @@
           "filename": "disc.wav",
           "displayName": "Discord Notification",
           "duration": 0.48,
-          "tags": ["meme", "discord", "ping"],
+          "tags": [
+            "meme",
+            "discord",
+            "ping"
+          ],
           "path": "/sounds/memes/meme-discord-ping.wav",
           "credit": "Discord · via Myinstants",
           "license": "fair-use-personal"
@@ -313,7 +438,11 @@
           "filename": "nani.wav",
           "displayName": "Nani?!",
           "duration": 2,
-          "tags": ["meme", "anime", "nani"],
+          "tags": [
+            "meme",
+            "anime",
+            "nani"
+          ],
           "path": "/sounds/memes/meme-nani.wav",
           "credit": "via Myinstants",
           "license": "fair-use-personal"
@@ -323,7 +452,10 @@
           "filename": "gchad.wav",
           "displayName": "Gigachad",
           "duration": 3,
-          "tags": ["meme", "chad"],
+          "tags": [
+            "meme",
+            "chad"
+          ],
           "path": "/sounds/memes/meme-gigachad.wav",
           "credit": "via Myinstants",
           "license": "fair-use-personal"
@@ -333,7 +465,11 @@
           "filename": "cena.wav",
           "displayName": "John Cena",
           "duration": 3,
-          "tags": ["meme", "wwe", "cena"],
+          "tags": [
+            "meme",
+            "wwe",
+            "cena"
+          ],
           "path": "/sounds/memes/meme-john-cena.wav",
           "credit": "WWE · via Myinstants",
           "license": "fair-use-personal"
@@ -343,7 +479,12 @@
           "filename": "winerr.wav",
           "displayName": "Windows XP Error",
           "duration": 0.99,
-          "tags": ["meme", "windows", "xp", "error"],
+          "tags": [
+            "meme",
+            "windows",
+            "xp",
+            "error"
+          ],
           "path": "/sounds/memes/meme-windows-error.wav",
           "credit": "Windows XP · via Myinstants",
           "license": "fair-use-personal"
@@ -353,7 +494,12 @@
           "filename": "winsdn.wav",
           "displayName": "Windows XP Shutdown",
           "duration": 2,
-          "tags": ["meme", "windows", "xp", "shutdown"],
+          "tags": [
+            "meme",
+            "windows",
+            "xp",
+            "shutdown"
+          ],
           "path": "/sounds/memes/meme-windows-shutdown.wav",
           "credit": "Windows XP · via Myinstants",
           "license": "fair-use-personal"
@@ -363,7 +509,11 @@
           "filename": "pipe.wav",
           "displayName": "Metal Pipe Falling",
           "duration": 2.5,
-          "tags": ["meme", "pipe", "impact"],
+          "tags": [
+            "meme",
+            "pipe",
+            "impact"
+          ],
           "path": "/sounds/memes/meme-metal-pipe.wav",
           "credit": "via Myinstants",
           "license": "fair-use-personal"
@@ -373,7 +523,11 @@
           "filename": "weide.wav",
           "displayName": "Directed by Robert B. Weide",
           "duration": 3,
-          "tags": ["meme", "weide", "outro"],
+          "tags": [
+            "meme",
+            "weide",
+            "outro"
+          ],
           "path": "/sounds/memes/meme-weide.wav",
           "credit": "Curb Your Enthusiasm · via Myinstants",
           "license": "fair-use-personal"
@@ -383,7 +537,10 @@
           "filename": "amongs.wav",
           "displayName": "Among Us — Emergency Meeting",
           "duration": 3,
-          "tags": ["meme", "among-us"],
+          "tags": [
+            "meme",
+            "among-us"
+          ],
           "path": "/sounds/memes/meme-among-us.wav",
           "credit": "Among Us (Innersloth) · via Myinstants",
           "license": "fair-use-personal"
@@ -393,7 +550,11 @@
           "filename": "tobcnt.wav",
           "displayName": "To Be Continued",
           "duration": 3,
-          "tags": ["meme", "jojo", "outro"],
+          "tags": [
+            "meme",
+            "jojo",
+            "outro"
+          ],
           "path": "/sounds/memes/meme-to-be-continued.wav",
           "credit": "JoJo's Bizarre Adventure · via Myinstants",
           "license": "fair-use-personal"
@@ -403,7 +564,11 @@
           "filename": "yes.wav",
           "displayName": "Chad Yes",
           "duration": 1.5,
-          "tags": ["meme", "chad", "yes"],
+          "tags": [
+            "meme",
+            "chad",
+            "yes"
+          ],
           "path": "/sounds/memes/meme-chad-yes.wav",
           "credit": "via Myinstants",
           "license": "fair-use-personal"
@@ -413,7 +578,11 @@
           "filename": "winnr.wav",
           "displayName": "Winner Winner Chicken Dinner",
           "duration": 2.05,
-          "tags": ["meme", "pubg", "victory"],
+          "tags": [
+            "meme",
+            "pubg",
+            "victory"
+          ],
           "path": "/sounds/memes/meme-chicken-dinner.wav",
           "credit": "PUBG · via Myinstants",
           "license": "fair-use-personal"
@@ -423,7 +592,11 @@
           "filename": "bombs.wav",
           "displayName": "Bombs Away",
           "duration": 2,
-          "tags": ["meme", "bombs", "fpv"],
+          "tags": [
+            "meme",
+            "bombs",
+            "fpv"
+          ],
           "path": "/sounds/memes/meme-bombs-away.wav",
           "credit": "via Myinstants",
           "license": "fair-use-personal"
@@ -433,7 +606,11 @@
           "filename": "mssion.wav",
           "displayName": "Mission Accomplished",
           "duration": 2.5,
-          "tags": ["meme", "mission", "victory"],
+          "tags": [
+            "meme",
+            "mission",
+            "victory"
+          ],
           "path": "/sounds/memes/meme-mission-accomplished.wav",
           "credit": "via Myinstants",
           "license": "fair-use-personal"
@@ -443,7 +620,11 @@
           "filename": "target.wav",
           "displayName": "Target Acquired",
           "duration": 1.06,
-          "tags": ["meme", "target", "fpv"],
+          "tags": [
+            "meme",
+            "target",
+            "fpv"
+          ],
           "path": "/sounds/memes/meme-target-acquired.wav",
           "credit": "via Myinstants",
           "license": "fair-use-personal"
@@ -453,7 +634,11 @@
           "filename": "enmysp.wav",
           "displayName": "Enemy Spotted (CS)",
           "duration": 1.54,
-          "tags": ["meme", "cs", "enemy"],
+          "tags": [
+            "meme",
+            "cs",
+            "enemy"
+          ],
           "path": "/sounds/memes/meme-enemy-spotted.wav",
           "credit": "Counter-Strike · via Myinstants",
           "license": "fair-use-personal"
@@ -470,7 +655,10 @@
           "filename": "incon.wav",
           "displayName": "Inconceivable!",
           "duration": 1.58,
-          "tags": ["movie", "princess-bride"],
+          "tags": [
+            "movie",
+            "princess-bride"
+          ],
           "path": "/sounds/movies/movie-inconceivable.wav",
           "credit": "The Princess Bride (1987) · via Myinstants",
           "license": "fair-use-personal"
@@ -480,7 +668,11 @@
           "filename": "need.wav",
           "displayName": "Top Gun — I feel the need for speed",
           "duration": 3,
-          "tags": ["movie", "top-gun", "armed"],
+          "tags": [
+            "movie",
+            "top-gun",
+            "armed"
+          ],
           "path": "/sounds/movies/movie-need-for-speed.wav",
           "trigger": "armed",
           "credit": "Top Gun (1986) · via Myinstants",
@@ -491,7 +683,11 @@
           "filename": "scream.wav",
           "displayName": "Wilhelm Scream",
           "duration": 1.01,
-          "tags": ["movie", "scream", "wilhelm"],
+          "tags": [
+            "movie",
+            "scream",
+            "wilhelm"
+          ],
           "path": "/sounds/movies/movie-wilhelm-scream.wav",
           "credit": "Wilhelm scream (1951) · via Myinstants",
           "license": "fair-use-personal"
@@ -501,7 +697,10 @@
           "filename": "lamp.wav",
           "displayName": "I love lamp",
           "duration": 2.5,
-          "tags": ["movie", "anchorman"],
+          "tags": [
+            "movie",
+            "anchorman"
+          ],
           "path": "/sounds/movies/movie-i-love-lamp.wav",
           "credit": "Anchorman (2004) · via Myinstants",
           "license": "fair-use-personal"
@@ -511,7 +710,11 @@
           "filename": "illbeb.wav",
           "displayName": "I'll be back",
           "duration": 2.06,
-          "tags": ["movie", "terminator", "arnold"],
+          "tags": [
+            "movie",
+            "terminator",
+            "arnold"
+          ],
           "path": "/sounds/movies/movie-ill-be-back.wav",
           "credit": "The Terminator (1984) · via Myinstants",
           "license": "fair-use-personal"
@@ -521,7 +724,11 @@
           "filename": "chpper.wav",
           "displayName": "Get to the chopper!",
           "duration": 2.5,
-          "tags": ["movie", "predator", "arnold"],
+          "tags": [
+            "movie",
+            "predator",
+            "arnold"
+          ],
           "path": "/sounds/movies/movie-chopper.wav",
           "credit": "Predator (1987) · via Myinstants",
           "license": "fair-use-personal"
@@ -531,7 +738,10 @@
           "filename": "captn.wav",
           "displayName": "I'm the captain now",
           "duration": 3,
-          "tags": ["movie", "captain-phillips"],
+          "tags": [
+            "movie",
+            "captain-phillips"
+          ],
           "path": "/sounds/movies/movie-captain-now.wav",
           "credit": "Captain Phillips (2013) · via Myinstants",
           "license": "fair-use-personal"
@@ -541,7 +751,10 @@
           "filename": "bond.wav",
           "displayName": "James Bond Theme",
           "duration": 3,
-          "tags": ["movie", "bond"],
+          "tags": [
+            "movie",
+            "bond"
+          ],
           "path": "/sounds/movies/movie-james-bond.wav",
           "credit": "James Bond · via Myinstants",
           "license": "fair-use-personal"
@@ -551,7 +764,10 @@
           "filename": "mlkshk.wav",
           "displayName": "I drink your milkshake",
           "duration": 3,
-          "tags": ["movie", "there-will-be-blood"],
+          "tags": [
+            "movie",
+            "there-will-be-blood"
+          ],
           "path": "/sounds/movies/movie-milkshake.wav",
           "credit": "There Will Be Blood (2007) · via Myinstants",
           "license": "fair-use-personal"
@@ -561,7 +777,10 @@
           "filename": "hello.wav",
           "displayName": "Say hello to my little friend",
           "duration": 3,
-          "tags": ["movie", "scarface"],
+          "tags": [
+            "movie",
+            "scarface"
+          ],
           "path": "/sounds/movies/movie-little-friend.wav",
           "credit": "Scarface (1983) · via Myinstants",
           "license": "fair-use-personal"
@@ -571,7 +790,11 @@
           "filename": "nopass.wav",
           "displayName": "You shall not pass!",
           "duration": 3,
-          "tags": ["movie", "lotr", "gandalf"],
+          "tags": [
+            "movie",
+            "lotr",
+            "gandalf"
+          ],
           "path": "/sounds/movies/movie-not-pass.wav",
           "credit": "Lord of the Rings · via Myinstants",
           "license": "fair-use-personal"
@@ -581,7 +804,10 @@
           "filename": "johnny.wav",
           "displayName": "Here's Johnny!",
           "duration": 3,
-          "tags": ["movie", "shining"],
+          "tags": [
+            "movie",
+            "shining"
+          ],
           "path": "/sounds/movies/movie-heres-johnny.wav",
           "credit": "The Shining (1980) · via Myinstants",
           "license": "fair-use-personal"
@@ -591,7 +817,11 @@
           "filename": "saber.wav",
           "displayName": "Lightsaber",
           "duration": 2.5,
-          "tags": ["movie", "star-wars", "lightsaber"],
+          "tags": [
+            "movie",
+            "star-wars",
+            "lightsaber"
+          ],
           "path": "/sounds/movies/sw-lightsaber.wav",
           "credit": "Star Wars · via Myinstants",
           "license": "fair-use-personal"
@@ -601,7 +831,11 @@
           "filename": "tie.wav",
           "displayName": "TIE Fighter Roar",
           "duration": 2.5,
-          "tags": ["movie", "star-wars", "tie"],
+          "tags": [
+            "movie",
+            "star-wars",
+            "tie"
+          ],
           "path": "/sounds/movies/sw-tie-fighter.wav",
           "credit": "Star Wars · via Myinstants",
           "license": "fair-use-personal"
@@ -611,7 +845,11 @@
           "filename": "r2d2.wav",
           "displayName": "R2-D2",
           "duration": 2.5,
-          "tags": ["movie", "star-wars", "droid"],
+          "tags": [
+            "movie",
+            "star-wars",
+            "droid"
+          ],
           "path": "/sounds/movies/sw-r2d2.wav",
           "credit": "Star Wars · via Myinstants",
           "license": "fair-use-personal"
@@ -621,7 +859,11 @@
           "filename": "march.wav",
           "displayName": "Imperial March",
           "duration": 3,
-          "tags": ["movie", "star-wars", "vader"],
+          "tags": [
+            "movie",
+            "star-wars",
+            "vader"
+          ],
           "path": "/sounds/movies/sw-imperial-march.wav",
           "credit": "Star Wars · via Myinstants",
           "license": "fair-use-personal"
@@ -631,7 +873,11 @@
           "filename": "father.wav",
           "displayName": "I am your father",
           "duration": 3,
-          "tags": ["movie", "star-wars", "vader"],
+          "tags": [
+            "movie",
+            "star-wars",
+            "vader"
+          ],
           "path": "/sounds/movies/sw-i-am-your-father.wav",
           "credit": "Star Wars: Empire Strikes Back · via Myinstants",
           "license": "fair-use-personal"
@@ -641,7 +887,11 @@
           "filename": "chewy.wav",
           "displayName": "Chewbacca",
           "duration": 1.62,
-          "tags": ["movie", "star-wars", "wookiee"],
+          "tags": [
+            "movie",
+            "star-wars",
+            "wookiee"
+          ],
           "path": "/sounds/movies/sw-chewbacca.wav",
           "credit": "Star Wars · via Myinstants",
           "license": "fair-use-personal"
@@ -651,7 +901,11 @@
           "filename": "breath.wav",
           "displayName": "Vader Breathing",
           "duration": 3,
-          "tags": ["movie", "star-wars", "vader"],
+          "tags": [
+            "movie",
+            "star-wars",
+            "vader"
+          ],
           "path": "/sounds/movies/sw-vader-breath.wav",
           "credit": "Star Wars · via Myinstants",
           "license": "fair-use-personal"
@@ -661,7 +915,12 @@
           "filename": "blastr.wav",
           "displayName": "TIE Fighter Blaster",
           "duration": 1.04,
-          "tags": ["movie", "star-wars", "tie", "blaster"],
+          "tags": [
+            "movie",
+            "star-wars",
+            "tie",
+            "blaster"
+          ],
           "path": "/sounds/movies/sw-tie-blaster.wav",
           "credit": "Star Wars · via Myinstants",
           "license": "fair-use-personal"
@@ -678,7 +937,11 @@
           "filename": "dexter.wav",
           "displayName": "Dexter Meme",
           "duration": 3,
-          "tags": ["tv", "dexter", "meme"],
+          "tags": [
+            "tv",
+            "dexter",
+            "meme"
+          ],
           "path": "/sounds/tv/tv-dexter-meme.wav",
           "credit": "Dexter (Showtime) · via Myinstants",
           "license": "fair-use-personal"
@@ -688,7 +951,11 @@
           "filename": "twss.wav",
           "displayName": "That's what she said",
           "duration": 0.94,
-          "tags": ["tv", "office", "michael"],
+          "tags": [
+            "tv",
+            "office",
+            "michael"
+          ],
           "path": "/sounds/tv/tv-thats-what-she-said.wav",
           "credit": "The Office (US) · via Myinstants",
           "license": "fair-use-personal"
@@ -698,7 +965,11 @@
           "filename": "parkur.wav",
           "displayName": "PARKOUR! (Office)",
           "duration": 2.5,
-          "tags": ["tv", "office", "parkour"],
+          "tags": [
+            "tv",
+            "office",
+            "parkour"
+          ],
           "path": "/sounds/tv/tv-parkour.wav",
           "credit": "The Office (US) · via Myinstants",
           "license": "fair-use-personal"
@@ -708,7 +979,10 @@
           "filename": "bazing.wav",
           "displayName": "Bazinga!",
           "duration": 0.78,
-          "tags": ["tv", "big-bang-theory"],
+          "tags": [
+            "tv",
+            "big-bang-theory"
+          ],
           "path": "/sounds/tv/tv-bazinga.wav",
           "credit": "The Big Bang Theory · via Myinstants",
           "license": "fair-use-personal"
@@ -718,7 +992,10 @@
           "filename": "wubba.wav",
           "displayName": "Wubba Lubba Dub Dub",
           "duration": 1.47,
-          "tags": ["tv", "rick-and-morty"],
+          "tags": [
+            "tv",
+            "rick-and-morty"
+          ],
           "path": "/sounds/tv/tv-wubba-lubba.wav",
           "credit": "Rick and Morty · via Myinstants",
           "license": "fair-use-personal"
@@ -735,7 +1012,11 @@
           "filename": "xbox.wav",
           "displayName": "Xbox Achievement Unlocked",
           "duration": 1.25,
-          "tags": ["game", "xbox", "achievement"],
+          "tags": [
+            "game",
+            "xbox",
+            "achievement"
+          ],
           "path": "/sounds/games/game-xbox-achievement.wav",
           "credit": "Xbox 360 system sound · via Myinstants",
           "license": "fair-use-personal"
@@ -745,7 +1026,12 @@
           "filename": "coin.wav",
           "displayName": "Mario Coin",
           "duration": 0.74,
-          "tags": ["game", "mario", "coin", "retro"],
+          "tags": [
+            "game",
+            "mario",
+            "coin",
+            "retro"
+          ],
           "path": "/sounds/games/game-mario-coin.wav",
           "credit": "Super Mario Bros. · via Myinstants",
           "license": "fair-use-personal"
@@ -755,7 +1041,11 @@
           "filename": "jump.wav",
           "displayName": "Mario Jump",
           "duration": 0.86,
-          "tags": ["game", "mario", "retro"],
+          "tags": [
+            "game",
+            "mario",
+            "retro"
+          ],
           "path": "/sounds/games/game-mario-jump.wav",
           "credit": "Super Mario Bros. · via Myinstants",
           "license": "fair-use-personal"
@@ -765,7 +1055,10 @@
           "filename": "halo.wav",
           "displayName": "Halo Theme",
           "duration": 3,
-          "tags": ["game", "halo"],
+          "tags": [
+            "game",
+            "halo"
+          ],
           "path": "/sounds/games/game-halo-theme.wav",
           "credit": "Halo · via Myinstants",
           "license": "fair-use-personal"
@@ -775,7 +1068,11 @@
           "filename": "lvlup.wav",
           "displayName": "Skyrim Level Up",
           "duration": 3,
-          "tags": ["game", "skyrim", "level"],
+          "tags": [
+            "game",
+            "skyrim",
+            "level"
+          ],
           "path": "/sounds/games/game-skyrim-level-up.wav",
           "credit": "The Elder Scrolls V: Skyrim · via Myinstants",
           "license": "fair-use-personal"
@@ -785,7 +1082,11 @@
           "filename": "sring.wav",
           "displayName": "Sonic Ring",
           "duration": 0.86,
-          "tags": ["game", "sonic", "retro"],
+          "tags": [
+            "game",
+            "sonic",
+            "retro"
+          ],
           "path": "/sounds/games/game-sonic-ring.wav",
           "credit": "Sonic the Hedgehog (Sega) · via Myinstants",
           "license": "fair-use-personal"
@@ -795,7 +1096,11 @@
           "filename": "zsecrt.wav",
           "displayName": "Zelda — Secret Found",
           "duration": 1.39,
-          "tags": ["game", "zelda", "retro"],
+          "tags": [
+            "game",
+            "zelda",
+            "retro"
+          ],
           "path": "/sounds/games/game-zelda-secret.wav",
           "credit": "The Legend of Zelda · via Myinstants",
           "license": "fair-use-personal"
@@ -805,7 +1110,11 @@
           "filename": "zitem.wav",
           "displayName": "Zelda — Item Get",
           "duration": 2.5,
-          "tags": ["game", "zelda", "retro"],
+          "tags": [
+            "game",
+            "zelda",
+            "retro"
+          ],
           "path": "/sounds/games/game-zelda-item.wav",
           "credit": "The Legend of Zelda · via Myinstants",
           "license": "fair-use-personal"
@@ -815,7 +1124,12 @@
           "filename": "gbboot.wav",
           "displayName": "Game Boy Startup",
           "duration": 1.72,
-          "tags": ["game", "nintendo", "retro", "boot"],
+          "tags": [
+            "game",
+            "nintendo",
+            "retro",
+            "boot"
+          ],
           "path": "/sounds/games/game-gameboy-startup.wav",
           "credit": "Nintendo Game Boy · via Myinstants",
           "license": "fair-use-personal"
@@ -825,7 +1139,11 @@
           "filename": "tetris.wav",
           "displayName": "Tetris Theme",
           "duration": 3,
-          "tags": ["game", "tetris", "retro"],
+          "tags": [
+            "game",
+            "tetris",
+            "retro"
+          ],
           "path": "/sounds/games/game-tetris-theme.wav",
           "credit": "Tetris (Korobeiniki) · via Myinstants",
           "license": "fair-use-personal"
@@ -835,7 +1153,11 @@
           "filename": "waka.wav",
           "displayName": "Pac-Man Waka",
           "duration": 0.99,
-          "tags": ["game", "pacman", "retro"],
+          "tags": [
+            "game",
+            "pacman",
+            "retro"
+          ],
           "path": "/sounds/games/game-pacman-waka.wav",
           "credit": "Pac-Man (Bandai Namco) · via Myinstants",
           "license": "fair-use-personal"
@@ -845,7 +1167,11 @@
           "filename": "poklvl.wav",
           "displayName": "Pokemon Level Up",
           "duration": 2.5,
-          "tags": ["game", "pokemon", "level"],
+          "tags": [
+            "game",
+            "pokemon",
+            "level"
+          ],
           "path": "/sounds/games/game-pokemon-level-up.wav",
           "credit": "Pokemon · via Myinstants",
           "license": "fair-use-personal"
@@ -855,7 +1181,11 @@
           "filename": "oneup.wav",
           "displayName": "Mario 1-Up",
           "duration": 0.94,
-          "tags": ["game", "mario", "retro"],
+          "tags": [
+            "game",
+            "mario",
+            "retro"
+          ],
           "path": "/sounds/games/game-mario-1up.wav",
           "credit": "Super Mario Bros. · via Myinstants",
           "license": "fair-use-personal"
@@ -865,7 +1195,11 @@
           "filename": "haduke.wav",
           "displayName": "Hadouken!",
           "duration": 1.14,
-          "tags": ["game", "street-fighter", "retro"],
+          "tags": [
+            "game",
+            "street-fighter",
+            "retro"
+          ],
           "path": "/sounds/games/game-hadouken.wav",
           "credit": "Street Fighter (Capcom) · via Myinstants",
           "license": "fair-use-personal"
@@ -875,7 +1209,10 @@
           "filename": "fatlty.wav",
           "displayName": "MK: Fatality!",
           "duration": 2.03,
-          "tags": ["game", "mortal-kombat"],
+          "tags": [
+            "game",
+            "mortal-kombat"
+          ],
           "path": "/sounds/games/game-mk-fatality.wav",
           "credit": "Mortal Kombat · via Myinstants",
           "license": "fair-use-personal"
@@ -885,7 +1222,11 @@
           "filename": "csbomb.wav",
           "displayName": "CS:GO — Bomb Planted",
           "duration": 1.58,
-          "tags": ["game", "cs-go", "bomb"],
+          "tags": [
+            "game",
+            "cs-go",
+            "bomb"
+          ],
           "path": "/sounds/games/game-cs-bomb.wav",
           "credit": "Counter-Strike: GO (Valve) · via Myinstants",
           "license": "fair-use-personal"
@@ -902,7 +1243,11 @@
           "filename": "win.wav",
           "displayName": "Achievement Chime",
           "duration": 0.74,
-          "tags": ["chime", "success", "synth"],
+          "tags": [
+            "chime",
+            "success",
+            "synth"
+          ],
           "path": "/sounds/warnings/win.wav",
           "credit": "Synthesized locally (C-E-G triangle bell, original)",
           "license": "generated-original"
@@ -912,7 +1257,11 @@
           "filename": "fail.wav",
           "displayName": "Sad Trombone",
           "duration": 1.26,
-          "tags": ["fail", "sad", "synth"],
+          "tags": [
+            "fail",
+            "sad",
+            "synth"
+          ],
           "path": "/sounds/warnings/fail.wav",
           "credit": "Synthesized locally (descending sawtooth, original)",
           "license": "generated-original"
@@ -922,7 +1271,11 @@
           "filename": "bzzt.wav",
           "displayName": "Error Buzz",
           "duration": 0.35,
-          "tags": ["error", "buzz", "synth"],
+          "tags": [
+            "error",
+            "buzz",
+            "synth"
+          ],
           "path": "/sounds/warnings/bzzt.wav",
           "credit": "Synthesized locally (low square wave, original)",
           "license": "generated-original"
@@ -932,7 +1285,11 @@
           "filename": "ping.wav",
           "displayName": "Notification Ping",
           "duration": 0.6,
-          "tags": ["notification", "bell", "synth"],
+          "tags": [
+            "notification",
+            "bell",
+            "synth"
+          ],
           "path": "/sounds/warnings/ping.wav",
           "credit": "Synthesized locally (sine bell, original)",
           "license": "generated-original"
@@ -942,7 +1299,11 @@
           "filename": "pullup.wav",
           "displayName": "Pull Up! (Aviation GPWS)",
           "duration": 2.5,
-          "tags": ["warning", "aviation", "pull-up"],
+          "tags": [
+            "warning",
+            "aviation",
+            "pull-up"
+          ],
           "path": "/sounds/warnings/warn-pull-up.wav",
           "credit": "GPWS aviation alert (Concorde flight recorder) · via Myinstants",
           "license": "fair-use-personal"
@@ -952,7 +1313,12 @@
           "filename": "terrn.wav",
           "displayName": "Terrain! Pull Up!",
           "duration": 3,
-          "tags": ["warning", "aviation", "gpws", "terrain"],
+          "tags": [
+            "warning",
+            "aviation",
+            "gpws",
+            "terrain"
+          ],
           "path": "/sounds/warnings/warn-terrain-pull-up.wav",
           "credit": "Aviation GPWS · via Myinstants",
           "license": "fair-use-personal"
@@ -962,7 +1328,12 @@
           "filename": "houstn.wav",
           "displayName": "Houston, we have a problem",
           "duration": 3,
-          "tags": ["warning", "aviation", "apollo", "famous"],
+          "tags": [
+            "warning",
+            "aviation",
+            "apollo",
+            "famous"
+          ],
           "path": "/sounds/warnings/warn-houston.wav",
           "credit": "Apollo 13 transmission · via Myinstants",
           "license": "fair-use-personal"
@@ -972,7 +1343,12 @@
           "filename": "sinkrt.wav",
           "displayName": "Sink Rate (GPWS)",
           "duration": 3,
-          "tags": ["warning", "aviation", "gpws", "sink-rate"],
+          "tags": [
+            "warning",
+            "aviation",
+            "gpws",
+            "sink-rate"
+          ],
           "path": "/sounds/warnings/warn-sink-rate.wav",
           "credit": "Aviation GPWS · via Myinstants",
           "license": "fair-use-personal"
@@ -982,7 +1358,11 @@
           "filename": "gear.wav",
           "displayName": "Landing Gear",
           "duration": 1.76,
-          "tags": ["warning", "aviation", "landing-gear"],
+          "tags": [
+            "warning",
+            "aviation",
+            "landing-gear"
+          ],
           "path": "/sounds/warnings/warn-landing-gear.wav",
           "credit": "MD-series cockpit callout · via Myinstants",
           "license": "fair-use-personal"
@@ -992,7 +1372,11 @@
           "filename": "alarm.wav",
           "displayName": "Danger Alarm",
           "duration": 2,
-          "tags": ["warning", "alarm", "danger"],
+          "tags": [
+            "warning",
+            "alarm",
+            "danger"
+          ],
           "path": "/sounds/warnings/warn-danger-alarm.wav",
           "credit": "via Myinstants",
           "license": "fair-use-personal"
@@ -1002,7 +1386,12 @@
           "filename": "airrad.wav",
           "displayName": "Air Raid Siren",
           "duration": 3,
-          "tags": ["warning", "siren", "air-raid", "ww2"],
+          "tags": [
+            "warning",
+            "siren",
+            "air-raid",
+            "ww2"
+          ],
           "path": "/sounds/warnings/warn-air-raid.wav",
           "credit": "WW2 air raid siren · via Myinstants",
           "license": "fair-use-personal"
@@ -1012,7 +1401,11 @@
           "filename": "klaxon.wav",
           "displayName": "Klaxon",
           "duration": 2,
-          "tags": ["warning", "klaxon", "alarm"],
+          "tags": [
+            "warning",
+            "klaxon",
+            "alarm"
+          ],
           "path": "/sounds/warnings/warn-klaxon.wav",
           "credit": "QI klaxon · via Myinstants",
           "license": "fair-use-personal"
@@ -1022,7 +1415,11 @@
           "filename": "stall.wav",
           "displayName": "Stall Warning",
           "duration": 1.84,
-          "tags": ["warning", "aviation", "stall"],
+          "tags": [
+            "warning",
+            "aviation",
+            "stall"
+          ],
           "path": "/sounds/warnings/warn-stall.wav",
           "credit": "Aviation stall warning · via Myinstants",
           "license": "fair-use-personal"
@@ -1032,7 +1429,11 @@
           "filename": "redalt.wav",
           "displayName": "Red Alert (TOS)",
           "duration": 2.5,
-          "tags": ["warning", "alarm", "star-trek"],
+          "tags": [
+            "warning",
+            "alarm",
+            "star-trek"
+          ],
           "path": "/sounds/warnings/warn-red-alert.wav",
           "credit": "Star Trek: TOS · via Myinstants",
           "license": "fair-use-personal"
