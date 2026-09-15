@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, Download } from 'lucide-react'
+import { ArrowLeft, Download, Pencil } from 'lucide-react'
 import { GlyphSheet } from '../../components/osd/GlyphSheet'
 import { useFont } from '../../hooks/useFont'
 import { useVariants } from '../../hooks/useVariants'
@@ -49,6 +49,13 @@ export function FontDetail() {
           <Download className="h-4 w-4" />
           {variant.output}
         </a>
+        <Link
+          to={`/osd/fonts/${variant.id}/edit`}
+          className="flex items-center gap-1.5 rounded-md border border-zinc-700 px-3 py-2 text-sm text-zinc-300 hover:border-accent/50 hover:text-accent"
+        >
+          <Pencil className="h-4 w-4" />
+          Edit glyphs
+        </Link>
         {variant.craftName && (
           <a
             href={`/osd/fonts/${variant.craftName}`}

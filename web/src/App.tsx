@@ -5,6 +5,7 @@ import { Home } from './pages/Home'
 import { Landing } from './pages/Landing'
 import { OsdHome } from './pages/osd/OsdHome'
 import { FontDetail } from './pages/osd/FontDetail'
+import { FontEditor } from './pages/osd/FontEditor'
 import { Library } from './pages/Library'
 import { Convert } from './pages/Convert'
 import { MySounds } from './pages/MySounds'
@@ -33,6 +34,7 @@ function App() {
                       <Route path="/sounds/setup" element={<Setup />} />
                       <Route path="/osd" element={<OsdHome />} />
                       <Route path="/osd/fonts/:variant" element={<FontDetail />} />
+                      <Route path="/osd/fonts/:variant/edit" element={<FontEditor />} />
                       <Route path="*" element={<Landing />} />
                     </Routes>
                   </ErrorBoundary>
