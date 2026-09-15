@@ -12,7 +12,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "postinstall": "patch-package && node scripts/sync-ffmpeg.mjs",
-    "sync-ffmpeg": "node scripts/sync-ffmpeg.mjs"
+    "sync-ffmpeg": "node scripts/sync-ffmpeg.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@ffmpeg/core": "^0.12.10",
@@ -40,6 +42,7 @@
     "tailwindcss": "^3.4.19",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",
-    "vite": "^8.0.10"
+    "vite": "^8.0.10",
+    "vitest": "^5.0.1"
   }
 }
