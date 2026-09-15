@@ -100,6 +100,11 @@ export function useFontEditor(base: Font | null, variantId: string | undefined) 
     })
   }, [])
 
+  /** Apply many glyph overrides at once, as one undoable step. */
+  const applyEdits = useCallback((incoming: EditMap) => {
+    setHistory((current) => push(current, { ...current.present, ...incoming }))
+  }, [])
+
   const revertAll = useCallback(() => {
     setHistory((current) =>
       Object.keys(current.present).length === 0 ? current : push(current, {}),
@@ -150,6 +155,7 @@ export function useFontEditor(base: Font | null, variantId: string | undefined) 
     editedIndexes: useMemo(() => new Set(Object.keys(edits).map(Number)), [edits]),
     setPixel,
     fillGlyph,
+    applyEdits,
     revertGlyph,
     revertAll,
     undo,

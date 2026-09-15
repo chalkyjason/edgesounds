@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, Download, Eraser, Redo2, RotateCcw, Trash2, Undo2 } from 'lucide-react'
 import { GlyphCanvas } from '../../components/osd/GlyphCanvas'
 import { GlyphEditorCanvas } from '../../components/osd/GlyphEditorCanvas'
+import { LogoUpload } from '../../components/osd/LogoUpload'
 import { GLYPH_COUNT } from '../../lib/mcm/decode'
 import { encodeFont } from '../../lib/mcm/encode'
 import type { Pixel } from '../../lib/mcm/types'
@@ -183,6 +184,15 @@ export function FontEditor() {
             <kbd className="font-mono">3</kbd> pick a colour,{' '}
             <kbd className="font-mono">⌘Z</kbd> undoes.
           </p>
+
+          <LogoUpload
+            onApply={(edits) => {
+              editor.applyEdits(edits)
+              const count = Object.keys(edits).length
+              notify(`Applied the splash to ${count} glyphs`, 'success')
+              setSelected(0xa0)
+            }}
+          />
 
           {download && (
             <div className="space-y-2 rounded-lg border border-zinc-800 bg-zinc-900/60 p-3">
