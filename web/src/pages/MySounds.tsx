@@ -107,7 +107,7 @@ export function MySounds() {
             Every clip you convert is automatically tucked away here for later. Stays on this device — nothing leaves your browser.
           </p>
           <Link
-            to="/convert"
+            to="/sounds/convert"
             className="mt-4 inline-flex rounded-md bg-accent px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-accent-dim"
           >
             Convert your first sound

@@ -26,14 +26,14 @@ export function Home() {
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
-              to="/convert"
+              to="/sounds/convert"
               className="flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 font-medium text-zinc-950 hover:bg-accent-dim"
             >
               <Wand2 className="h-4 w-4" />
               Convert a file
             </Link>
             <Link
-              to="/library"
+              to="/sounds/library"
               className="flex items-center gap-2 rounded-md border border-zinc-700 px-4 py-2.5 text-zinc-200 hover:border-accent/60 hover:text-accent"
             >
               Browse library <ArrowRight className="h-4 w-4" />
@@ -67,7 +67,7 @@ export function Home() {
           <div className="flex items-end justify-between">
             <h2 className="text-2xl font-semibold text-zinc-100">Featured sounds</h2>
             <Link
-              to="/library"
+              to="/sounds/library"
               className="text-sm text-accent hover:underline"
             >
               All sounds →
@@ -87,7 +87,7 @@ export function Home() {
           The setup guide walks through SD card layout, auto-trigger filenames, and Special Functions.
         </p>
         <Link
-          to="/setup"
+          to="/sounds/setup"
           className="mt-3 inline-flex items-center gap-1 text-sm text-accent hover:underline"
         >
           Read the setup guide <ArrowRight className="h-4 w-4" />

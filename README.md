@@ -12,6 +12,30 @@ analog OSD.
 
 ---
 
+## What is in this repository
+
+Two tools for the same cockpit, sharing one website.
+
+| Path | What it is |
+|---|---|
+| `tools/` `glyphs/` `fonts/` `previews/` `assets/` `tests/` | The Python font pipeline described in this README. It is the **only** author of the `.mcm` files. |
+| [`web/`](web/) | The website — the OSD font browser, plus **EdgeSounds**, an in-browser EdgeTX `.wav` converter and sound library. See [`web/README.md`](web/README.md). |
+
+The website does not rebuild fonts. It ships the `.mcm` this pipeline
+produces and decodes them in the browser with a TypeScript port of the
+codec, whose tests read `fonts/*.mcm` directly — so a change here fails the
+web test suite rather than shipping a font the browser would mis-decode.
+
+```bash
+# the fonts
+python tools/build_font.py --craft-name && python tools/validate.py fonts/*.mcm
+
+# the site
+cd web && npm install && npm run dev
+```
+
+---
+
 ## Download
 
 Grab one `.mcm` from [`fonts/`](fonts/) and upload it through Betaflight

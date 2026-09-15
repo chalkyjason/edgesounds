@@ -1,5 +1,5 @@
 {
-  "name": "edgesounds",
+  "name": "armyjay-web",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -16,8 +16,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "stage-osd": "node scripts/stage-osd-assets.mjs",
-    "prebuild": "node scripts/stage-osd-assets.mjs",
-    "predev": "node scripts/stage-osd-assets.mjs"
+    "prebuild": "node scripts/stage-osd-assets.mjs && node scripts/gen-sitemap.mjs",
+    "predev": "node scripts/stage-osd-assets.mjs && node scripts/gen-sitemap.mjs"
   },
   "dependencies": {
     "@ffmpeg/core": "^0.12.10",

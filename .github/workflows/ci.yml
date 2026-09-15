@@ -69,3 +69,32 @@ jobs:
         run: |
           python tools/crosscheck_configurator.py \
             --configurator "$RUNNER_TEMP/betaflight-configurator"
+
+  web:
+    # The site: EdgeSounds plus the OSD font browser. The codec's tests read
+    # the real ../fonts/*.mcm, so a change to a font on the Python side fails
+    # here rather than shipping a font the browser would mis-decode.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: web
+
+      - name: Lint
+        run: npm run lint
+        working-directory: web
+
+      - name: Unit tests
+        run: npm run test
+        working-directory: web
+
+      - name: Build
+        run: npm run build
+        working-directory: web
