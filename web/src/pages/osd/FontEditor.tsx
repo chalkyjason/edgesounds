@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, Download, Eraser, Redo2, RotateCcw, Trash2, Undo2 } from 'lucide-react'
+import { ArrowLeft, Download, Eraser, Redo2, RotateCcw, Search, Trash2, Undo2 } from 'lucide-react'
 import { GlyphCanvas } from '../../components/osd/GlyphCanvas'
 import { GlyphEditorCanvas } from '../../components/osd/GlyphEditorCanvas'
 import { LogoUpload } from '../../components/osd/LogoUpload'
@@ -32,6 +32,25 @@ export function FontEditor() {
   const { notify } = useToast()
   const [selected, setSelected] = useState(0x41) // 'A' — something recognisable
   const [color, setColor] = useState<Pixel>('white')
+  const [find, setFind] = useState('')
+
+  // Accepts 0x41, 65, or a literal character. 256 glyphs is more than anyone
+  // should have to scan by eye.
+  const findMatch = (query: string): number | null => {
+    const q = query.trim()
+    if (!q) return null
+    if (/^0x[0-9a-f]{1,2}$/i.test(q)) return parseInt(q.slice(2), 16)
+    if (/^\d{1,3}$/.test(q)) {
+      const n = Number(q)
+      return n < GLYPH_COUNT ? n : null
+    }
+    if (q.length === 1) {
+      const code = q.toUpperCase().charCodeAt(0)
+      return code < GLYPH_COUNT ? code : null
+    }
+    return null
+  }
+  const found = findMatch(find)
 
   // Keyboard: undo/redo and the three paint colours.
   useEffect(() => {
@@ -224,7 +243,29 @@ export function FontEditor() {
 
         {/* Picker */}
         <div>
-          <h2 className="mb-2 text-sm font-medium text-zinc-300">Pick a glyph</h2>
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-sm font-medium text-zinc-300">Pick a glyph</h2>
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-500" />
+              <input
+                value={find}
+                onChange={(event) => {
+                  setFind(event.target.value)
+                  const match = findMatch(event.target.value)
+                  if (match !== null) setSelected(match)
+                }}
+                placeholder="0x41, 65, or A"
+                aria-label="Jump to a glyph by hex, number, or character"
+                className="w-44 rounded-md border border-zinc-700 bg-zinc-900 py-1.5 pl-7 pr-2 font-mono text-xs text-zinc-100 outline-none placeholder:text-zinc-600 focus:border-accent"
+              />
+            </div>
+          </div>
+          {find.trim() && found === null && (
+            <p className="mb-2 text-xs text-amber-400">
+              No glyph matches &ldquo;{find.trim()}&rdquo;. Try a hex index like 0x41, a number
+              from 0 to 255, or a single character.
+            </p>
+          )}
           <div className="grid max-h-[70vh] grid-cols-[repeat(auto-fill,minmax(46px,1fr))] gap-1 overflow-y-auto rounded-lg border border-zinc-800 bg-zinc-950/60 p-2">
             {Array.from({ length: GLYPH_COUNT }, (_, index) => (
               <button
@@ -240,7 +281,7 @@ export function FontEditor() {
                       : 'border-zinc-800 hover:border-zinc-600',
                 ].join(' ')}
               >
-                <GlyphCanvas glyph={font[index]} scale={2} />
+                <GlyphCanvas glyph={font[index]} scale={2} label={`Glyph ${hex(index)}`} />
                 <span className="font-mono text-[8px] leading-none text-zinc-500">
                   {hex(index)}
                 </span>

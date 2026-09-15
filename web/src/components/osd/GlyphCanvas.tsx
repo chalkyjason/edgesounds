@@ -13,7 +13,16 @@ const CHECKER_B = '#232327'
  * indistinguishable from black, which is the single most confusing thing when
  * reading a glyph sheet.
  */
-export function GlyphCanvas({ glyph, scale = 3 }: { glyph: Glyph; scale?: number }) {
+export function GlyphCanvas({
+  glyph,
+  scale = 3,
+  label,
+}: {
+  glyph: Glyph
+  scale?: number
+  /** Accessible name. Without one a canvas is invisible to a screen reader. */
+  label?: string
+}) {
   const ref = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -44,7 +53,9 @@ export function GlyphCanvas({ glyph, scale = 3 }: { glyph: Glyph; scale?: number
       width={GLYPH_WIDTH * scale}
       height={GLYPH_HEIGHT * scale}
       className="block"
-      aria-hidden="true"
+      role={label ? 'img' : undefined}
+      aria-label={label}
+      aria-hidden={label ? undefined : true}
     />
   )
 }

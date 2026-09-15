@@ -18,7 +18,7 @@ export function GlyphSheet({ font }: { font: Font }) {
           className="flex flex-col items-center gap-1 rounded border border-zinc-800 bg-zinc-950 p-1.5"
           title={`${hex(index)} (${index})`}
         >
-          <GlyphCanvas glyph={font[index]} scale={3} />
+          <GlyphCanvas glyph={font[index]} scale={3} label={`Glyph ${hex(index)}`} />
           <figcaption className="font-mono text-[9px] leading-none text-zinc-500">
             {hex(index)}
           </figcaption>

@@ -37,3 +37,17 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #52525b;
 }
+
+/* Visually hidden, still announced. Used for the glyph editor's cursor
+   position, which is otherwise only conveyed by a drawn outline. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
