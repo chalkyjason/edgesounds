@@ -72,15 +72,21 @@ web/
   capacitor.config.ts        NEW  appId, appName, webDir: 'dist-ios'
   ios/                       NEW  Xcode project, committed (SPM)
   scripts/
+    trim-library.mjs         NEW  pure library filter (plain JS: Node runs it directly)
     prepare-ios.mjs          NEW  dist/ -> dist-ios/, trimmed and cleaned
+    __tests__/               NEW
   src/
     platform/
       platform.ts            NEW  isNativeApp()
       saveFile.ts            NEW  the one export path
-      trimLibrary.ts         NEW  pure library filter
       __tests__/             NEW
     components/
       SaveLink.tsx           NEW  <a download> on web, button + share sheet in the app
+      __tests__/             NEW
+  ios/App/App/
+    PrivacyInfo.xcprivacy    NEW  required by the Filesystem plugin
+tools/
+  make_ios_icon.py           NEW  draws the 1024 px icon from the favicon's mark
 ```
 
 `web/dist-ios/` is gitignored. Capacitor's own `ios/.gitignore` already
@@ -121,7 +127,10 @@ export function saveFile(filename: string, source: Blob | string): Promise<SaveO
 - **App:** resolves the source to bytes (fetching a URL if given — the spike
   confirmed `fetch` works on `blob:` URLs in the web view), writes them to
   `Directory.Cache` at `exports/<filename>`, and opens the share sheet on the
-  resulting file URI. It deletes the cache file afterwards, best effort.
+  resulting file URI. It clears `exports/` **before** each write rather than
+  deleting the file afterwards: the app receiving a share may still be
+  reading the file when the sheet closes. Saves are serialised for the same
+  reason — two overlapping saves would otherwise clear each other's file.
 
 The file is written under its **real filename**, because the share sheet and
 "Save to Files" use the on-disk name. EdgeTX triggers on exact names
@@ -170,8 +179,10 @@ anchor sites swap to `SaveLink`; the two ZIP sites call `saveFile` directly.
   not affected by `viewport-fit=cover`.
 
 `env()` insets are zero in a desktop browser, so the site is visually
-unchanged. The web view's background is set to `#09090b` and the status bar
-to light-on-dark in `capacitor.config.ts`.
+unchanged. The web view's background is set to `#09090b` in
+`capacitor.config.ts`. The status bar reads light because `Info.plist`
+forces `UIUserInterfaceStyle` to `Dark` — Capacitor's `SystemBars.style`
+setting is Android-only.
 
 ## App-only adjustments
 
@@ -216,6 +227,7 @@ dropped. Categories left empty are removed.
 | `ITSAppUsesNonExemptEncryption` | `false` |
 | App icon | One 1024 px PNG: the `favicon.svg` mark on `#09090b` |
 | Launch screen | Solid `#09090b` |
+| `UIUserInterfaceStyle` | `Dark` — light status-bar text, and dark native sheets to match |
 
 The app makes no network requests beyond its own bundled files and collects
 nothing (`analytics.ts` is a stub), so no usage-description strings are
@@ -229,7 +241,8 @@ and asks before the first signed build.
 
 **Unit (Vitest, added to the existing `web` CI job):**
 
-- `saveFile`, app branch, with the plugins mocked:
+- `saveFile`, app branch, with the plugins mocked (and the browser branch
+  with a stubbed anchor):
   - bytes written decode back to the input exactly, for a small blob and for
     one spanning several chunks;
   - the file is written under the exact filename given;
@@ -237,12 +250,19 @@ and asks before the first signed build.
   - the share sheet is opened on the URI the write returned;
   - a dismissed share resolves `'cancelled'`; any other failure rejects.
 - `trimLibrary`, against the **real** `public/library.json`: 27 sounds kept,
-  none with another licence, no empty categories; plus a synthetic case with
-  a missing licence.
+  none with another licence, no empty categories; plus synthetic cases for a
+  missing, unknown, differently-cased and padded licence.
+- `prepareIos`, against a fake `dist/` in a temp dir: only listed sounds
+  survive, web-only files go, `dist/` is untouched, a stale `dist-ios/` is
+  wiped, and a missing or path-escaping sound file fails the build.
+- `SaveLink`, `Footer` and `DropZone` rendered with `react-dom/server`, the
+  platform check mocked each way: the browser markup of `SaveLink` is
+  asserted byte for byte, which is the "web unchanged" guarantee.
 
 **Build:** `npm run build:ios` and `npm run ios:sim` both succeed. These run
 on the Mac, not in CI — the CI runner is Linux. A macOS CI job is out of
-scope.
+scope. `ios:sim` keeps DerivedData under `$TMPDIR`, outside the
+iCloud-synced repo.
 
 **On a real iPhone, by hand** — the things the spike could not see:
 
@@ -288,10 +308,12 @@ on-device, which is real functionality, but the risk is not zero.
 the lint run once. Xcode reading an evicted `web/ios/` will stall the same
 way. Moving the repo out of `~/Documents` before starting is advisable.
 
-**To confirm against current Capacitor 8 docs during implementation**, since
-the spike did not exercise them: the config key for status bar style, and
-whether the Filesystem plugin requires a privacy manifest entry in the app
-target.
+**Two things the spike did not exercise were confirmed from the installed
+packages while planning:** the Filesystem plugin's README requires a
+`PrivacyInfo.xcprivacy` in the app target declaring
+`NSPrivacyAccessedAPICategoryFileTimestamp` (reason `C617.1`), so it is
+included; and Capacitor's status-bar style config is Android-only, hence
+`UIUserInterfaceStyle`.
 
 ## Out of scope
 
