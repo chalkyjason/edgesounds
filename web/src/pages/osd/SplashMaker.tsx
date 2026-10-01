@@ -37,6 +37,15 @@ export function SplashMaker() {
   const [color, setColor] = useState<Pixel>('white')
   const [size, setSize] = useState<BrushSize>(1)
 
+  // A restored design may be an image: open on that tool, not on an empty
+  // text template that contradicts the preview. Runs once, when the saved
+  // design has been read.
+  const [followedRestore, setFollowedRestore] = useState(false)
+  if (editor.loaded && !followedRestore) {
+    setFollowedRestore(true)
+    setTool(editor.design.generator)
+  }
+
   const pickTool = (next: Tool) => {
     setTool(next)
     if (next === 'text' || next === 'image') editor.setGenerator(next)

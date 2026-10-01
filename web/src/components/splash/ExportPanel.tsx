@@ -10,6 +10,16 @@ import { SaveLink } from '../SaveLink'
 import { STOCK_BASE } from '../../lib/splash/bases'
 import type { ExportBase } from '../../lib/splash/bases'
 
+const EXPORT_DEBOUNCE_MS = 250
+
+interface Exports {
+  droppedReservedInk: boolean
+  bytes: number
+  name: string
+  mcmUrl: string
+  pngUrl: string
+}
+
 const BUTTON =
   'flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-40'
 
@@ -30,33 +40,42 @@ export function ExportPanel({ raster }: { raster: Raster }) {
   const loaded = useFont(base?.output)
   const empty = isRasterEmpty(raster)
 
-  const composed = useMemo(() => {
-    if (loaded.state !== 'loaded' || empty || !base) return null
-    const { font, droppedReservedInk } = fontWithSplash(loaded.font, raster)
-    const text = encodeFont(font)
-    return {
-      droppedReservedInk,
-      bytes: text.length,
-      name: `${base.id}_splash.mcm`,
-      url: URL.createObjectURL(new Blob([text], { type: 'application/octet-stream' })),
+  // Both downloads are rebuilt in one debounced effect rather than on every
+  // raster change: a paint drag emits dozens of rasters a second, and encoding
+  // a whole font plus a PNG for each would make the stroke stutter. The object
+  // URLs are created and revoked here too, never in render.
+  const [exports, setExports] = useState<Exports | null>(null)
+  useEffect(() => {
+    if (loaded.state !== 'loaded' || empty || !base) {
+      const timer = setTimeout(() => setExports(null), 0)
+      return () => clearTimeout(timer)
     }
+    const font = loaded.font
+    const timer = setTimeout(() => {
+      const { font: composedFont, droppedReservedInk } = fontWithSplash(font, raster)
+      const text = encodeFont(composedFont)
+      setExports({
+        droppedReservedInk,
+        bytes: text.length,
+        name: `${base.id}_splash.mcm`,
+        mcmUrl: URL.createObjectURL(new Blob([text], { type: 'application/octet-stream' })),
+        pngUrl: URL.createObjectURL(new Blob([splashPng(raster)], { type: 'image/png' })),
+      })
+    }, EXPORT_DEBOUNCE_MS)
+    return () => clearTimeout(timer)
   }, [loaded, raster, empty, base])
 
-  const png = useMemo(() => {
-    if (empty) return null
-    return URL.createObjectURL(new Blob([splashPng(raster)], { type: 'image/png' }))
-  }, [raster, empty])
+  useEffect(() => {
+    return () => {
+      if (exports) {
+        URL.revokeObjectURL(exports.mcmUrl)
+        URL.revokeObjectURL(exports.pngUrl)
+      }
+    }
+  }, [exports])
 
-  useEffect(() => {
-    return () => {
-      if (composed) URL.revokeObjectURL(composed.url)
-    }
-  }, [composed])
-  useEffect(() => {
-    return () => {
-      if (png) URL.revokeObjectURL(png)
-    }
-  }, [png])
+  const composed = exports
+  const png = exports?.pngUrl ?? null
 
   return (
     <div className="space-y-3 rounded-lg border border-zinc-800 bg-zinc-900/60 p-4">
@@ -89,7 +108,7 @@ export function ExportPanel({ raster }: { raster: Raster }) {
       <div className="flex flex-wrap gap-2">
         {composed ? (
           <SaveLink
-            href={composed.url}
+            href={composed.mcmUrl}
             filename={composed.name}
             className={`${BUTTON} bg-accent text-zinc-950 hover:bg-accent-dim`}
           >

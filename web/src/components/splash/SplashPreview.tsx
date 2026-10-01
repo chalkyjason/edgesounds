@@ -4,8 +4,10 @@ import { RASTER_HEIGHT, RASTER_WIDTH } from '../../lib/splash/raster'
 import type { Raster } from '../../lib/splash/raster'
 
 /** Mid-grey: the honest stand-in for an analog video feed behind the OSD. */
-const VIDEO = '#7a7a7a'
-const SEAM = '#09090b'
+const VIDEO_RGB: [number, number, number] = [0x7a, 0x7a, 0x7a]
+const SEAM_RGB: [number, number, number] = [0x09, 0x09, 0x0b]
+const WHITE_RGB: [number, number, number] = [255, 255, 255]
+const BLACK_RGB: [number, number, number] = [0, 0, 0]
 
 /**
  * Two views of the raster: over grey "video", which is what the black
@@ -39,17 +41,34 @@ function Canvas({
   useEffect(() => {
     const ctx = ref.current?.getContext('2d')
     if (!ctx) return
-    ctx.fillStyle = seams ? SEAM : VIDEO
-    ctx.fillRect(0, 0, width, height)
+    // One ImageData, one blit: this redraws on every keystroke and stroke.
+    const image = ctx.createImageData(width, height)
+    const data = image.data
+    const bg = seams ? SEAM_RGB : VIDEO_RGB
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = bg[0]
+      data[i + 1] = bg[1]
+      data[i + 2] = bg[2]
+      data[i + 3] = 255
+    }
     for (let y = 0; y < RASTER_HEIGHT; y += 1) {
       for (let x = 0; x < RASTER_WIDTH; x += 1) {
         const pixel = raster[y * RASTER_WIDTH + x]
-        ctx.fillStyle = pixel === 'white' ? '#ffffff' : pixel === 'black' ? '#000000' : VIDEO
+        const [r, g, b] = pixel === 'white' ? WHITE_RGB : pixel === 'black' ? BLACK_RGB : VIDEO_RGB
         const px = x * scale + seam * Math.floor(x / GLYPH_WIDTH)
         const py = y * scale + seam * Math.floor(y / GLYPH_HEIGHT)
-        ctx.fillRect(px, py, scale, scale)
+        for (let dy = 0; dy < scale; dy += 1) {
+          let o = ((py + dy) * width + px) * 4
+          for (let dx = 0; dx < scale; dx += 1) {
+            data[o] = r
+            data[o + 1] = g
+            data[o + 2] = b
+            o += 4
+          }
+        }
       }
     }
+    ctx.putImageData(image, 0, 0)
   }, [raster, scale, seams, seam, width, height])
 
   return (

@@ -5,8 +5,12 @@ import type { Pixel } from '../../lib/mcm/types'
 import { RASTER_HEIGHT, RASTER_WIDTH } from '../../lib/splash/raster'
 import type { Raster } from '../../lib/splash/raster'
 
-const COLORS: Record<Pixel, string> = { white: '#ffffff', black: '#000000', transparent: '#18181b' }
-const CHECKER = '#232327'
+const RGB: Record<Pixel, [number, number, number]> = {
+  white: [255, 255, 255],
+  black: [0, 0, 0],
+  transparent: [0x18, 0x18, 0x1b],
+}
+const CHECKER_RGB: [number, number, number] = [0x23, 0x23, 0x27]
 const GRID = 'rgba(255,255,255,0.14)'
 const RESERVED = 'rgba(255,80,80,0.18)'
 
@@ -38,13 +42,28 @@ export function PaintCanvas({
     const canvas = ref.current
     const ctx = canvas?.getContext('2d')
     if (!canvas || !ctx) return
+    // One ImageData for all 20,736 pixels at `scale`, then a single blit --
+    // 62,000 fillRects per pointer move is what made painting stutter.
+    const image = ctx.createImageData(RASTER_WIDTH * scale, RASTER_HEIGHT * scale)
+    const data = image.data
+    const stride = RASTER_WIDTH * scale * 4
     for (let y = 0; y < RASTER_HEIGHT; y += 1) {
       for (let x = 0; x < RASTER_WIDTH; x += 1) {
         const pixel = raster[y * RASTER_WIDTH + x]
-        ctx.fillStyle = pixel === 'transparent' && (x + y) % 2 === 1 ? CHECKER : COLORS[pixel]
-        ctx.fillRect(x * scale, y * scale, scale, scale)
+        const [r, g, b] = pixel === 'transparent' && (x + y) % 2 === 1 ? CHECKER_RGB : RGB[pixel]
+        for (let dy = 0; dy < scale; dy += 1) {
+          let o = (y * scale + dy) * stride + x * scale * 4
+          for (let dx = 0; dx < scale; dx += 1) {
+            data[o] = r
+            data[o + 1] = g
+            data[o + 2] = b
+            data[o + 3] = 255
+            o += 4
+          }
+        }
       }
     }
+    ctx.putImageData(image, 0, 0)
     const reservedCol = (RESERVED_INDEX - LOGO_START) % TILES_HORIZ
     const reservedRow = Math.floor((RESERVED_INDEX - LOGO_START) / TILES_HORIZ)
     ctx.fillStyle = RESERVED

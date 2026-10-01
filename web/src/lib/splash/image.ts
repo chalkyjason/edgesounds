@@ -16,6 +16,15 @@ export const DEFAULT_IMAGE_OPTIONS: ImageOptions = {
   outline: false,
 }
 
+/** What the page converts. HEIC (an iPhone's default) is not among them, so say so. */
+export const ACCEPTED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'] as const
+
+/** Null when the file can be used; otherwise the message to show. */
+export function checkImageFile(file: Pick<File, 'name' | 'type'>): string | null {
+  if ((ACCEPTED_IMAGE_TYPES as readonly string[]).includes(file.type)) return null
+  return `${file.name} is not a PNG, JPEG, WebP or GIF`
+}
+
 export interface Placement {
   x: number
   y: number

@@ -101,9 +101,10 @@ export function useSplashDesign(stencils: Stencils | null) {
         if (!cancelled) setImage({ source, result: { rgba: data, placement } })
       } catch (error) {
         if (!cancelled) {
+          const detail = error instanceof Error ? ` (${error.message})` : ''
           setImage({
             source,
-            result: { error: error instanceof Error ? error.message : 'Could not read that image' },
+            result: { error: `Could not read ${design.image.sourceName ?? 'that image'}${detail}` },
           })
         }
       }
@@ -111,7 +112,7 @@ export function useSplashDesign(stencils: Stencils | null) {
     return () => {
       cancelled = true
     }
-  }, [source])
+  }, [source, design.image.sourceName])
 
   const current = image && image.source === source ? image.result : null
   const decoded = current && 'rgba' in current ? current : null

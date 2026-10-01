@@ -1,21 +1,23 @@
 import { ImageUp } from 'lucide-react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import type { SplashEditor } from '../../hooks/useSplashDesign'
+import { ACCEPTED_IMAGE_TYPES, checkImageFile } from '../../lib/splash/image'
 
-const ACCEPT = 'image/png,image/jpeg,image/webp,image/gif'
+const ACCEPT = ACCEPTED_IMAGE_TYPES.join(',')
 
 /** Any picture, fitted into 288 x 72 and thresholded to the three OSD colours. */
 export function ImagePanel({ editor }: { editor: SplashEditor }) {
   const inputRef = useRef<HTMLInputElement>(null)
+  const [rejected, setRejected] = useState<string | null>(null)
   const { image } = editor.design
 
+  // A file the page cannot convert is named, and the current image is kept:
+  // replacing it with nothing would blank the preview for no reason.
   const pick = (file: File | null) => {
     if (!file) return
-    if (!ACCEPT.split(',').includes(file.type)) {
-      editor.setImageSource(null)
-      return
-    }
-    editor.setImageSource(file)
+    const problem = checkImageFile(file)
+    setRejected(problem)
+    if (!problem) editor.setImageSource(file)
   }
 
   return (
@@ -43,6 +45,7 @@ export function ImagePanel({ editor }: { editor: SplashEditor }) {
         className="hidden"
         onChange={(event) => pick(event.target.files?.[0] ?? null)}
       />
+      {rejected && <p className="text-sm text-red-400">{rejected}</p>}
       {editor.imageError && <p className="text-sm text-red-400">{editor.imageError}</p>}
 
       <div>

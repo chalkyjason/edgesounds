@@ -1,5 +1,5 @@
 import { GLYPH_HEIGHT, GLYPH_WIDTH } from '../mcm/decode'
-import { LOGO_HEIGHT, LOGO_WIDTH, UPLOAD_PALETTE, rasterToTiles } from '../mcm/logo'
+import { LOGO_HEIGHT, LOGO_WIDTH, TILES_HORIZ, TILES_VERT, UPLOAD_PALETTE } from '../mcm/logo'
 import type { Glyph, Pixel } from '../mcm/types'
 
 /** The 288 x 72 start screen, row-major, one Pixel per cell. */
@@ -79,9 +79,25 @@ export function rasterToRgba(raster: Raster): Uint8ClampedArray {
   return rgba
 }
 
-/** The raster as the 96 splash tiles, row-major from 0xA0. */
+/**
+ * The raster as the 96 splash tiles, row-major from 0xA0. Sliced directly:
+ * the raster is already Pixels, and going through RGBA and back costs more
+ * than everything else on the page put together.
+ */
 export function rasterToGlyphs(raster: Raster): Glyph[] {
-  return rasterToTiles(rasterToRgba(raster), RASTER_WIDTH, RASTER_HEIGHT, { strict: true })
+  if (raster.length !== RASTER_SIZE) throw new Error(`raster has ${raster.length} pixels, expected ${RASTER_SIZE}`)
+  const tiles: Glyph[] = []
+  for (let row = 0; row < TILES_VERT; row += 1) {
+    for (let col = 0; col < TILES_HORIZ; col += 1) {
+      const pixels: Pixel[] = new Array<Pixel>(GLYPH_WIDTH * GLYPH_HEIGHT)
+      for (let y = 0; y < GLYPH_HEIGHT; y += 1) {
+        const start = (row * GLYPH_HEIGHT + y) * RASTER_WIDTH + col * GLYPH_WIDTH
+        for (let x = 0; x < GLYPH_WIDTH; x += 1) pixels[y * GLYPH_WIDTH + x] = raster[start + x]
+      }
+      tiles.push({ pixels })
+    }
+  }
+  return tiles
 }
 
 export function isRasterEmpty(raster: Raster): boolean {

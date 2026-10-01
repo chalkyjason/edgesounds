@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { DEFAULT_IMAGE_OPTIONS, fitInside, rasterizeImage } from '../image'
+import { ACCEPTED_IMAGE_TYPES, DEFAULT_IMAGE_OPTIONS, checkImageFile, fitInside, rasterizeImage } from '../image'
 import { RASTER_WIDTH } from '../raster'
 
 const at = (x: number, y: number) => y * RASTER_WIDTH + x
@@ -61,5 +61,21 @@ describe('rasterizeImage', () => {
 
   it('rejects mismatched data', () => {
     expect(() => rasterizeImage(PIXELS, { ...PLACE, width: 3 }, DEFAULT_IMAGE_OPTIONS)).toThrow('expected 24 bytes')
+  })
+})
+
+describe('checkImageFile', () => {
+  const file = (name: string, type: string) => ({ name, type }) as File
+
+  it('accepts the four formats the page converts', () => {
+    for (const type of ACCEPTED_IMAGE_TYPES) expect(checkImageFile(file('x', type))).toBeNull()
+  })
+
+  it("names the file and the accepted types for anything else, including an iPhone's HEIC", () => {
+    expect(checkImageFile(file('IMG_0042.HEIC', 'image/heic'))).toBe(
+      'IMG_0042.HEIC is not a PNG, JPEG, WebP or GIF',
+    )
+    expect(checkImageFile(file('logo.svg', 'image/svg+xml'))).toBe('logo.svg is not a PNG, JPEG, WebP or GIF')
+    expect(checkImageFile(file('mystery', ''))).toBe('mystery is not a PNG, JPEG, WebP or GIF')
   })
 })
