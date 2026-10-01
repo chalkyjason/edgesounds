@@ -274,6 +274,8 @@ files out of a cached xcframework there overnight).
 - [ ] The saved WAV plays, and `afinfo` on the Mac reports 32 kHz mono
       16-bit.
 - [ ] Library: preview plays; a single WAV saves; a ZIP of several saves.
+- [ ] Tap two WAV buttons in quick succession: both share sheets appear, one
+      after the other, with no "sharing is in progress" error.
 - [ ] My Sounds: a save, the ZIP of all, and "clear all" with its
       confirmation.
 - [ ] Font browser: a shipped `.mcm` saves and is byte-identical to

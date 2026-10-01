@@ -9,6 +9,8 @@ export type SaveOutcome = 'saved' | 'cancelled'
 export const CHUNK_BYTES = 768 * 1024
 
 const EXPORT_DIR = 'exports'
+const SHARE_BUSY_RETRIES = 3
+const SHARE_BUSY_RETRY_MS = 250
 
 // Saves run one at a time in the app. Each one clears EXPORT_DIR before it
 // writes, so two overlapping saves would delete each other's file.
@@ -75,12 +77,18 @@ async function shareOnDevice(filename: string, source: Blob | string): Promise<S
     })
   }
 
-  try {
-    await Share.share({ url: uri })
-    return 'saved'
-  } catch (error) {
-    if (isShareCancel(error)) return 'cancelled'
-    throw error
+  // The previous sheet's completion can fire while its dismissal is still
+  // animating, and the Share plugin refuses to present over it. That window
+  // is a few hundred milliseconds, so wait it out rather than fail the save.
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      await Share.share({ url: uri })
+      return 'saved'
+    } catch (error) {
+      if (isShareCancel(error)) return 'cancelled'
+      if (!isShareBusy(error) || attempt >= SHARE_BUSY_RETRIES) throw error
+      await new Promise((resolve) => setTimeout(resolve, SHARE_BUSY_RETRY_MS))
+    }
   }
 }
 
@@ -104,6 +112,12 @@ async function readBytes(filename: string, source: Blob | string): Promise<Uint8
 function isShareCancel(error: unknown): boolean {
   const message = error instanceof Error ? error.message : String(error)
   return /share cancell?ed/i.test(message)
+}
+
+/** ...and with this one when another sheet is still on screen. */
+function isShareBusy(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error)
+  return /sharing is in progress/i.test(message)
 }
 
 function toBase64(bytes: Uint8Array): string {

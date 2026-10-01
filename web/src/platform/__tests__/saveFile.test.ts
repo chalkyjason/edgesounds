@@ -145,6 +145,27 @@ describe('saveFile in the app', () => {
     await expect(saveFile('armed.wav', new Blob([pattern(10)]))).resolves.toBe('cancelled')
   })
 
+  it('retries when the previous sheet is still animating away', async () => {
+    // UIKit can report the first sheet complete while its dismissal is still
+    // running; the Share plugin then rejects the next call with this message.
+    vi.mocked(Share.share)
+      .mockRejectedValueOnce(new Error("Can't share while sharing is in progress"))
+      .mockRejectedValueOnce(new Error("Can't share while sharing is in progress"))
+      .mockResolvedValueOnce({})
+    await expect(saveFile('armed.wav', new Blob([pattern(10)]))).resolves.toBe('saved')
+    expect(Share.share).toHaveBeenCalledTimes(3)
+    // One write; the retries only re-present the sheet.
+    expect(Filesystem.writeFile).toHaveBeenCalledTimes(1)
+  })
+
+  it('gives up on a sheet that never frees up', async () => {
+    vi.mocked(Share.share).mockRejectedValue(new Error("Can't share while sharing is in progress"))
+    await expect(saveFile('armed.wav', new Blob([pattern(10)]))).rejects.toThrow(
+      'sharing is in progress',
+    )
+    expect(Share.share).toHaveBeenCalledTimes(4)
+  })
+
   it('rejects when sharing fails for any other reason', async () => {
     vi.mocked(Share.share).mockRejectedValue(new Error('Error sharing item'))
     await expect(saveFile('armed.wav', new Blob([pattern(10)]))).rejects.toThrow(
