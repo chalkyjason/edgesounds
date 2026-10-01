@@ -107,6 +107,8 @@ export function Library() {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          type="search"
+          aria-label="Search sounds by name or tag"
           placeholder="Search by name or tag…"
           className="w-full rounded-md border border-zinc-800 bg-zinc-900/60 py-2 pl-9 pr-3 text-sm text-zinc-100 outline-none placeholder:text-zinc-500 focus:border-accent"
         />

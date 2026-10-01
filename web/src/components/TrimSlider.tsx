@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import { formatDuration } from '../utils/validateAudio'
 
 export function TrimSlider({
@@ -13,18 +14,23 @@ export function TrimSlider({
   onChangeStart: (v: number) => void
   onChangeEnd: (v: number) => void
 }) {
+  const id = useId()
   const max = Math.max(duration, 0)
   const span = end - start
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm text-zinc-300">
+      <p className="block text-sm text-zinc-300">
         Trim ({formatDuration(start)} → {formatDuration(end)} · {span.toFixed(2)}s)
-      </label>
+      </p>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <div className="mb-1 text-xs text-zinc-500">Start</div>
+          <label htmlFor={`${id}-start`} className="mb-1 block text-xs text-zinc-500">
+            Start
+          </label>
           <input
+            id={`${id}-start`}
+            aria-valuetext={formatDuration(start)}
             type="range"
             min={0}
             max={max}
@@ -38,8 +44,12 @@ export function TrimSlider({
           />
         </div>
         <div>
-          <div className="mb-1 text-xs text-zinc-500">End</div>
+          <label htmlFor={`${id}-end`} className="mb-1 block text-xs text-zinc-500">
+            End
+          </label>
           <input
+            id={`${id}-end`}
+            aria-valuetext={formatDuration(end)}
             type="range"
             min={0}
             max={max}

@@ -37,6 +37,7 @@ export function LogoUpload({
   const [strictFailed, setStrictFailed] = useState<string | null>(null)
   const [pendingImage, setPendingImage] = useState<ImageData | null>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const buildPreview = useCallback((imageData: ImageData, strict: boolean) => {
     const tiles = rasterToTiles(imageData.data, imageData.width, imageData.height, { strict })
@@ -114,20 +115,28 @@ export function LogoUpload({
         </p>
       </div>
 
-      <label className="flex w-fit cursor-pointer items-center gap-1.5 rounded-md border border-zinc-700 px-3 py-2 text-xs text-zinc-300 hover:border-accent/50 hover:text-accent">
+      {/* A button, not a <label> around the input: a label can't take focus,
+          so the hidden input was unreachable from the keyboard. */}
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        className="flex w-fit items-center gap-1.5 rounded-md border border-zinc-700 px-3 py-2 text-xs text-zinc-300 hover:border-accent/50 hover:text-accent"
+      >
         <ImageUp className="h-4 w-4" />
         Choose an image
-        <input
-          type="file"
-          accept="image/png,image/gif,image/bmp,image/webp"
-          className="hidden"
-          onChange={(event) => {
-            const file = event.target.files?.[0]
-            if (file) void handleFile(file)
-            event.target.value = ''
-          }}
-        />
-      </label>
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/png,image/gif,image/bmp,image/webp"
+        className="hidden"
+        tabIndex={-1}
+        onChange={(event) => {
+          const file = event.target.files?.[0]
+          if (file) void handleFile(file)
+          event.target.value = ''
+        }}
+      />
 
       {error && <p className="text-xs text-red-400">{error}</p>}
 

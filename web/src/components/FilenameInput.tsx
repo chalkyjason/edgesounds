@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { MAX_FILENAME_LENGTH, sanitizeFilename } from '../utils/sanitizeFilename'
 
 export function FilenameInput({
@@ -12,6 +12,7 @@ export function FilenameInput({
 }) {
   // Only the "we stripped something" notice needs to persist across renders; the
   // length warning is a pure function of `value`, so derive it instead of storing it.
+  const id = useId()
   const [stripWarning, setStripWarning] = useState<string | null>(null)
   const warning =
     stripWarning ??
@@ -29,9 +30,12 @@ export function FilenameInput({
 
   return (
     <div>
-      <label className="mb-1 block text-sm text-zinc-300">EdgeTX filename</label>
+      <label htmlFor={id} className="mb-1 block text-sm text-zinc-300">
+        EdgeTX filename
+      </label>
       <div className="flex items-center overflow-hidden rounded-md border border-zinc-700 bg-zinc-900 focus-within:border-accent">
         <input
+          id={id}
           value={value}
           onChange={(e) => handleChange(e.target.value)}
           placeholder={placeholder}

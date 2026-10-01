@@ -164,8 +164,11 @@ export function Converter() {
           <div className="grid gap-4 md:grid-cols-2">
             <FilenameInput value={filename} onChange={setFilename} />
             <div>
-              <label className="mb-1 block text-sm text-zinc-300">Trigger preset</label>
+              <label htmlFor="trigger-preset" className="mb-1 block text-sm text-zinc-300">
+                Trigger preset
+              </label>
               <select
+                id="trigger-preset"
                 value={selectedPreset?.id ?? ''}
                 onChange={(e) => {
                   const preset = TRIGGER_PRESETS.find((p) => p.id === e.target.value)

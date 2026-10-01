@@ -16,7 +16,12 @@ const TONES = {
 export function Toaster() {
   const { toasts, dismiss } = useToast()
   return (
-    <div className="toaster-offset pointer-events-none fixed z-50 flex flex-col gap-2">
+    // Always mounted and live, so screen readers announce each toast as it lands.
+    <div
+      role="status"
+      aria-live="polite"
+      className="toaster-offset pointer-events-none fixed z-50 flex flex-col gap-2"
+    >
       {toasts.map((t) => {
         const Icon = ICONS[t.kind]
         return (
@@ -29,7 +34,7 @@ export function Toaster() {
             <button
               onClick={() => dismiss(t.id)}
               className="text-current opacity-60 hover:opacity-100"
-              aria-label="Dismiss"
+              aria-label="Dismiss notification"
             >
               <X className="h-4 w-4" />
             </button>
