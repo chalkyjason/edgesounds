@@ -11,6 +11,7 @@ export const CHUNK_BYTES = 768 * 1024
 const EXPORT_DIR = 'exports'
 const SHARE_BUSY_RETRIES = 3
 const SHARE_BUSY_RETRY_MS = 250
+const REVOKE_DELAY_MS = 40_000
 
 // Saves run one at a time in the app. Each one clears EXPORT_DIR before it
 // writes, so two overlapping saves would delete each other's file.
@@ -40,7 +41,9 @@ function downloadInBrowser(filename: string, source: Blob | string): void {
   anchor.href = url
   anchor.download = filename
   anchor.click()
-  if (typeof source !== 'string') URL.revokeObjectURL(url)
+  // The download starts asynchronously; revoking the URL straight away can
+  // cancel it in Safari and some Firefox versions, so hold it a while.
+  if (typeof source !== 'string') setTimeout(() => URL.revokeObjectURL(url), REVOKE_DELAY_MS)
 }
 
 async function shareOnDevice(filename: string, source: Blob | string): Promise<SaveOutcome> {

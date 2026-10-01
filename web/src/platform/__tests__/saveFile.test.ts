@@ -241,14 +241,19 @@ describe('saveFile in a browser', () => {
     expect(anchor.click).toHaveBeenCalledTimes(1)
   })
 
-  it('clicks a download link to an object URL for a Blob, then revokes it', async () => {
+  it('clicks a download link to an object URL for a Blob, then revokes it later', async () => {
+    vi.useFakeTimers()
     const revoke = vi.spyOn(URL, 'revokeObjectURL')
     await saveFile('my-edgesounds.zip', new Blob([pattern(10)]))
     expect(anchor.href).toMatch(/^blob:/)
     expect(anchor.download).toBe('my-edgesounds.zip')
     expect(anchor.click).toHaveBeenCalledTimes(1)
+    // Revoking straight after click() can cancel the download in Safari.
+    expect(revoke).not.toHaveBeenCalled()
+    vi.runAllTimers()
     expect(revoke).toHaveBeenCalledWith(anchor.href)
     revoke.mockRestore()
+    vi.useRealTimers()
   })
 
   it('never touches the native plugins', async () => {
