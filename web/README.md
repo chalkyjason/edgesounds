@@ -82,6 +82,33 @@ always seen and accepted rather than made silently. `0xFF` is skipped: it
 doubles as `SYM_END_OF_FONT`, so ink in the bottom-right tile is reported
 rather than dropped quietly.
 
+## iPhone app
+
+The same site, wrapped in Capacitor. Nothing about the web build changes;
+the app detects at runtime that it is native (`src/platform/platform.ts`)
+and swaps only the export path (`saveFile` / `SaveLink`: share sheet instead
+of `<a download>`), three lines of copy, and the donation link.
+
+```bash
+npm run build:ios   # build, derive dist-ios/, cap sync
+npm run ios:sim     # unsigned simulator build (DerivedData under ~/Library)
+npm run ios:open    # the Xcode project, for a signed build on a phone
+```
+
+`dist-ios/` is `dist/` with the library trimmed to the 27 sounds licensed
+`generated-original` (`scripts/trim-library.mjs`, an allowlist that fails
+closed) and the web-host files removed (`scripts/prepare-ios.mjs`).
+Capacitor's `webDir` points at `dist-ios/`, never `dist/`, so the 71
+fair-use clips cannot reach the App Store build.
+
+The Xcode project under `ios/` is committed. It is iPhone-only, portrait,
+iOS 15+, forced dark, and carries the privacy manifest the Filesystem plugin
+requires. The icon is drawn by `../tools/make_ios_icon.py`.
+
+One quirk worth knowing: the `capacitor://` asset handler serves bundled
+audio through a range-request path that `fetch()` reports as status 0, not
+200. `saveFile` accepts that; a missing file throws instead.
+
 ## Deploy
 
 Static host; Cloudflare Pages root directory is `web/`. `public/_headers`

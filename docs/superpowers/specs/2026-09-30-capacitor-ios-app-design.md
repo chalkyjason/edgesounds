@@ -261,8 +261,9 @@ and asks before the first signed build.
 
 **Build:** `npm run build:ios` and `npm run ios:sim` both succeed. These run
 on the Mac, not in CI — the CI runner is Linux. A macOS CI job is out of
-scope. `ios:sim` keeps DerivedData under `$TMPDIR`, outside the
-iCloud-synced repo.
+scope. `ios:sim` keeps DerivedData under `~/Library/Developer/Xcode/DerivedData`,
+outside the iCloud-synced repo (not `$TMPDIR`: macOS's tmp cleaner pruned
+files out of a cached xcframework there overnight).
 
 **On a real iPhone, by hand** — the things the spike could not see:
 

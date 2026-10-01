@@ -16,6 +16,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "stage-osd": "node scripts/stage-osd-assets.mjs",
+    "build:ios": "npm run build && node scripts/prepare-ios.mjs && cap sync ios",
+    "ios:sim": "set -o pipefail && xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath \"$HOME/Library/Developer/Xcode/DerivedData/armyjay-ios\" CODE_SIGNING_ALLOWED=NO build | grep -E 'error:|BUILD'",
+    "ios:open": "cap open ios",
     "prebuild": "node scripts/stage-osd-assets.mjs && node scripts/gen-sitemap.mjs",
     "predev": "node scripts/stage-osd-assets.mjs && node scripts/gen-sitemap.mjs"
   },
