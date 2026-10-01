@@ -3,17 +3,25 @@ import type { ErrorInfo, ReactNode } from 'react'
 
 interface Props {
   children: ReactNode
+  /** When this changes -- the route, say -- a caught error is cleared. */
+  resetKey?: unknown
 }
 
 interface State {
   error: Error | null
+  resetKey?: unknown
 }
 
 export class ErrorBoundary extends Component<Props, State> {
-  state: State = { error: null }
+  state: State = { error: null, resetKey: this.props.resetKey }
 
-  static getDerivedStateFromError(error: Error): State {
+  static getDerivedStateFromError(error: Error): Partial<State> {
     return { error }
+  }
+
+  static getDerivedStateFromProps(props: Props, state: State): Partial<State> | null {
+    if (Object.is(props.resetKey, state.resetKey)) return null
+    return { error: null, resetKey: props.resetKey }
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {

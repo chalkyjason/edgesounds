@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import type { ReactNode } from 'react'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Home } from './pages/Home'
@@ -16,6 +17,12 @@ import { MySoundsProvider } from './hooks/useMySounds'
 import { SharedAudioProvider } from './hooks/useSharedAudio'
 import { ToastProvider } from './hooks/useToast'
 
+/** A page that crashed stays crashed only until you navigate away from it. */
+function RouteErrorBoundary({ children }: { children: ReactNode }) {
+  const { pathname } = useLocation()
+  return <ErrorBoundary resetKey={pathname}>{children}</ErrorBoundary>
+}
+
 function App() {
   return (
     <ErrorBoundary>
@@ -25,7 +32,7 @@ function App() {
             <MySoundsProvider>
               <BrowserRouter>
                 <Layout>
-                  <ErrorBoundary>
+                  <RouteErrorBoundary>
                     <Routes>
                       <Route path="/" element={<Landing />} />
                       <Route path="/sounds" element={<Home />} />
@@ -39,7 +46,7 @@ function App() {
                       <Route path="/osd/splash" element={<SplashMaker />} />
                       <Route path="*" element={<Landing />} />
                     </Routes>
-                  </ErrorBoundary>
+                  </RouteErrorBoundary>
                 </Layout>
               </BrowserRouter>
             </MySoundsProvider>
