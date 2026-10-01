@@ -82,6 +82,29 @@ always seen and accepted rather than made silently. `0xFF` is skipped: it
 doubles as `SYM_END_OF_FONT`, so ink in the bottom-right tile is reported
 rather than dropped quietly.
 
+## Start screen
+
+`/osd/splash` designs the 288×72 boot splash. One *generator* makes the base
+raster — the **Text** template (two centred lines in the stencil letters,
+rules on or off, automatic black outline) or the **Image** tool (any picture
+fitted into 288×72 and thresholded to white/black/transparent) — and
+**Paint** is a sparse layer of pixel overrides on top, the same
+base-plus-edits pattern as the glyph editor, so changing the text later
+keeps the touch-ups.
+
+The stencil letterforms live in `../assets/splash_stencils.json`, which
+`tools/make_logo.py` reads too; the build stages it to `/osd/stencils.json`.
+`src/lib/splash/__tests__/template.test.ts` renders `ARMY JAY / TACTICAL OSD`
+and compares the sliced tiles with glyphs `0xA0–0xFE` of the real
+`fonts/armyjay_full.mcm`, so the port cannot drift from the Python original.
+
+Export composes the raster into a base font — the three variants, or the
+stock Betaflight font (`assets/references/stock/default_v2.mcm`, GPL-3.0,
+staged as `betaflight_default.mcm`) — through the codec, and offers the
+`.mcm` or a three-colour PNG for Configurator's own uploader. The design is
+saved in the `splash` store of `armyjay_osd` (now version 2, opened only
+through `utils/osdDb.ts`).
+
 ## iPhone app
 
 The same site, wrapped in Capacitor. Nothing about the web build changes;
