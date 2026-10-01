@@ -8,6 +8,7 @@ import { formatBytes, formatDuration } from '../utils/validateAudio'
 import { MAX_ENTRIES } from '../utils/mySoundsStorage'
 import { SaveLink } from '../components/SaveLink'
 import { saveFile } from '../platform/saveFile'
+import { zipPaths } from '../utils/zipPaths'
 
 export function MySounds() {
   const { sounds, loading, remove, clearAll } = useMySounds()
@@ -61,16 +62,24 @@ export function MySounds() {
       audioRef.current?.pause()
       setPlayingId(null)
     }
-    await remove(id)
-    notify(`Removed ${name}`, 'info')
+    try {
+      await remove(id)
+      notify(`Removed ${name}`, 'info')
+    } catch (e) {
+      notify(e instanceof Error ? `Couldn't remove ${name}: ${e.message}` : `Couldn't remove ${name}`, 'error')
+    }
   }
 
   const handleClear = async () => {
     if (!confirm(`Remove all ${sounds.length} saved sounds? This can't be undone.`)) return
     audioRef.current?.pause()
     setPlayingId(null)
-    await clearAll()
-    notify('Cleared all saved sounds', 'info')
+    try {
+      await clearAll()
+      notify('Cleared all saved sounds', 'info')
+    } catch (e) {
+      notify(e instanceof Error ? `Couldn't clear saved sounds: ${e.message}` : "Couldn't clear saved sounds", 'error')
+    }
   }
 
   const downloadAll = async () => {
@@ -78,12 +87,19 @@ export function MySounds() {
     setZipping(true)
     try {
       const zip = new JSZip()
-      // Build SD-card layout: bare files in /SOUNDS/<lang>/ — flat zip is fine
-      for (const s of sounds) zip.file(s.filename, s.blob)
+      // Build SD-card layout: bare files in /SOUNDS/<lang>/, older copies of a
+      // repeated name in their own folders so none is lost
+      const paths = zipPaths(sounds.map((s) => s.filename))
+      sounds.forEach((s, i) => zip.file(paths[i], s.blob))
       const blob = await zip.generateAsync({ type: 'blob' })
       const outcome = await saveFile('my-edgesounds.zip', blob)
       if (outcome === 'saved') {
-        notify(`Bundled ${sounds.length} sounds into my-edgesounds.zip`, 'success')
+        const copies = paths.filter((p) => p.includes('/')).length
+        notify(
+          `Bundled ${sounds.length} sounds into my-edgesounds.zip` +
+            (copies ? ` · ${copies} older ${copies === 1 ? 'copy' : 'copies'} in copy-N folders` : ''),
+          'success',
+        )
       }
     } catch (e) {
       notify(e instanceof Error ? e.message : 'Zip failed', 'error')
