@@ -105,7 +105,8 @@ staged at build time like the other OSD assets, and gitignored.
 
 Rows are strings of `.` (clear) and `#` (white). Every row of a glyph has the
 same length; glyphs may differ in width (`I` and `1` are narrower than `M`).
-`" "` (space) is a glyph of clear rows, 6 wide in `big` and 3 in `small`.
+`" "` (space) is a glyph of clear rows, 12 wide in `big` and 6 in `small`, as
+today — changing either would move every word on the shipped splash.
 
 ### Composition rules (today's, made explicit)
 
@@ -114,8 +115,9 @@ same length; glyphs may differ in width (`I` and `1` are narrower than `M`).
   within its 18 px tile row.
 - The big line sits on row 1, the small line on row 2.
 - Rules: 3 px thick, from x = 24 to x = 264, vertically centred in rows 0 and
-  3, with the five-step chevron caps `make_logo.py` draws today. Both rules
-  are one switch.
+  3. The top rule carries the five-step chevron caps; the bottom one does
+  not — that is how the shipped splash is drawn, whatever `make_logo.py`'s
+  comment says about "matching". Both rules are one switch.
 - The outline is a 1 px black halo around every white pixel, computed over
   the whole raster so it is continuous across tile seams.
 
@@ -128,15 +130,11 @@ drawn in the same idiom: squared terminals, closed counters, 3 px strokes in
 
 ### Proof the move changed nothing
 
-`python tools/make_logo.py` must reproduce `assets/logo_288x72.png` byte for
-byte. CI gains that check next to the existing `fonts/` staleness check:
-
-```yaml
-- name: Rebuild the splash raster and confirm the committed one is current
-  run: |
-    python tools/make_logo.py
-    git diff --exit-code -- assets/logo_288x72.png
-```
+`tests/test_stencils.py` asserts that `make_logo.render()` is **pixel-identical**
+to the committed `assets/logo_288x72.png`, and pins the moved letterforms
+verbatim. Pixels, not bytes: PNG encoders differ across Pillow and zlib
+versions, so a `git diff` on the file would fail spuriously. The committed
+PNG is not rewritten.
 
 ## The page
 
@@ -251,8 +249,9 @@ editor's Boot splash section gets one line: "Or design one — Start screen →"
 **Python (`tests/test_stencils.py`):** the JSON parses; both fonts have every
 character in the set; every glyph is rectangular with the font's height and
 uses only `.`/`#`; the moved glyphs equal the strings they replaced (pinned
-once, then the file is the source). `make_logo.py` reproduces
-`assets/logo_288x72.png` — asserted in CI as above.
+once, then the file is the source); the space widths are the originals;
+`make_logo.render()` is pixel-identical to `assets/logo_288x72.png`; the
+stencil sheet renders.
 
 **TypeScript, the decisive test:** `renderTemplate({ big: 'ARMY JAY', small:
 'TACTICAL OSD', rules: true })` → `rasterToTiles` must equal glyphs
@@ -273,9 +272,9 @@ Then, as pure-function tests:
   a new stroke, brush sizes cover the right offsets, out-of-bounds ignored.
 - `fontWithSplash`: every glyph outside `0xA0`–`0xFE` is `toBe` the base's;
   `0xFF` is the base's; the tiles match the raster.
-- `splashPng`: Node has no canvas, so the PNG is checked structurally — the
-  signature and an IHDR of 288 × 72 — and the colour mapping is tested on
-  `rasterToRgba`, which the PNG is built from.
+- `splashPng`: the signature, an IHDR of 288 × 72, and the IDAT inflated with
+  Node's own zlib — so the hand-rolled stored-deflate stream is checked by a
+  real decoder — with the scanlines compared to `rasterToRgba`.
 - Storage: the v1 → v2 upgrade keeps `font_edits` intact (fake-indexeddb
   is **not** added; the upgrade function is tested by calling it with a stub
   `IDBDatabase` that records `createObjectStore` calls).
@@ -296,9 +295,10 @@ design still there.
 
 ## Acceptance criteria
 
-1. `python tools/make_logo.py` and `python tools/build_font.py --craft-name`
-   leave `assets/logo_288x72.png` and `fonts/` unchanged; the Python suite
-   passes with the new tests; CI has the splash-raster check.
+1. `python tools/make_logo.py` renders a raster pixel-identical to the
+   committed `assets/logo_288x72.png` (asserted by test), and
+   `python tools/build_font.py --craft-name` leaves `fonts/` unchanged; the
+   Python suite passes with the new tests.
 2. The decisive TypeScript test passes: the web compositor reproduces the
    shipped splash tile for tile.
 3. `/osd/splash` renders text, image and paint into one raster, previews it
