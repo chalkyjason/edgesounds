@@ -17,6 +17,26 @@ body {
   margin: 0;
 }
 
+/*
+ * Safe areas. The insets are zero in a desktop browser and real inside the
+ * iPhone app, where the page runs edge to edge (viewport-fit=cover) under the
+ * status bar and the home indicator.
+ */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.safe-x {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+.toaster-offset {
+  right: calc(1rem + env(safe-area-inset-right));
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+}
+
 ::selection {
   background-color: rgba(0, 255, 157, 0.35);
   color: #fff;

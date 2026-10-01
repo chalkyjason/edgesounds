@@ -1,6 +1,7 @@
 import { Upload } from 'lucide-react'
 import { useCallback, useRef, useState } from 'react'
 import { ACCEPTED_EXTENSIONS, isAcceptedAudioFile } from '../utils/validateAudio'
+import { isNativeApp } from '../platform/platform'
 
 export function DropZone({
   onFile,
@@ -53,7 +54,9 @@ export function DropZone({
       >
         <Upload className="h-8 w-8" />
         <div>
-          <div className="text-sm font-medium">Drop an audio file or click to browse</div>
+          <div className="text-sm font-medium">
+            {isNativeApp() ? 'Choose an audio file' : 'Drop an audio file or click to browse'}
+          </div>
           <div className="mt-1 text-xs text-zinc-500">
             {ACCEPTED_EXTENSIONS.join(' · ')}
           </div>

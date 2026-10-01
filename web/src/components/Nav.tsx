@@ -40,7 +40,7 @@ export function Nav() {
   const subItems = inSounds ? SOUNDS_ITEMS : inOsd ? osdItems : []
 
   return (
-    <header className="sticky top-0 z-30 border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur">
+    <header className="safe-top sticky top-0 z-30 border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-stretch gap-1 px-4 sm:gap-2">
         <NavLink
           to="/"
