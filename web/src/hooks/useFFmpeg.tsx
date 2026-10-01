@@ -48,6 +48,8 @@ export function FFmpegProvider({ children }: { children: ReactNode }) {
       } catch (e) {
         const message = e instanceof Error ? e.message : 'Failed to load audio engine'
         setError(message)
+        // A half-loaded instance still holds a worker; a retry makes a new one.
+        ffmpeg.terminate()
         ffmpegRef.current = null
         loadPromiseRef.current = null
         throw e

@@ -27,6 +27,9 @@ export function Converter() {
   const [filename, setFilename] = useState('')
 
   const file = source?.file ?? null
+  // Swapping files mid-conversion would let the running one finish onto the
+  // new file's card, and ffmpeg.wasm can't be interrupted, so wait it out.
+  const busy = status.state === 'loading-engine' || status.state === 'converting'
   const previewUrl = source?.previewUrl ?? null
   const selectedPreset = TRIGGER_PRESETS.find((p) => p.filename === filename) ?? null
 
@@ -132,7 +135,8 @@ export function Converter() {
               </div>
               <button
                 onClick={handleReset}
-                className="flex items-center gap-1 rounded-md border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 hover:border-zinc-500"
+                disabled={busy}
+                className="flex items-center gap-1 rounded-md border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 hover:border-zinc-500 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <RefreshCw className="h-3.5 w-3.5" /> Convert another
               </button>
@@ -210,11 +214,7 @@ export function Converter() {
           {status.state !== 'done' ? (
             <button
               onClick={handleConvert}
-              disabled={
-                !filename ||
-                status.state === 'loading-engine' ||
-                status.state === 'converting'
-              }
+              disabled={!filename || busy}
               className="flex items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 font-medium text-zinc-950 transition-colors hover:bg-accent-dim disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Wand2 className="h-4 w-4" />
