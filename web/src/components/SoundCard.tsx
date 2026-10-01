@@ -1,6 +1,7 @@
 import { Download } from 'lucide-react'
 import type { SoundEntry } from '../types'
 import { AudioPreview } from './AudioPreview'
+import { SaveLink } from './SaveLink'
 import { useToast } from '../hooks/useToast'
 import { track } from '../utils/analytics'
 
@@ -65,15 +66,15 @@ export function SoundCard({
 
       <div className="flex items-center justify-between text-xs text-zinc-400">
         {sound.credit && <span className="truncate">{sound.credit}</span>}
-        <a
+        <SaveLink
           href={sound.path}
-          download={sound.filename}
+          filename={sound.filename}
           onClick={handleDownload}
           className="ml-auto flex items-center gap-1 rounded border border-zinc-800 px-2 py-1 text-zinc-300 hover:border-accent/50 hover:text-accent"
         >
           <Download className="h-3.5 w-3.5" />
           <span>WAV</span>
-        </a>
+        </SaveLink>
       </div>
     </div>
   )

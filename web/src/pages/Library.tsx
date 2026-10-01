@@ -6,6 +6,7 @@ import { SoundCard } from '../components/SoundCard'
 import { useToast } from '../hooks/useToast'
 import { track } from '../utils/analytics'
 import type { SoundEntry } from '../types'
+import { saveFile } from '../platform/saveFile'
 
 export function Library() {
   const lib = useLibrary()
@@ -55,13 +56,8 @@ export function Library() {
         })
       )
       const blob = await zip.generateAsync({ type: 'blob' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = zipName
-      a.click()
-      URL.revokeObjectURL(url)
-      notify(`${sounds.length} sounds bundled into ${zipName}`, 'success')
+      const outcome = await saveFile(zipName, blob)
+      if (outcome === 'saved') notify(`${sounds.length} sounds bundled into ${zipName}`, 'success')
     } catch (e) {
       notify(e instanceof Error ? e.message : 'Zip failed', 'error')
     } finally {

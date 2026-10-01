@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, Download, Pencil } from 'lucide-react'
 import { GlyphSheet } from '../../components/osd/GlyphSheet'
+import { SaveLink } from '../../components/SaveLink'
 import { useFont } from '../../hooks/useFont'
 import { useVariants } from '../../hooks/useVariants'
 
@@ -41,14 +42,14 @@ export function FontDetail() {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <a
+        <SaveLink
           href={`/osd/fonts/${variant.output}`}
-          download={variant.output}
+          filename={variant.output}
           className="flex items-center gap-1.5 rounded-md bg-accent px-3 py-2 text-sm font-medium text-zinc-950 hover:bg-accent-dim"
         >
           <Download className="h-4 w-4" />
           {variant.output}
-        </a>
+        </SaveLink>
         <Link
           to={`/osd/fonts/${variant.id}/edit`}
           className="flex items-center gap-1.5 rounded-md border border-zinc-700 px-3 py-2 text-sm text-zinc-300 hover:border-accent/50 hover:text-accent"
@@ -57,14 +58,14 @@ export function FontDetail() {
           Edit glyphs
         </Link>
         {variant.craftName && (
-          <a
+          <SaveLink
             href={`/osd/fonts/${variant.craftName}`}
-            download={variant.craftName}
+            filename={variant.craftName}
             className="flex items-center gap-1.5 rounded-md border border-zinc-700 px-3 py-2 text-sm text-zinc-300 hover:border-accent/50 hover:text-accent"
           >
             <Download className="h-4 w-4" />
             craft-name build
-          </a>
+          </SaveLink>
         )}
       </div>
 

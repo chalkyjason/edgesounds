@@ -11,6 +11,7 @@ import {
 } from '../utils/validateAudio'
 import { sanitizeFilename } from '../utils/sanitizeFilename'
 import { DropZone } from './DropZone'
+import { SaveLink } from './SaveLink'
 import { FilenameInput } from './FilenameInput'
 import { ConversionProgress } from './ConversionProgress'
 import { TrimSlider } from './TrimSlider'
@@ -259,13 +260,13 @@ function DownloadResult({
             <RefreshCw className="h-4 w-4" /> Another
           </button>
           {downloadUrl && (
-            <a
+            <SaveLink
               href={downloadUrl}
-              download={status.result.filename}
+              filename={status.result.filename}
               className="flex items-center gap-1 rounded-md bg-accent px-3 py-2 text-sm font-medium text-zinc-950 hover:bg-accent-dim"
             >
               <Download className="h-4 w-4" /> Download .wav
-            </a>
+            </SaveLink>
           )}
         </div>
       </div>

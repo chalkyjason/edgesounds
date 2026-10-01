@@ -4,6 +4,8 @@ import { ArrowLeft, Download, Eraser, Redo2, RotateCcw, Search, Trash2, Undo2 } 
 import { GlyphCanvas } from '../../components/osd/GlyphCanvas'
 import { GlyphEditorCanvas } from '../../components/osd/GlyphEditorCanvas'
 import { LogoUpload } from '../../components/osd/LogoUpload'
+import { SaveLink } from '../../components/SaveLink'
+import { isNativeApp } from '../../platform/platform'
 import { GLYPH_COUNT } from '../../lib/mcm/decode'
 import { encodeFont } from '../../lib/mcm/encode'
 import type { Pixel } from '../../lib/mcm/types'
@@ -199,9 +201,15 @@ export function FontEditor() {
           </div>
 
           <p className="text-[11px] leading-relaxed text-zinc-600">
-            Drag to paint. <kbd className="font-mono">1</kbd>/<kbd className="font-mono">2</kbd>/
-            <kbd className="font-mono">3</kbd> pick a colour,{' '}
-            <kbd className="font-mono">⌘Z</kbd> undoes.
+            Drag to paint.
+            {!isNativeApp() && (
+              <>
+                {' '}
+                <kbd className="font-mono">1</kbd>/<kbd className="font-mono">2</kbd>/
+                <kbd className="font-mono">3</kbd> pick a colour,{' '}
+                <kbd className="font-mono">⌘Z</kbd> undoes.
+              </>
+            )}
           </p>
 
           <LogoUpload
@@ -215,15 +223,15 @@ export function FontEditor() {
 
           {download && (
             <div className="space-y-2 rounded-lg border border-zinc-800 bg-zinc-900/60 p-3">
-              <a
+              <SaveLink
                 href={download.url}
-                download={download.name}
+                filename={download.name}
                 onClick={() => notify(`Downloading ${download.name}`, 'info')}
                 className="flex items-center justify-center gap-1.5 rounded-md bg-accent px-3 py-2 text-sm font-medium text-zinc-950 hover:bg-accent-dim"
               >
                 <Download className="h-4 w-4" />
                 Download edited font
-              </a>
+              </SaveLink>
               <p className="text-center font-mono text-[10px] text-zinc-500">
                 {download.bytes.toLocaleString()} bytes
                 {download.bytes === 147463 ? ' · valid' : ' · UNEXPECTED SIZE'}

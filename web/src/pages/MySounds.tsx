@@ -6,6 +6,8 @@ import { useMySounds } from '../hooks/useMySounds'
 import { useToast } from '../hooks/useToast'
 import { formatBytes, formatDuration } from '../utils/validateAudio'
 import { MAX_ENTRIES } from '../utils/mySoundsStorage'
+import { SaveLink } from '../components/SaveLink'
+import { saveFile } from '../platform/saveFile'
 
 export function MySounds() {
   const { sounds, loading, remove, clearAll } = useMySounds()
@@ -79,13 +81,10 @@ export function MySounds() {
       // Build SD-card layout: bare files in /SOUNDS/<lang>/ — flat zip is fine
       for (const s of sounds) zip.file(s.filename, s.blob)
       const blob = await zip.generateAsync({ type: 'blob' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'my-edgesounds.zip'
-      a.click()
-      URL.revokeObjectURL(url)
-      notify(`Bundled ${sounds.length} sounds into my-edgesounds.zip`, 'success')
+      const outcome = await saveFile('my-edgesounds.zip', blob)
+      if (outcome === 'saved') {
+        notify(`Bundled ${sounds.length} sounds into my-edgesounds.zip`, 'success')
+      }
     } catch (e) {
       notify(e instanceof Error ? e.message : 'Zip failed', 'error')
     } finally {
@@ -170,14 +169,14 @@ export function MySounds() {
                 </div>
               </div>
               {url && (
-                <a
+                <SaveLink
                   href={url}
-                  download={s.filename}
+                  filename={s.filename}
                   className="flex items-center gap-1 rounded-md border border-zinc-800 px-2 py-1 text-xs text-zinc-300 hover:border-accent/50 hover:text-accent"
                 >
                   <Download className="h-3.5 w-3.5" />
                   WAV
-                </a>
+                </SaveLink>
               )}
               <button
                 onClick={() => handleRemove(s.id, s.displayName)}
