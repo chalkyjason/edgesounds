@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import type { Pixel } from '../lib/mcm/types'
 import { fitInside, rasterizeImage } from '../lib/splash/image'
 import type { ImageOptions, Placement } from '../lib/splash/image'
@@ -10,6 +10,7 @@ import { renderTemplate } from '../lib/splash/template'
 import type { LineReport, TemplateInput } from '../lib/splash/template'
 import { DEFAULT_DESIGN, clearDesign, loadDesign, saveDesign } from '../utils/splashStorage'
 import type { SplashDesign } from '../utils/splashStorage'
+import { useDebouncedSave } from './useDebouncedSave'
 
 const SAVE_DEBOUNCE_MS = 400
 const EMPTY_REPORT: LineReport = { width: 0, overflow: 0, unsupported: [], drawn: false }
@@ -38,7 +39,6 @@ export function useSplashDesign(stencils: Stencils | null) {
   const [loaded, setLoaded] = useState(false)
   const [storage, setStorage] = useState<'ok' | 'unavailable'>('ok')
   const [image, setImage] = useState<ImageState>(null)
-  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Restore.
   useEffect(() => {
@@ -64,19 +64,14 @@ export function useSplashDesign(stencils: Stencils | null) {
   }, [])
 
   // Persist, debounced, once restored (so the default never overwrites a save).
-  useEffect(() => {
-    if (!loaded || storage === 'unavailable') return
-    if (saveTimer.current) clearTimeout(saveTimer.current)
-    saveTimer.current = setTimeout(() => {
-      saveDesign({ ...design, paint: paint.present }).catch((error: unknown) => {
-        console.warn('[useSplashDesign] could not save the design', error)
-        setStorage('unavailable')
-      })
-    }, SAVE_DEBOUNCE_MS)
-    return () => {
-      if (saveTimer.current) clearTimeout(saveTimer.current)
-    }
-  }, [design, paint.present, loaded, storage])
+  const toSave = useMemo<SplashDesign>(() => ({ ...design, paint: paint.present }), [design, paint.present])
+  const persist = useCallback((value: SplashDesign) => {
+    saveDesign(value).catch((error: unknown) => {
+      console.warn('[useSplashDesign] could not save the design', error)
+      setStorage('unavailable')
+    })
+  }, [])
+  useDebouncedSave(toSave, loaded && storage === 'ok', persist, SAVE_DEBOUNCE_MS)
 
   // Decode the image source into pixels at its fitted placement. The result
   // is tagged with its source and read during render, so this effect only

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PIXELS_PER_GLYPH } from '../lib/mcm/decode'
 import type { Font, Pixel } from '../lib/mcm/types'
 import { clearEdit, loadEdit, saveEdit } from '../utils/fontStorage'
+import { useDebouncedSave } from './useDebouncedSave'
 
 export type EditMap = Record<number, Pixel[]>
 
@@ -13,6 +14,14 @@ interface History {
 
 const EMPTY: History = { present: {}, past: [], future: [] }
 const MAX_HISTORY = 100
+const SAVE_DEBOUNCE_MS = 400
+
+function persist(pending: { variantId: string; edits: EditMap } | null) {
+  if (!pending) return
+  void saveEdit(pending.variantId, pending.edits).catch((error) =>
+    console.warn('[useFontEditor] could not save edits', error),
+  )
+}
 
 function push(history: History, next: EditMap): History {
   return {
@@ -133,15 +142,8 @@ export function useFontEditor(base: Font | null, variantId: string | undefined) 
 
   // Persist on change, once the initial load has settled so we never write {}
   // over a saved edit before it has been read back.
-  useEffect(() => {
-    if (!variantId || !loaded) return
-    const handle = setTimeout(() => {
-      void saveEdit(variantId, edits).catch((error) =>
-        console.warn('[useFontEditor] could not save edits', error),
-      )
-    }, 400)
-    return () => clearTimeout(handle)
-  }, [edits, loaded, variantId])
+  const pending = useMemo(() => (variantId ? { variantId, edits } : null), [variantId, edits])
+  useDebouncedSave(pending, Boolean(pending) && loaded, persist, SAVE_DEBOUNCE_MS)
 
   const discard = useCallback(async () => {
     if (!variantId) return
