@@ -59,11 +59,19 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      # Pinned to the commit STATUS.md records the fonts were verified
+      # against. Upstream reorganises its source tree (osdFont.js has since
+      # moved), and a check that breaks on their refactors proves nothing
+      # about our fonts. Move the pin deliberately, updating STATUS.md.
       - name: Clone betaflight-configurator
+        env:
+          CONFIGURATOR_SHA: 505bd6d803971d4bf48aea5c6c5cea134eda21fb
         run: |
-          GIT_LFS_SKIP_SMUDGE=1 git clone --depth 1 \
-            https://github.com/betaflight/betaflight-configurator \
-            "$RUNNER_TEMP/betaflight-configurator"
+          dir="$RUNNER_TEMP/betaflight-configurator"
+          git init -q "$dir"
+          git -C "$dir" remote add origin https://github.com/betaflight/betaflight-configurator
+          GIT_LFS_SKIP_SMUDGE=1 git -C "$dir" fetch -q --depth 1 origin "$CONFIGURATOR_SHA"
+          GIT_LFS_SKIP_SMUDGE=1 git -C "$dir" checkout -q FETCH_HEAD
 
       - name: Cross-check against Configurator
         run: |
