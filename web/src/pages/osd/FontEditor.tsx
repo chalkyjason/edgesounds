@@ -92,10 +92,11 @@ export function FontEditor() {
     }
   }, [download])
 
-  if (variants.state === 'loading' || loaded.state === 'loading')
-    return <p className="text-zinc-400">Loading font…</p>
-  if (loaded.state === 'error') return <p className="text-red-400">{loaded.message}</p>
-  if (!variant || !editor.font)
+  // The variant is settled before the font: with no variant, useFont reports
+  // "No font specified", which would hide the clearer message below.
+  if (variants.state === 'loading') return <p className="text-zinc-400">Loading font…</p>
+  if (variants.state === 'error') return <p className="text-red-400">{variants.message}</p>
+  if (!variant)
     return (
       <div className="space-y-3">
         <p className="text-red-400">No such font: {variantId}</p>
@@ -104,6 +105,9 @@ export function FontEditor() {
         </Link>
       </div>
     )
+  if (loaded.state === 'error') return <p className="text-red-400">{loaded.message}</p>
+  if (loaded.state === 'loading' || !editor.font)
+    return <p className="text-zinc-400">Loading font…</p>
 
   // Hoisted after the guard above: TypeScript keeps the narrowing on a local
   // const, but loses it on `editor.font` inside the picker's map callback.
