@@ -37,6 +37,35 @@ body {
   bottom: calc(1rem + env(safe-area-inset-bottom));
 }
 
+/*
+ * Touch screens. iOS zooms the page into any focused field set under 16px,
+ * and doesn't zoom back out. A fingertip also needs about 44pt where a cursor
+ * needs a few pixels: .touch-target grows a control's hit area to that
+ * without moving anything on screen.
+ */
+@media (pointer: coarse) {
+  :is(input:not([type='checkbox']):not([type='radio']):not([type='range']), select, textarea) {
+    font-size: max(16px, 1em);
+  }
+  input[type='checkbox'] {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+  /* Zero specificity: an element already positioned (absolute) keeps it. */
+  :where(.touch-target) {
+    position: relative;
+  }
+  .touch-target::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+}
+
 ::selection {
   background-color: rgba(0, 255, 157, 0.35);
   color: #fff;

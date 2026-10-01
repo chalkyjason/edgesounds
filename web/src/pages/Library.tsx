@@ -7,6 +7,7 @@ import { useToast } from '../hooks/useToast'
 import { track } from '../utils/analytics'
 import type { SoundEntry } from '../types'
 import { saveFile } from '../platform/saveFile'
+import { isNativeApp } from '../platform/platform'
 
 export function Library() {
   const lib = useLibrary()
@@ -71,7 +72,9 @@ export function Library() {
         <div>
           <h1 className="text-2xl font-semibold text-zinc-100">Library</h1>
           <p className="mt-1 text-sm text-zinc-400">
-            Pre-converted, EdgeTX-ready clips. Click play to preview, click download to grab.
+            Pre-converted, EdgeTX-ready clips. {isNativeApp()
+              ? 'Tap play to preview, tap WAV to save.'
+              : 'Click play to preview, click download to grab.'}
           </p>
         </div>
         {selectedSounds.length > 0 && (

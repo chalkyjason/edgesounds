@@ -54,7 +54,7 @@ export function SplashMaker() {
   return (
     <div className="space-y-6">
       <div>
-        <Link to="/osd" className="text-sm text-zinc-400 hover:text-accent">
+        <Link to="/osd" className="touch-target text-sm text-zinc-400 hover:text-accent">
           ← OSD fonts
         </Link>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-50">Start screen</h1>
@@ -65,7 +65,7 @@ export function SplashMaker() {
         </p>
         {editor.storage === 'unavailable' && (
           <p className="mt-2 text-xs text-amber-400">
-            This browser is not letting the design be saved, so it will be gone on reload.
+            The design can't be saved here, so it will be gone on reload.
           </p>
         )}
       </div>

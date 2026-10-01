@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, Radio, Type } from 'lucide-react'
+import { isNativeApp } from '../platform/platform'
 
 const HALVES = [
   {
@@ -7,7 +8,7 @@ const HALVES = [
     icon: Radio,
     title: 'Sounds',
     tagline: 'Make your radio talk back.',
-    body: 'Convert any audio file to the 32 kHz mono 16-bit .wav EdgeTX actually accepts — entirely in your browser, nothing uploaded. Plus a library of ready-to-flash callouts, and a setup guide covering the filenames EdgeTX triggers on its own.',
+    body: 'Convert any audio file to the 32 kHz mono 16-bit .wav EdgeTX actually accepts — entirely on your device, nothing uploaded. Plus a library of ready-to-flash callouts, and a setup guide covering the filenames EdgeTX triggers on its own.',
     cta: 'Convert a sound',
   },
   {
@@ -25,7 +26,7 @@ export function Landing() {
     <div className="space-y-10">
       <header className="space-y-3">
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
-          FPV tooling that runs in your browser
+          FPV tooling that runs {isNativeApp() ? 'on your phone' : 'in your browser'}
         </p>
         <h1 className="text-4xl font-semibold tracking-tight text-zinc-50 sm:text-5xl">
           Army Jay

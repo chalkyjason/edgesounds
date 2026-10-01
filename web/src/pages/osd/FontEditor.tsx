@@ -120,14 +120,14 @@ export function FontEditor() {
       <div>
         <Link
           to={`/osd/fonts/${variant.id}`}
-          className="flex w-fit items-center gap-1.5 text-sm text-zinc-400 hover:text-accent"
+          className="touch-target flex w-fit items-center gap-1.5 text-sm text-zinc-400 hover:text-accent"
         >
           <ArrowLeft className="h-4 w-4" />
           {variant.id}
         </Link>
         <h1 className="mt-3 text-2xl font-semibold text-zinc-50">Glyph editor</h1>
         <p className="mt-1 text-sm text-zinc-400">
-          Edits are kept in this browser and layered over the original font — the base file is
+          Edits are kept on this device and layered over the original font — the base file is
           never modified.{' '}
           {editedCount > 0 && (
             <span className="text-accent">
@@ -218,7 +218,7 @@ export function FontEditor() {
 
           <p className="text-xs text-zinc-500">
             Or design one from text, a picture or pixels —{' '}
-            <Link to="/osd/splash" className="text-accent hover:underline">
+            <Link to="/osd/splash" className="touch-target text-accent hover:underline">
               Start screen →
             </Link>
           </p>

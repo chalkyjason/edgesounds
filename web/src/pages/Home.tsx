@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, Plane, Sliders, Wand2, Zap } from 'lucide-react'
 import { useLibrary } from '../hooks/useLibrary'
 import { SoundCard } from '../components/SoundCard'
+import { isNativeApp } from '../platform/platform'
 
 export function Home() {
   const lib = useLibrary()
@@ -15,7 +16,7 @@ export function Home() {
       <section className="grid items-center gap-8 md:grid-cols-2">
         <div className="space-y-5">
           <span className="inline-flex items-center gap-1 rounded-full border border-accent/40 bg-accent/5 px-3 py-1 text-xs uppercase tracking-wider text-accent">
-            <Zap className="h-3 w-3" /> EdgeTX-ready in your browser
+            <Zap className="h-3 w-3" /> EdgeTX-ready {isNativeApp() ? 'on your phone' : 'in your browser'}
           </span>
           <h1 className="text-4xl font-semibold text-zinc-50 md:text-5xl">
             Make your FPV radio <span className="text-accent">talk back.</span>
@@ -47,8 +48,12 @@ export function Home() {
       <section className="grid gap-4 md:grid-cols-3">
         <FeatureCard
           icon={<Wand2 className="h-5 w-5 text-accent" />}
-          title="In-browser conversion"
-          body="ffmpeg.wasm runs locally. Your audio never leaves the tab."
+          title={isNativeApp() ? 'On-device conversion' : 'In-browser conversion'}
+          body={
+            isNativeApp()
+              ? 'Converted right on your phone. Your audio never leaves it.'
+              : 'ffmpeg.wasm runs locally. Your audio never leaves the tab.'
+          }
         />
         <FeatureCard
           icon={<Sliders className="h-5 w-5 text-accent" />}
@@ -68,7 +73,7 @@ export function Home() {
             <h2 className="text-2xl font-semibold text-zinc-100">Featured sounds</h2>
             <Link
               to="/sounds/library"
-              className="text-sm text-accent hover:underline"
+              className="touch-target text-sm text-accent hover:underline"
             >
               All sounds →
             </Link>
@@ -88,7 +93,7 @@ export function Home() {
         </p>
         <Link
           to="/sounds/setup"
-          className="mt-3 inline-flex items-center gap-1 text-sm text-accent hover:underline"
+          className="touch-target mt-3 inline-flex items-center gap-1 text-sm text-accent hover:underline"
         >
           Read the setup guide <ArrowRight className="h-4 w-4" />
         </Link>

@@ -30,7 +30,7 @@ export function FontDetail() {
       <div>
         <Link
           to="/osd"
-          className="flex w-fit items-center gap-1.5 text-sm text-zinc-400 hover:text-accent"
+          className="touch-target flex w-fit items-center gap-1.5 text-sm text-zinc-400 hover:text-accent"
         >
           <ArrowLeft className="h-4 w-4" />
           All fonts
@@ -81,7 +81,7 @@ export function FontDetail() {
       <section>
         <h2 className="text-lg font-semibold text-zinc-100">All 256 glyphs</h2>
         <p className="mt-1 text-xs text-zinc-500">
-          Decoded from the <code className="font-mono">.mcm</code> in your browser. Checkerboard
+          Decoded from the <code className="font-mono">.mcm</code> on your device. Checkerboard
           means transparent — the video feed shows through.
         </p>
         <div className="mt-4">

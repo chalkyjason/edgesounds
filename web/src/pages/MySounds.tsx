@@ -119,7 +119,7 @@ export function MySounds() {
         <div className="rounded-lg border border-dashed border-zinc-800 p-8 text-center">
           <p className="text-zinc-300">Nothing saved yet.</p>
           <p className="mt-1 text-sm text-zinc-400">
-            Every clip you convert is automatically tucked away here for later. Stays on this device — nothing leaves your browser.
+            Every clip you convert is automatically tucked away here for later. Stays on this device — nothing is uploaded.
           </p>
           <Link
             to="/sounds/convert"
@@ -138,7 +138,7 @@ export function MySounds() {
         <div>
           <h1 className="text-2xl font-semibold text-zinc-100">My Sounds</h1>
           <p className="mt-1 text-sm text-zinc-400">
-            {sounds.length} of {MAX_ENTRIES} saved on this device. Oldest gets evicted when full. Nothing leaves your browser.
+            {sounds.length} of {MAX_ENTRIES} saved on this device. Oldest gets evicted when full. Nothing is uploaded.
           </p>
         </div>
         <div className="flex gap-2">
@@ -188,7 +188,7 @@ export function MySounds() {
                 <SaveLink
                   href={url}
                   filename={s.filename}
-                  className="flex items-center gap-1 rounded-md border border-zinc-800 px-2 py-1 text-xs text-zinc-300 hover:border-accent/50 hover:text-accent"
+                  className="touch-target flex items-center gap-1 rounded-md border border-zinc-800 px-2 py-1 text-xs text-zinc-300 hover:border-accent/50 hover:text-accent"
                 >
                   <Download className="h-3.5 w-3.5" />
                   WAV
@@ -196,7 +196,7 @@ export function MySounds() {
               )}
               <button
                 onClick={() => handleRemove(s.id, s.displayName)}
-                className="flex items-center gap-1 rounded-md border border-zinc-800 px-2 py-1 text-xs text-zinc-300 hover:border-red-500/60 hover:text-red-400"
+                className="touch-target flex items-center gap-1 rounded-md border border-zinc-800 px-2 py-1 text-xs text-zinc-300 hover:border-red-500/60 hover:text-red-400"
                 aria-label={`Remove ${s.displayName}`}
               >
                 <Trash2 className="h-3.5 w-3.5" />

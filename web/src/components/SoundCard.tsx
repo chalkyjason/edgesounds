@@ -32,7 +32,7 @@ export function SoundCard({
       ].join(' ')}
     >
       {selectable && (
-        <label className="absolute right-3 top-3 flex cursor-pointer items-center">
+        <label className="touch-target absolute right-3 top-3 flex cursor-pointer items-center">
           <input
             type="checkbox"
             checked={!!selected}
@@ -70,7 +70,7 @@ export function SoundCard({
           href={sound.path}
           filename={sound.filename}
           onClick={handleDownload}
-          className="ml-auto flex items-center gap-1 rounded border border-zinc-800 px-2 py-1 text-zinc-300 hover:border-accent/50 hover:text-accent"
+          className="touch-target ml-auto flex items-center gap-1 rounded border border-zinc-800 px-2 py-1 text-zinc-300 hover:border-accent/50 hover:text-accent"
         >
           <Download className="h-3.5 w-3.5" />
           <span>WAV</span>
