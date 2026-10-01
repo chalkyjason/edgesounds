@@ -92,7 +92,11 @@ async function readBytes(filename: string, source: Blob | string): Promise<Uint8
   } catch {
     throw new Error(`Could not load ${filename}`)
   }
-  if (!response.ok) throw new Error(`Could not load ${filename}`)
+  // Capacitor's asset handler serves bundled audio through its range-request
+  // path, which arrives here as status 0 with the full body; a missing file
+  // throws above instead. So status 0 is accepted, and an empty body is
+  // caught by the caller's size check.
+  if (!response.ok && response.status !== 0) throw new Error(`Could not load ${filename}`)
   return new Uint8Array(await response.arrayBuffer())
 }
 

@@ -113,6 +113,20 @@ describe('saveFile in the app', () => {
     expectSameBytes(bytesOnDisk(), bytes)
   })
 
+  it("accepts the status-0 response Capacitor's asset handler gives bundled audio", async () => {
+    // The capacitor:// scheme handler serves audio and video through its
+    // range-request path, which reaches fetch() as status 0 with ok=false and
+    // the full body. A missing file throws instead, so status 0 is not a 404.
+    const bytes = pattern(300)
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => ({ ok: false, status: 0, arrayBuffer: async () => bytes.buffer })),
+    )
+
+    await expect(saveFile('armed.wav', '/sounds/callouts/armed.wav')).resolves.toBe('saved')
+    expectSameBytes(bytesOnDisk(), bytes)
+  })
+
   it('names the file when a URL source cannot be fetched', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response('nope', { status: 404 })))
     await expect(saveFile('armed.wav', '/sounds/callouts/armed.wav')).rejects.toThrow(
