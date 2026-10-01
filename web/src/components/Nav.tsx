@@ -29,6 +29,7 @@ export function Nav() {
   // unavailable, so navigation never depends on that fetch succeeding.
   const osdItems: SubItem[] = [
     { to: '/osd', label: 'All fonts', end: true },
+    { to: '/osd/splash', label: 'Start screen' },
     ...(variants.state === 'loaded'
       ? variants.variants.map((variant) => ({
           to: `/osd/fonts/${variant.id}`,

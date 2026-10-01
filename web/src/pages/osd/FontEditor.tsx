@@ -212,6 +212,12 @@ export function FontEditor() {
             )}
           </p>
 
+          <p className="text-xs text-zinc-500">
+            Or design one from text, a picture or pixels —{' '}
+            <Link to="/osd/splash" className="text-accent hover:underline">
+              Start screen →
+            </Link>
+          </p>
           <LogoUpload
             onApply={(edits) => {
               editor.applyEdits(edits)
