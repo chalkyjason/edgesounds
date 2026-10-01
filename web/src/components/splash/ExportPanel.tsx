@@ -7,6 +7,7 @@ import { fontWithSplash, splashPng } from '../../lib/splash/compose'
 import { isRasterEmpty } from '../../lib/splash/raster'
 import type { Raster } from '../../lib/splash/raster'
 import { SaveLink } from '../SaveLink'
+import { isNativeApp } from '../../platform/platform'
 import { STOCK_BASE } from '../../lib/splash/bases'
 import type { ExportBase } from '../../lib/splash/bases'
 
@@ -31,7 +32,9 @@ export function ExportPanel({ raster }: { raster: Raster }) {
       ...(variants.state === 'loaded'
         ? variants.variants.map((v) => ({ id: v.id, output: v.output, label: v.id }))
         : []),
-      STOCK_BASE,
+      // Betaflight's font is GPL-3.0, which the App Store's terms are widely
+      // held to conflict with, so the app doesn't ship it (see prepare-ios).
+      ...(isNativeApp() ? [] : [STOCK_BASE]),
     ],
     [variants],
   )

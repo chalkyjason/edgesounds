@@ -25,6 +25,7 @@ beforeEach(() => {
   write('index.html', '<!doctype html>')
   write('assets/app.js', 'console.log(1)')
   write('osd/fonts/armyjay_full.mcm', 'MAX7456')
+  write('osd/fonts/betaflight_default.mcm', 'MAX7456')
   write('ffmpeg/ffmpeg-core.wasm', 'wasm')
   write('ffmpeg/ffmpeg-core.js', 'core')
   for (const name of ['_headers', '_redirects', 'sitemap.xml', 'robots.txt', 'og.png']) write(name)
@@ -74,6 +75,13 @@ describe('prepareIos', () => {
     prepareIos(dist, out)
     expect(existsSync(join(out, 'ffmpeg'))).toBe(false)
     expect(existsSync(join(dist, 'ffmpeg/ffmpeg-core.wasm'))).toBe(true)
+  })
+
+  it("leaves Betaflight's GPL stock font out of the app", () => {
+    prepareIos(dist, out)
+    expect(existsSync(join(out, 'osd/fonts/betaflight_default.mcm'))).toBe(false)
+    expect(existsSync(join(out, 'osd/fonts/armyjay_full.mcm'))).toBe(true)
+    expect(existsSync(join(dist, 'osd/fonts/betaflight_default.mcm'))).toBe(true)
   })
 
   it('keeps the rest of the site', () => {

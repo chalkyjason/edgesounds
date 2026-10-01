@@ -8,6 +8,7 @@ import type { BrushSize } from '../../components/splash/PaintCanvas'
 import { SplashPreview } from '../../components/splash/SplashPreview'
 import { TextTemplatePanel } from '../../components/splash/TextTemplatePanel'
 import { useSplashDesign } from '../../hooks/useSplashDesign'
+import { isNativeApp } from '../../platform/platform'
 import { useStencils } from '../../hooks/useStencils'
 import { useToast } from '../../hooks/useToast'
 import type { Pixel } from '../../lib/mcm/types'
@@ -60,8 +61,11 @@ export function SplashMaker() {
         <h1 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-50">Start screen</h1>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-400">
           The 288×72 splash Betaflight shows at boot. Type it, drop a picture in, or paint it, then
-          export a font with it in — one of the Army Jay variants, or Betaflight's default font with
-          only the splash swapped. Paint sits on top: change the text later and your touch-ups stay.
+          export a font with it in —{' '}
+          {isNativeApp()
+            ? 'one of the Army Jay variants.'
+            : "one of the Army Jay variants, or Betaflight's default font with only the splash swapped."}{' '}
+          Paint sits on top: change the text later and your touch-ups stay.
         </p>
         {editor.storage === 'unavailable' && (
           <p className="mt-2 text-xs text-amber-400">

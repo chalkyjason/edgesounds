@@ -1,10 +1,10 @@
 // Builds dist-ios/, the web bundle the iPhone app ships, from dist/.
 //
-// The app is the site minus three things: the sounds it may not distribute
-// through the App Store (see trim-library.mjs), ffmpeg, and the files that
-// only mean something to a web host. Capacitor's webDir points at dist-ios/,
-// never at dist/, so the untrimmed library cannot be synced into the app by
-// mistake.
+// The app is the site minus what it may not distribute through the App
+// Store -- most of the sound library (see trim-library.mjs), ffmpeg and
+// Betaflight's stock font -- and the files that only mean something to a web
+// host. Capacitor's webDir points at dist-ios/, never at dist/, so the
+// untrimmed library cannot be synced into the app by mistake.
 
 import { cpSync, existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve, sep } from 'node:path'
@@ -12,6 +12,10 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { trimLibrary } from './trim-library.mjs'
 
 export const WEB_ONLY_FILES = ['_headers', '_redirects', 'sitemap.xml', 'robots.txt', 'og.png']
+
+// Betaflight's stock font, an export base on the start screen page, is
+// GPL-3.0 like ffmpeg below; the app's export panel leaves it out.
+export const NOT_IN_APP_FILES = ['osd/fonts/betaflight_default.mcm']
 
 // ffmpeg.wasm is GPL, which the App Store's terms are widely held to
 // conflict with, and 31 MB. The app converts with Web Audio instead.
@@ -72,6 +76,7 @@ export function prepareIos(distDir, outDir) {
   }
   if (existsSync(soundsDir)) removeEmptyDirs(soundsDir)
   for (const name of WEB_ONLY_FILES) rmSync(join(outDir, name), { force: true })
+  for (const name of NOT_IN_APP_FILES) rmSync(join(outDir, name), { force: true })
   for (const name of WEB_ONLY_DIRS) rmSync(join(outDir, name), { recursive: true, force: true })
 
   // Belt and braces: whatever the code above did, nothing unlisted may ship.

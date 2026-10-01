@@ -9,7 +9,7 @@ platform: ios
 version: 1.0.0
 build: 1
 category_primary: Utilities
-content_rights: no                  # see "Before submitting" -- the stock Betaflight font
+content_rights: no
 copyright: 2026 Jason Chalky
 
 ## Age Rating
@@ -115,19 +115,17 @@ france_declaration: no
   answer: no
 
 - question: Does this app contain, display, or access third-party content?
-  answer: no                        # TODO: revisit with the stock Betaflight font below
+  answer: no
 
 ## Before submitting
 
 Open items the app's code can't settle:
 
-1. **The stock Betaflight font ships in the app.** `betaflight_default.mcm`
-   (vendored from Betaflight Configurator, GPL-3.0) is the "Betaflight's
-   default font" base in the start screen's export, and the Army Jay fonts
-   copy its protected glyphs verbatim. This is the same App Store / GPL
-   question that took ffmpeg out of the app. Options: accept it, drop the
-   default-font base in the app, or get a view on whether bitmap glyph data
-   is covered.
+1. ~~**The stock Betaflight font.**~~ Resolved: Betaflight's default font
+   (GPL-3.0) is no longer in the app; the start screen exports into the
+   Army Jay fonts only. The Army Jay fonts match stock at 8 of 256 indexes
+   (MODIFIED_INDEXES.md), and all 8 are blank or transparent -- no stock
+   artwork ships.
 2. **The library's voice callouts were made with Windows' Zira TTS voice.**
    Check that Microsoft's terms allow redistributing that output in a
    free app.
