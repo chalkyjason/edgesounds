@@ -5,7 +5,7 @@
 // repo root is their only author, and duplicating them would let the two
 // copies drift. This runs on predev and prebuild.
 
-import { copyFileSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -58,6 +58,20 @@ function readVariants() {
 mkdirSync(DEST, { recursive: true })
 const fonts = copyDir('fonts', 'fonts', '.mcm')
 copyDir('previews', 'previews', '.png')
+
+// The start-screen page needs two more things from the repo: the stencil
+// alphabets the Python splash builder also reads, and Betaflight's stock
+// font as an export base. Both are vendored at the root, neither is ours to
+// duplicate under web/.
+function copyFile(fromRel, toRel) {
+  const from = join(REPO, fromRel)
+  if (!existsSync(from)) fail(`missing ${fromRel}`)
+  mkdirSync(dirname(join(DEST, toRel)), { recursive: true })
+  copyFileSync(from, join(DEST, toRel))
+  console.log(`[stage-osd-assets] ${fromRel} -> public/osd/${toRel}`)
+}
+copyFile('assets/splash_stencils.json', 'stencils.json')
+copyFile('assets/references/stock/default_v2.mcm', 'fonts/betaflight_default.mcm')
 
 const variants = readVariants().map((v) => {
   const craftName = v.output.replace(/\.mcm$/, '_craftname.mcm')
