@@ -1,19 +1,23 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PIXELS_PER_GLYPH } from '../lib/mcm/decode'
 import type { Font, Pixel } from '../lib/mcm/types'
-import { clearEdit, loadEdit, saveEdit } from '../utils/fontStorage'
+import {
+  beginStroke as begin,
+  endStroke as end,
+  initialHistory,
+  record,
+  redo as redoStep,
+  undo as undoStep,
+} from '../lib/history'
+import type { History } from '../lib/history'
+import { loadEdit, saveEdit } from '../utils/fontStorage'
 import { useDebouncedSave } from './useDebouncedSave'
 
 export type EditMap = Record<number, Pixel[]>
 
-interface History {
-  present: EditMap
-  past: EditMap[]
-  future: EditMap[]
-}
+type EditHistory = History<EditMap>
 
-const EMPTY: History = { present: {}, past: [], future: [] }
-const MAX_HISTORY = 100
+const EMPTY: EditHistory = initialHistory({})
 const SAVE_DEBOUNCE_MS = 400
 
 function persist(pending: { variantId: string; edits: EditMap } | null) {
@@ -21,14 +25,6 @@ function persist(pending: { variantId: string; edits: EditMap } | null) {
   void saveEdit(pending.variantId, pending.edits).catch((error) =>
     console.warn('[useFontEditor] could not save edits', error),
   )
-}
-
-function push(history: History, next: EditMap): History {
-  return {
-    present: next,
-    past: [...history.past, history.present].slice(-MAX_HISTORY),
-    future: [],
-  }
 }
 
 /**
@@ -44,7 +40,7 @@ function push(history: History, next: EditMap): History {
  * half-populated redo stack across reloads is worse than starting clean.
  */
 export function useFontEditor(base: Font | null, variantId: string | undefined) {
-  const [history, setHistory] = useState<History>(EMPTY)
+  const [history, setHistory] = useState<EditHistory>(EMPTY)
   const [loaded, setLoaded] = useState(false)
   const edits = history.present
 
@@ -54,7 +50,7 @@ export function useFontEditor(base: Font | null, variantId: string | undefined) 
     void (async () => {
       try {
         const saved = await loadEdit(variantId)
-        if (!cancelled) setHistory({ present: saved?.edits ?? {}, past: [], future: [] })
+        if (!cancelled) setHistory(initialHistory(saved?.edits ?? {}))
       } catch (error) {
         console.warn('[useFontEditor] could not load saved edits', error)
         if (!cancelled) setHistory(EMPTY)
@@ -85,7 +81,7 @@ export function useFontEditor(base: Font | null, variantId: string | undefined) 
         if (existing[pixelIndex] === value) return current
         const pixels = existing.slice()
         pixels[pixelIndex] = value
-        return push(current, { ...current.present, [glyphIndex]: pixels })
+        return record(current, { ...current.present, [glyphIndex]: pixels })
       })
     },
     [base],
@@ -93,7 +89,7 @@ export function useFontEditor(base: Font | null, variantId: string | undefined) 
 
   const fillGlyph = useCallback((glyphIndex: number, value: Pixel) => {
     setHistory((current) =>
-      push(current, {
+      record(end(current), {
         ...current.present,
         [glyphIndex]: Array<Pixel>(PIXELS_PER_GLYPH).fill(value),
       }),
@@ -105,51 +101,31 @@ export function useFontEditor(base: Font | null, variantId: string | undefined) 
       if (!(glyphIndex in current.present)) return current
       const next = { ...current.present }
       delete next[glyphIndex]
-      return push(current, next)
+      return record(end(current), next)
     })
   }, [])
 
   /** Apply many glyph overrides at once, as one undoable step. */
   const applyEdits = useCallback((incoming: EditMap) => {
-    setHistory((current) => push(current, { ...current.present, ...incoming }))
+    setHistory((current) => record(end(current), { ...current.present, ...incoming }))
   }, [])
 
   const revertAll = useCallback(() => {
     setHistory((current) =>
-      Object.keys(current.present).length === 0 ? current : push(current, {}),
+      Object.keys(current.present).length === 0 ? current : record(end(current), {}),
     )
   }, [])
 
-  const undo = useCallback(() => {
-    setHistory((current) => {
-      if (current.past.length === 0) return current
-      const previous = current.past[current.past.length - 1]
-      return {
-        present: previous,
-        past: current.past.slice(0, -1),
-        future: [current.present, ...current.future],
-      }
-    })
-  }, [])
-
-  const redo = useCallback(() => {
-    setHistory((current) => {
-      if (current.future.length === 0) return current
-      const [next, ...rest] = current.future
-      return { present: next, past: [...current.past, current.present], future: rest }
-    })
-  }, [])
+  /** Bracket a drag so it becomes one undo step. */
+  const beginStroke = useCallback(() => setHistory(begin), [])
+  const endStroke = useCallback(() => setHistory(end), [])
+  const undo = useCallback(() => setHistory((current) => undoStep(end(current))), [])
+  const redo = useCallback(() => setHistory((current) => redoStep(end(current))), [])
 
   // Persist on change, once the initial load has settled so we never write {}
   // over a saved edit before it has been read back.
   const pending = useMemo(() => (variantId ? { variantId, edits } : null), [variantId, edits])
   useDebouncedSave(pending, Boolean(pending) && loaded, persist, SAVE_DEBOUNCE_MS)
-
-  const discard = useCallback(async () => {
-    if (!variantId) return
-    await clearEdit(variantId)
-    setHistory(EMPTY)
-  }, [variantId])
 
   return {
     font,
@@ -160,9 +136,10 @@ export function useFontEditor(base: Font | null, variantId: string | undefined) 
     applyEdits,
     revertGlyph,
     revertAll,
+    beginStroke,
+    endStroke,
     undo,
     redo,
-    discard,
     canUndo: history.past.length > 0,
     canRedo: history.future.length > 0,
   }

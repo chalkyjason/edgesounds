@@ -44,4 +44,16 @@ describe('paintReducer', () => {
     const loaded = paintReducer(h, { type: 'load', paint: { 7: 'black' } })
     expect(loaded).toEqual({ present: { 7: 'black' }, past: [], future: [] })
   })
+
+  it('records a whole drag as one undo step', () => {
+    let h = paintReducer(EMPTY_HISTORY, stroke(1, 1))
+    h = paintReducer(h, { type: 'strokeBegin' })
+    for (let x = 10; x < 20; x += 1) h = paintReducer(h, stroke(x, 10))
+    h = paintReducer(h, { type: 'strokeEnd' })
+    expect(h.past).toHaveLength(2)
+    h = paintReducer(h, { type: 'undo' })
+    expect(h.present[at(10, 10)]).toBeUndefined()
+    expect(h.present[at(19, 10)]).toBeUndefined()
+    expect(h.present[at(1, 1)]).toBe('white')
+  })
 })

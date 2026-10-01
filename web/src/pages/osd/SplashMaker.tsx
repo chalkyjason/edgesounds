@@ -100,6 +100,7 @@ export function SplashMaker() {
         <button
           type="button"
           onClick={() => {
+            if (!confirm("Start over? This clears the text, image and paint, and can't be undone.")) return
             void editor.reset()
             notify('Started over', 'info')
           }}
@@ -157,7 +158,14 @@ export function SplashMaker() {
                   </button>
                 ))}
               </div>
-              <PaintCanvas raster={editor.raster} color={color} size={size} onStroke={editor.stroke} />
+              <PaintCanvas
+                raster={editor.raster}
+                color={color}
+                size={size}
+                onStroke={editor.stroke}
+                onStrokeStart={editor.beginStroke}
+                onStrokeEnd={editor.endStroke}
+              />
               <div className="flex flex-wrap gap-2">
                 <button type="button" onClick={editor.undo} disabled={!editor.canUndo} className={TOOLBAR}>
                   <Undo2 className="h-3.5 w-3.5" /> Undo

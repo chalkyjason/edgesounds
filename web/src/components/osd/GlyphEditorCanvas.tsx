@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { linePoints } from '../../lib/history'
 import { GLYPH_HEIGHT, GLYPH_WIDTH } from '../../lib/mcm/decode'
 import type { Glyph, Pixel } from '../../lib/mcm/types'
 
@@ -31,15 +32,23 @@ export function GlyphEditorCanvas({
   glyph,
   color,
   onPaint,
+  onStrokeStart,
+  onStrokeEnd,
   scale = 22,
 }: {
   glyph: Glyph
   color: Pixel
   onPaint: (pixelIndex: number, value: Pixel) => void
+  /** A drag is bracketed by these, so it can be one undo step. */
+  onStrokeStart?: () => void
+  onStrokeEnd?: () => void
   scale?: number
 }) {
   const ref = useRef<HTMLCanvasElement>(null)
   const [painting, setPainting] = useState(false)
+  // The cell the previous pointer event landed on: a fast drag paints the
+  // line between events rather than dots.
+  const last = useRef<[number, number] | null>(null)
   const [cursor, setCursor] = useState<Cursor>({ x: 0, y: 0 })
   const [keyboardActive, setKeyboardActive] = useState(false)
 
@@ -86,9 +95,13 @@ export function GlyphEditorCanvas({
       const rect = canvas.getBoundingClientRect()
       const x = Math.floor(((event.clientX - rect.left) / rect.width) * GLYPH_WIDTH)
       const y = Math.floor(((event.clientY - rect.top) / rect.height) * GLYPH_HEIGHT)
-      if (x < 0 || y < 0 || x >= GLYPH_WIDTH || y >= GLYPH_HEIGHT) return
-      setCursor({ x, y })
-      onPaint(y * GLYPH_WIDTH + x, color)
+      const [fromX, fromY] = last.current ?? [x, y]
+      last.current = [x, y]
+      for (const [px, py] of linePoints(fromX, fromY, x, y)) {
+        if (px < 0 || py < 0 || px >= GLYPH_WIDTH || py >= GLYPH_HEIGHT) continue
+        setCursor({ x: px, y: py })
+        onPaint(py * GLYPH_WIDTH + px, color)
+      }
     },
     [color, onPaint],
   )
@@ -150,6 +163,8 @@ export function GlyphEditorCanvas({
         onPointerDown={(event) => {
           event.currentTarget.setPointerCapture(event.pointerId)
           setKeyboardActive(false)
+          last.current = null
+          onStrokeStart?.()
           setPainting(true)
           paintAt(event)
         }}
@@ -159,8 +174,12 @@ export function GlyphEditorCanvas({
         onPointerUp={(event) => {
           event.currentTarget.releasePointerCapture(event.pointerId)
           setPainting(false)
+          onStrokeEnd?.()
         }}
-        onPointerCancel={() => setPainting(false)}
+        onPointerCancel={() => {
+          setPainting(false)
+          onStrokeEnd?.()
+        }}
       />
       <p aria-live="polite" className="sr-only">
         {keyboardActive

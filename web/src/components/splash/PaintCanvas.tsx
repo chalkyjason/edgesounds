@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { GLYPH_HEIGHT, GLYPH_WIDTH } from '../../lib/mcm/decode'
 import { RESERVED_INDEX, LOGO_START, TILES_HORIZ } from '../../lib/mcm/logo'
 import type { Pixel } from '../../lib/mcm/types'
+import { linePoints } from '../../lib/history'
 import { RASTER_HEIGHT, RASTER_WIDTH } from '../../lib/splash/raster'
 import type { Raster } from '../../lib/splash/raster'
 
@@ -19,7 +20,8 @@ export type BrushSize = 1 | 2 | 3
 /**
  * The whole 288 x 72 raster as a paint surface at `scale`. Pointer events
  * with capture, as in GlyphEditorCanvas, so a finger or stylus stroke
- * survives leaving the canvas. The tile grid is drawn over the pixels, and
+ * survives leaving the canvas; each drag is bracketed by onStrokeStart and
+ * onStrokeEnd so it can be one undo step. The tile grid is drawn over the pixels, and
  * the reserved 0xFF tile is tinted: ink there is never written to a font.
  */
 export function PaintCanvas({
@@ -27,16 +29,23 @@ export function PaintCanvas({
   color,
   size,
   onStroke,
+  onStrokeStart,
+  onStrokeEnd,
   scale = 3,
 }: {
   raster: Raster
   color: Pixel
   size: BrushSize
   onStroke: (x: number, y: number, size: BrushSize, color: Pixel) => void
+  onStrokeStart?: () => void
+  onStrokeEnd?: () => void
   scale?: number
 }) {
   const ref = useRef<HTMLCanvasElement>(null)
   const [painting, setPainting] = useState(false)
+  // The cell the previous pointer event landed on, so a fast drag paints the
+  // line between events rather than dots.
+  const last = useRef<[number, number] | null>(null)
 
   useEffect(() => {
     const canvas = ref.current
@@ -96,8 +105,12 @@ export function PaintCanvas({
       const rect = canvas.getBoundingClientRect()
       const x = Math.floor(((event.clientX - rect.left) / rect.width) * RASTER_WIDTH)
       const y = Math.floor(((event.clientY - rect.top) / rect.height) * RASTER_HEIGHT)
-      if (x < 0 || y < 0 || x >= RASTER_WIDTH || y >= RASTER_HEIGHT) return
-      onStroke(x, y, size, color)
+      const [fromX, fromY] = last.current ?? [x, y]
+      last.current = [x, y]
+      for (const [px, py] of linePoints(fromX, fromY, x, y)) {
+        if (px < 0 || py < 0 || px >= RASTER_WIDTH || py >= RASTER_HEIGHT) continue
+        onStroke(px, py, size, color)
+      }
     },
     [color, size, onStroke],
   )
@@ -114,6 +127,8 @@ export function PaintCanvas({
         style={{ cursor: 'crosshair', width: RASTER_WIDTH * scale, height: RASTER_HEIGHT * scale }}
         onPointerDown={(event) => {
           event.currentTarget.setPointerCapture(event.pointerId)
+          last.current = null
+          onStrokeStart?.()
           setPainting(true)
           paintAt(event)
         }}
@@ -123,8 +138,12 @@ export function PaintCanvas({
         onPointerUp={(event) => {
           event.currentTarget.releasePointerCapture(event.pointerId)
           setPainting(false)
+          onStrokeEnd?.()
         }}
-        onPointerCancel={() => setPainting(false)}
+        onPointerCancel={() => {
+          setPainting(false)
+          onStrokeEnd?.()
+        }}
       />
     </div>
   )

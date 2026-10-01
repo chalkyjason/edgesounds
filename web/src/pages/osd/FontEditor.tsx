@@ -155,6 +155,8 @@ export function FontEditor() {
             glyph={glyph}
             color={color}
             onPaint={(pixelIndex, value) => editor.setPixel(selected, pixelIndex, value)}
+            onStrokeStart={editor.beginStroke}
+            onStrokeEnd={editor.endStroke}
           />
 
           <div className="flex flex-wrap items-center gap-1.5">
@@ -248,8 +250,10 @@ export function FontEditor() {
               </p>
               <button
                 onClick={() => {
-                  void editor.discard()
-                  notify('Reverted every glyph', 'info')
+                  const count = `${editedCount} edited glyph${editedCount === 1 ? '' : 's'}`
+                  if (!confirm(`Discard all ${count}? Undo can bring them back until you leave this page.`)) return
+                  editor.revertAll()
+                  notify('Reverted every glyph · Undo brings them back', 'info')
                 }}
                 className="flex w-full items-center justify-center gap-1.5 rounded-md border border-zinc-700 px-3 py-1.5 text-xs text-zinc-400 hover:border-red-500/50 hover:text-red-400"
               >

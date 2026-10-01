@@ -146,6 +146,8 @@ export function useSplashDesign(stencils: Stencils | null) {
   const stroke = useCallback((x: number, y: number, size: 1 | 2 | 3, color: Pixel) => {
     dispatch({ type: 'stroke', x, y, size, color })
   }, [])
+  const beginStroke = useCallback(() => dispatch({ type: 'strokeBegin' }), [])
+  const endStroke = useCallback(() => dispatch({ type: 'strokeEnd' }), [])
   const undo = useCallback(() => dispatch({ type: 'undo' }), [])
   const redo = useCallback(() => dispatch({ type: 'redo' }), [])
   const clearPaint = useCallback(() => dispatch({ type: 'clear' }), [])
@@ -175,6 +177,8 @@ export function useSplashDesign(stencils: Stencils | null) {
     setImageOptions,
     setImageSource,
     stroke,
+    beginStroke,
+    endStroke,
     undo,
     redo,
     clearPaint,

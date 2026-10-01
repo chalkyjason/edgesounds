@@ -1,54 +1,47 @@
 import type { Pixel } from '../mcm/types'
+import { beginStroke, endStroke, initialHistory, record, redo, undo } from '../history'
+import type { History } from '../history'
 import { brushOffsets } from './raster'
 import type { PaintLayer } from './raster'
 
-export interface PaintHistory {
-  present: PaintLayer
-  past: PaintLayer[]
-  future: PaintLayer[]
-}
+export type PaintHistory = History<PaintLayer>
 
-export const EMPTY_HISTORY: PaintHistory = { present: {}, past: [], future: [] }
-const MAX_HISTORY = 100
+export const EMPTY_HISTORY: PaintHistory = initialHistory({})
 
 export type PaintAction =
+  | { type: 'strokeBegin' }
   | { type: 'stroke'; x: number; y: number; size: 1 | 2 | 3; color: Pixel }
+  | { type: 'strokeEnd' }
   | { type: 'undo' }
   | { type: 'redo' }
   | { type: 'clear' }
   | { type: 'load'; paint: PaintLayer }
 
-function push(history: PaintHistory, next: PaintLayer): PaintHistory {
-  return { present: next, past: [...history.past, history.present].slice(-MAX_HISTORY), future: [] }
-}
-
 /**
- * The paint layer with undo/redo. One stroke action per pointer event; a
- * stroke that changes nothing leaves the history alone so a stationary drag
- * does not fill the undo stack.
+ * The paint layer with undo/redo. A drag is bracketed by strokeBegin and
+ * strokeEnd and becomes one undo step; a stroke that changes nothing leaves
+ * the history alone, so a stationary drag records nothing.
  */
 export function paintReducer(history: PaintHistory, action: PaintAction): PaintHistory {
   switch (action.type) {
+    case 'strokeBegin':
+      return beginStroke(history)
     case 'stroke': {
       const offsets = brushOffsets(action.x, action.y, action.size)
       if (offsets.every((o) => history.present[o] === action.color)) return history
       const next = { ...history.present }
       for (const offset of offsets) next[offset] = action.color
-      return push(history, next)
+      return record(history, next)
     }
-    case 'undo': {
-      if (history.past.length === 0) return history
-      const previous = history.past[history.past.length - 1]
-      return { present: previous, past: history.past.slice(0, -1), future: [history.present, ...history.future] }
-    }
-    case 'redo': {
-      if (history.future.length === 0) return history
-      const [next, ...rest] = history.future
-      return { present: next, past: [...history.past, history.present], future: rest }
-    }
+    case 'strokeEnd':
+      return endStroke(history)
+    case 'undo':
+      return undo(endStroke(history))
+    case 'redo':
+      return redo(endStroke(history))
     case 'clear':
-      return Object.keys(history.present).length === 0 ? history : push(history, {})
+      return Object.keys(history.present).length === 0 ? history : record(endStroke(history), {})
     case 'load':
-      return { present: action.paint, past: [], future: [] }
+      return initialHistory(action.paint)
   }
 }
