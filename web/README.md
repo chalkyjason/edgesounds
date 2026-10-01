@@ -118,11 +118,13 @@ npm run ios:sim     # unsigned simulator build (DerivedData under ~/Library)
 npm run ios:open    # the Xcode project, for a signed build on a phone
 ```
 
-`dist-ios/` is `dist/` with the library trimmed to the 27 sounds licensed
+`dist-ios/` is `dist/` with the library trimmed to the 6 sounds licensed
 `generated-original` (`scripts/trim-library.mjs`, an allowlist that fails
-closed) and the web-host files removed (`scripts/prepare-ios.mjs`).
-Capacitor's `webDir` points at `dist-ios/`, never `dist/`, so the 71
-fair-use clips cannot reach the App Store build.
+closed), and ffmpeg, Betaflight's stock font and the web-host files removed
+(`scripts/prepare-ios.mjs`). Capacitor's `webDir` points at `dist-ios/`,
+never `dist/`, so the 71 fair-use clips and the 21 `windows-tts` callouts
+(made with Windows' Zira voice, whose terms for redistribution are unclear)
+cannot reach the App Store build.
 
 The Xcode project under `ios/` is committed. It is iPhone-only, portrait,
 iOS 15+, forced dark, and carries the privacy manifest the Filesystem plugin

@@ -35,7 +35,7 @@ description: |
   SOUNDS FOR EDGETX
   Turn any audio clip into the exact file EdgeTX radios accept: 32 kHz, mono, 16-bit WAV. Pick a file from Files, trim it to the second you want, choose which event it should play on, and save it straight to Files or AirDrop it to your computer. Conversion happens on your phone; nothing is uploaded.
 
-  Not sure what to call it? Trigger presets fill in the filenames EdgeTX plays on its own, for events like arming, disarming and low battery. A library of ready-made callouts is included, and every clip you convert is kept in My Sounds so you can save them all as one ZIP for your SD card.
+  Not sure what to call it? Trigger presets fill in the filenames EdgeTX plays on its own, for events like arming, disarming and low battery. A handful of ready-made warning tones is included, and every clip you convert is kept in My Sounds so you can save them all as one ZIP for your SD card.
 
   OSD FONTS FOR BETAFLIGHT
   Browse the Army Jay MAX7456 character sets for analog Betaflight OSDs: bold stencil letters and chunky icons, each outlined in black so they read over bright sky and dark ground. Every glyph is shown decoded from the font file itself.
@@ -45,7 +45,7 @@ description: |
   Features:
   - Convert MP3, M4A, WAV and FLAC to EdgeTX-ready WAV
   - Trim clips and name them for EdgeTX's built-in events
-  - Library of ready-made flight callouts
+  - Ready-made warning tones and sound effects
   - My Sounds keeps everything you convert; save it all as one ZIP
   - Three Army Jay OSD font variants, including a high-readability set
   - Pixel glyph editor and boot splash designer
@@ -62,7 +62,7 @@ marketing_url: https://chalkyjason.github.io/MyWebsite/projects/army-jay/
 ### 6.9-inch (iPhone 17 Pro Max)
 
 - screenshots/appstore/01-convert.png        # a clip trimmed, named for the "armed" event, converted
-- screenshots/appstore/02-library.png        # the callout library
+- screenshots/appstore/02-library.png        # the library of ready-made tones
 - screenshots/appstore/03-font.png           # the armyjay_full font and its boot splash
 - screenshots/appstore/04-editor.png         # the pixel glyph editor
 - screenshots/appstore/05-start-screen.png   # a boot splash typed in with the text template
@@ -126,9 +126,9 @@ Open items the app's code can't settle:
    Army Jay fonts only. The Army Jay fonts match stock at 8 of 256 indexes
    (MODIFIED_INDEXES.md), and all 8 are blank or transparent -- no stock
    artwork ships.
-2. **The library's voice callouts were made with Windows' Zira TTS voice.**
-   Check that Microsoft's terms allow redistributing that output in a
-   free app.
+2. ~~**The Zira voice callouts.**~~ Resolved: the 21 callouts made with
+   Windows' Zira TTS voice are tagged `windows-tts` and left out of the app;
+   it ships the 6 synthesized tones only. The website keeps them.
 3. **Test on a real iPhone**: the device checklist in
    `docs/superpowers/specs/2026-09-30-capacitor-ios-app-design.md`.
 4. **Phone number** for the review contact, above.

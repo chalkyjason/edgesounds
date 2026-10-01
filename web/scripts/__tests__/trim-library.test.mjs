@@ -15,8 +15,14 @@ describe('trimLibrary on the real library.json', () => {
 
   // The exact set that ships in the App Store build. If this number changes,
   // the library changed: check the new clips really are original, then update.
-  it('keeps the 27 original sounds', () => {
-    expect(kept).toHaveLength(27)
+  it('keeps the 6 original sounds', () => {
+    expect(kept).toHaveLength(6)
+  })
+
+  // Windows' Zira voice: Microsoft's terms for redistributing its output in
+  // an app are unclear, so those callouts stay on the website.
+  it('keeps none of the Windows text-to-speech callouts', () => {
+    expect(kept.filter((s) => /Windows TTS/.test(s.credit ?? ''))).toEqual([])
   })
 
   it('keeps nothing under any other licence', () => {

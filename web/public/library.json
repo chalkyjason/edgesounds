@@ -18,7 +18,7 @@
           ],
           "path": "/sounds/callouts/armed.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "callout-dsarmd",
@@ -33,7 +33,7 @@
           ],
           "path": "/sounds/callouts/dsarmd.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "callout-battlw",
@@ -49,7 +49,7 @@
           ],
           "path": "/sounds/callouts/battlw.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "callout-thralert",
@@ -65,7 +65,7 @@
           ],
           "path": "/sounds/callouts/thralert.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "callout-swalert",
@@ -81,7 +81,7 @@
           ],
           "path": "/sounds/callouts/swalert.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "callout-inactiv",
@@ -96,7 +96,7 @@
           ],
           "path": "/sounds/callouts/inactiv.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "callout-telemok",
@@ -111,7 +111,7 @@
           ],
           "path": "/sounds/callouts/telemok.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "callout-telemko",
@@ -127,7 +127,7 @@
           ],
           "path": "/sounds/callouts/telemko.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "callout-lowbatt",
@@ -143,7 +143,7 @@
           ],
           "path": "/sounds/callouts/lowbatt.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         }
       ]
     },
@@ -164,7 +164,7 @@
           ],
           "path": "/sounds/flight/crashd.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "flight-gohome",
@@ -178,7 +178,7 @@
           ],
           "path": "/sounds/flight/gohome.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "flight-punch",
@@ -192,7 +192,7 @@
           ],
           "path": "/sounds/flight/punch.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "flight-dive",
@@ -206,7 +206,7 @@
           ],
           "path": "/sounds/flight/dive.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "flight-recon",
@@ -221,7 +221,7 @@
           ],
           "path": "/sounds/flight/recon.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "flight-recoff",
@@ -236,7 +236,7 @@
           ],
           "path": "/sounds/flight/recoff.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "flight-acro",
@@ -251,7 +251,7 @@
           ],
           "path": "/sounds/flight/acro.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "flight-angle",
@@ -266,7 +266,7 @@
           ],
           "path": "/sounds/flight/angle.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "flight-horizon",
@@ -281,7 +281,7 @@
           ],
           "path": "/sounds/flight/horizn.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "flight-failsafe",
@@ -296,7 +296,7 @@
           ],
           "path": "/sounds/flight/failsf.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "flight-beeper",
@@ -310,7 +310,7 @@
           ],
           "path": "/sounds/flight/beeper.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         },
         {
           "id": "flight-turtle",
@@ -325,7 +325,7 @@
           ],
           "path": "/sounds/flight/turtle.wav",
           "credit": "Generated locally (Windows TTS — Zira voice)",
-          "license": "generated-original"
+          "license": "windows-tts"
         }
       ]
     },
