@@ -25,6 +25,8 @@ beforeEach(() => {
   write('index.html', '<!doctype html>')
   write('assets/app.js', 'console.log(1)')
   write('osd/fonts/armyjay_full.mcm', 'MAX7456')
+  write('ffmpeg/ffmpeg-core.wasm', 'wasm')
+  write('ffmpeg/ffmpeg-core.js', 'core')
   for (const name of ['_headers', '_redirects', 'sitemap.xml', 'robots.txt', 'og.png']) write(name)
   write('sounds/callouts/armed.wav', 'RIFF-armed')
   write('sounds/callouts/nolic.wav', 'RIFF-nolic')
@@ -66,6 +68,12 @@ describe('prepareIos', () => {
     for (const name of ['_headers', '_redirects', 'sitemap.xml', 'robots.txt', 'og.png']) {
       expect(existsSync(join(out, name))).toBe(false)
     }
+  })
+
+  it('leaves ffmpeg out of the app', () => {
+    prepareIos(dist, out)
+    expect(existsSync(join(out, 'ffmpeg'))).toBe(false)
+    expect(existsSync(join(dist, 'ffmpeg/ffmpeg-core.wasm'))).toBe(true)
   })
 
   it('keeps the rest of the site', () => {

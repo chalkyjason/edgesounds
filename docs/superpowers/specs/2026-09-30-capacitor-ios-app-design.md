@@ -303,6 +303,17 @@ carries that exposure. Options:
 Recommendation: build milestone 1 on ffmpeg, which is proven, and spike the
 Web Audio path before milestone 2.
 
+**Resolved 2026-10-01: the app converts with Web Audio.** `decodeAudioData`
+on an `OfflineAudioContext` at 32 kHz decodes and resamples in one step;
+`src/lib/audio/wav.ts` trims, folds to mono and writes the WAV.
+`prepare-ios.mjs` leaves `ffmpeg/` out of `dist-ios/`, taking the app's web
+bundle from 35 MB to 4.6 MB. The site still uses ffmpeg. Checked in
+Playwright's WebKit 26.6 against generated tones: WAV, FLAC and 48 kHz WAV
+come out at ~80 dB SNR; AAC at 48 dB (the codec's own loss) with its ~50 ms
+encoder delay left in, which ffmpeg would have stripped; MP3 decodes; a
+corrupt file gets a plain error. Ogg was not tested -- no encoder was to
+hand -- and fails with that same error if iOS can't decode it.
+
 **Review under guideline 4.2 (minimum functionality).** Apple rejects apps
 that are only a wrapped website. This one converts audio and edits fonts
 on-device, which is real functionality, but the risk is not zero.

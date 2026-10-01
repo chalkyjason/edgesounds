@@ -2,6 +2,8 @@ import { useCallback, useState } from 'react'
 import type { FFmpeg } from '@ffmpeg/ffmpeg'
 import { fetchFile } from '@ffmpeg/util'
 import { useFFmpeg } from './useFFmpeg'
+import { convertWithWebAudio } from '../lib/audio/webAudio'
+import { isNativeApp } from '../platform/platform'
 import type { ConversionOptions, ConversionResult, ConversionStatus } from '../types'
 import { ensureWavExtension } from '../utils/sanitizeFilename'
 import { track } from '../utils/analytics'
@@ -17,22 +19,36 @@ export function useAudioConversion() {
   const convert = useCallback(
     async (file: File, options: ConversionOptions): Promise<ConversionResult> => {
       track('convert_start')
-
-      if (!isLoaded) setStatus({ state: 'loading-engine' })
-      const ffmpeg = await load()
-
-      setStatus({ state: 'converting', progress: 0 })
-
-      const onProgress = ({ progress }: { progress: number }) => {
-        setStatus({ state: 'converting', progress: Math.max(0, Math.min(1, progress)) })
-      }
-      ffmpeg.on('progress', onProgress)
-
-      const inputName = `input_${Date.now()}.${getExt(file.name) || 'bin'}`
       const outputName = ensureWavExtension(options.filename)
 
+      const withFfmpeg = async (): Promise<Blob> => {
+        if (!isLoaded) setStatus({ state: 'loading-engine' })
+        const ffmpeg = await load()
+        setStatus({ state: 'converting', progress: 0 })
+        const onProgress = ({ progress }: { progress: number }) => {
+          setStatus({ state: 'converting', progress: Math.max(0, Math.min(1, progress)) })
+        }
+        ffmpeg.on('progress', onProgress)
+        try {
+          const inputName = `input_${Date.now()}.${getExt(file.name) || 'bin'}`
+          return await runConversion(ffmpeg, await fetchFile(file), inputName, outputName, options)
+        } finally {
+          ffmpeg.off('progress', onProgress)
+        }
+      }
+
+      // The app ships without ffmpeg (GPL, and 31 MB): the platform decodes.
+      const withWebAudio = (): Promise<Blob> => {
+        setStatus({ state: 'converting', progress: 0 })
+        return convertWithWebAudio(file, {
+          sampleRate: SAMPLE_RATE,
+          startSeconds: options.trimStartSeconds,
+          endSeconds: options.trimEndSeconds,
+        })
+      }
+
       try {
-        const blob = await runConversion(ffmpeg, await fetchFile(file), inputName, outputName, options)
+        const blob = await (isNativeApp() ? withWebAudio() : withFfmpeg())
 
         const duration =
           (options.trimEndSeconds ?? 0) > (options.trimStartSeconds ?? 0)
@@ -58,8 +74,6 @@ export function useAudioConversion() {
         setStatus({ state: 'error', message })
         track('convert_error', { message })
         throw e
-      } finally {
-        ffmpeg.off('progress', onProgress)
       }
     },
     [isLoaded, load]
