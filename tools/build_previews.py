@@ -14,6 +14,10 @@ Two per variant, into ``previews/``:
     arrow and the crosshair -- so the visual balance can be judged rather
     than guessed at.
 
+And once, not per variant, ``stencil_sheet.png``: both stencil alphabets
+from ``assets/splash_stencils.json`` at 4x, every character the start-screen
+page can set, so the letterforms can be reviewed as a set.
+
 The mock screen is a PAL analog layout, 30 columns by 16 rows of 12x18
 glyphs, drawn from the font itself. Nothing here is mocked up in another
 typeface: if it looks wrong on this sheet, it looks wrong in the goggles.
@@ -32,6 +36,7 @@ if __name__ == "__main__" and __package__ is None:
 
 from PIL import Image, ImageDraw
 
+from make_logo import load_stencils
 from mcm_decode import read_font
 from mcm_encode import GLYPH_HEIGHT, GLYPH_WIDTH, Glyph
 from render import (
@@ -179,8 +184,59 @@ def render_logo_preview(glyphs: Sequence[Glyph], title: str) -> Image.Image:
     return sheet
 
 
+STENCIL_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.!'/"
+STENCIL_PER_ROW = 13
+STENCIL_GAP = 2
+
+
+def render_stencil_sheet(
+    stencils: dict[str, dict[str, list[str]]] | None = None, scale: int = 4
+) -> Image.Image:
+    """Both stencil alphabets, white on the panel colour, one font per block."""
+    stencils = stencils or load_stencils()
+    blocks: list[Image.Image] = []
+    for name in ("big", "small"):
+        font = stencils[name]
+        height = len(next(iter(font.values())))
+        lines = [
+            STENCIL_CHARS[i : i + STENCIL_PER_ROW]
+            for i in range(0, len(STENCIL_CHARS), STENCIL_PER_ROW)
+        ]
+        rows: list[Image.Image] = []
+        for line in lines:
+            width = sum(len(font[c][0]) for c in line) + STENCIL_GAP * (len(line) - 1)
+            row = Image.new("RGB", (width, height), PANEL_BG)
+            x = 0
+            for char in line:
+                glyph = font[char]
+                for y, spec in enumerate(glyph):
+                    for dx, cell in enumerate(spec):
+                        if cell == "#":
+                            row.putpixel((x + dx, y), (255, 255, 255))
+                x += len(glyph[0]) + STENCIL_GAP
+            rows.append(row)
+        block_w = max(r.width for r in rows)
+        block_h = sum(r.height + STENCIL_GAP * 2 for r in rows)
+        block = Image.new("RGB", (block_w, block_h), PANEL_BG)
+        y = 0
+        for r in rows:
+            block.paste(r, (0, y))
+            y += r.height + STENCIL_GAP * 2
+        blocks.append(block)
+
+    margin = 4
+    width = max(b.width for b in blocks) + margin * 2
+    height = sum(b.height + margin * 2 for b in blocks)
+    sheet = Image.new("RGB", (width, height), PANEL_BG)
+    y = margin
+    for b in blocks:
+        sheet.paste(b, (margin, y))
+        y += b.height + margin * 2
+    return sheet.resize((width * scale, height * scale), Image.Resampling.NEAREST)
+
+
 def build(variant_paths: Sequence[Path]) -> list[Path]:
-    written: list[Path] = []
+    written: list[Path] = [save(render_stencil_sheet(), PREVIEW_DIR / "stencil_sheet.png")]
     for path in variant_paths:
         glyphs = read_font(path)
         name = path.stem

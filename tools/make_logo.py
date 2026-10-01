@@ -26,6 +26,7 @@ stays clear of the last 12 px of the last row. See STATUS.md.
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -53,108 +54,26 @@ BLACK_RGB = UPLOAD_PALETTE["-"]
 WHITE_RGB = UPLOAD_PALETTE["#"]
 GREEN_RGB = UPLOAD_PALETTE["."]
 
-# -- Stencil alphabet, 12 wide x 14 tall, 3px strokes ----------------------
-# Only the letters the wordmark needs. Squared terminals and closed
+# -- Stencil alphabets ------------------------------------------------------
+# The letterforms live in assets/splash_stencils.json, which the web app's
+# start-screen page reads too (staged to /osd/stencils.json), so there is
+# one source for both. ``big`` is 14 px tall with 3 px strokes, ``small`` is
+# 9 px tall; glyphs may differ in width. Squared terminals and closed
 # counters: military stencil weight without the breaks, which cost
 # legibility on a noisy analog feed for no real gain.
 
-BIG_STENCIL = {
-    "A": """
-...######...
-..########..
-.###....###.
-###......###
-###......###
-###......###
-############
-############
-###......###
-###......###
-###......###
-###......###
-###......###
-###......###
-""",
-    "R": """
-##########..
-###########.
-###......###
-###......###
-###......###
-###########.
-##########..
-###...###...
-###....###..
-###.....###.
-###......###
-###......###
-###......###
-###......###
-""",
-    "M": """
-###......###
-####....####
-############
-############
-###.####.###
-###..##..###
-###......###
-###......###
-###......###
-###......###
-###......###
-###......###
-###......###
-###......###
-""",
-    "Y": """
-###......###
-###......###
-.###....###.
-..###..###..
-...######...
-....####....
-....####....
-....####....
-....####....
-....####....
-....####....
-....####....
-....####....
-....####....
-""",
-    "J": """
-......######
-......######
-.........###
-.........###
-.........###
-.........###
-.........###
-.........###
-.........###
-###......###
-###......###
-####....####
-.##########.
-..########..
-""",
-    " ": "\n".join(["." * 12] * 14),
-}
+STENCILS_PATH = REPO_ROOT / "assets" / "splash_stencils.json"
 
-# -- Subtitle alphabet, 6 wide x 9 tall ------------------------------------
 
-SMALL_STENCIL = {
-    "T": "######|######|..##..|..##..|..##..|..##..|..##..|..##..|..##..",
-    "A": ".####.|######|##..##|##..##|######|######|##..##|##..##|##..##",
-    "C": ".#####|######|##....|##....|##....|##....|##....|######|.#####",
-    "I": "######|######|..##..|..##..|..##..|..##..|..##..|######|######",
-    "L": "##....|##....|##....|##....|##....|##....|##....|######|######",
-    "O": ".####.|######|##..##|##..##|##..##|##..##|##..##|######|.####.",
-    "S": ".#####|######|##....|####..|.####.|..####|....##|######|#####.",
-    "D": "#####.|######|##..##|##..##|##..##|##..##|##..##|######|#####.",
-    " ": "......|......|......|......|......|......|......|......|......",
-}
+def load_stencils(path: Path = STENCILS_PATH) -> dict[str, dict[str, list[str]]]:
+    """Read the stencil file: ``{"big": {"A": [rows...]}, "small": {...}}``."""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return {name: data[name]["glyphs"] for name in ("big", "small")}
+
+
+_STENCILS = load_stencils()
+BIG_STENCIL = _STENCILS["big"]
+SMALL_STENCIL = _STENCILS["small"]
 
 WORDMARK_TEXT = "ARMY JAY"
 SUBTITLE_TEXT = "TACTICAL OSD"
@@ -169,15 +88,9 @@ RULE_RIGHT = WIDTH - 24
 RULE_THICKNESS = 3
 
 
-def _rows(spec: str) -> list[str]:
-    if "|" in spec:
-        return spec.split("|")
-    return [line for line in spec.split("\n") if line.strip()]
-
-
-def _compose(font: dict[str, str], text: str, gap: int) -> list[str]:
+def _compose(font: dict[str, list[str]], text: str, gap: int) -> list[str]:
     """Lay a string out in a stencil font, returning white-only rows."""
-    glyphs = [_rows(font[ch]) for ch in text]
+    glyphs = [font[ch] for ch in text]
     height = len(glyphs[0])
     filler = "." * gap
     return [filler.join(g[y] for g in glyphs) for y in range(height)]

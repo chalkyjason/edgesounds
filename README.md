@@ -389,6 +389,7 @@ skips cleanly if the checkout or Node is missing.
 │   └── logo.py            boot splash tiles, sliced from the raster
 ├── assets/
 │   ├── logo_288x72.png    boot splash source raster
+│   ├── splash_stencils.json  the stencil alphabets, read by make_logo.py and the website
 │   └── references/        decoded stock fonts, reference only
 ├── previews/              glyph sheets and OSD mock-ups
 ├── tests/                 65 tests
@@ -397,7 +398,7 @@ skips cleanly if the checkout or Node is missing.
 │   ├── mcm_decode.py      parser, ASCII dump, PNG export
 │   ├── validate.py        acceptance checks
 │   ├── build_font.py      variants.toml → fonts/*.mcm
-│   ├── make_logo.py       draws assets/logo_288x72.png
+│   ├── make_logo.py       draws assets/logo_288x72.png from splash_stencils.json
 │   ├── slice_logo.py      raster → glyphs/logo.py
 │   ├── outline_art.py     white sketch → outlined art
 │   ├── render.py          shared rasterisation
