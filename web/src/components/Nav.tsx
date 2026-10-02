@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { Radio } from 'lucide-react'
 import { useMySounds } from '../hooks/useMySounds'
 import { useVariants } from '../hooks/useVariants'
+import { isNativeApp } from '../platform/platform'
 
 interface SubItem {
   to: string
@@ -59,8 +60,18 @@ export function Nav() {
           to="/"
           className="mr-2 flex shrink-0 items-center gap-2 py-3 text-zinc-100 outline-none transition-colors hover:text-accent focus-visible:text-accent sm:mr-4"
         >
-          <Radio className="h-5 w-5 text-accent" />
-          <span className="font-mono text-sm tracking-wider">ARMY JAY</span>
+          {/* The iPhone app is Callsign FPV; the site is the Army Jay brand. */}
+          {isNativeApp() ? (
+            <>
+              <img src="/callsign-mark.svg" alt="" className="h-6 w-auto" />
+              <span className="font-mono text-sm tracking-wider">CALLSIGN FPV</span>
+            </>
+          ) : (
+            <>
+              <Radio className="h-5 w-5 text-accent" />
+              <span className="font-mono text-sm tracking-wider">ARMY JAY</span>
+            </>
+          )}
         </NavLink>
 
         <SectionLink to="/sounds" label="Sounds" active={inSounds} />

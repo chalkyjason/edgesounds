@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
   appId: 'com.armyjay.app',
-  appName: 'Army Jay',
+  appName: 'Callsign FPV',
   // Never dist/: dist-ios/ is the build with the library trimmed for the App Store.
   webDir: 'dist-ios',
   backgroundColor: '#09090b',

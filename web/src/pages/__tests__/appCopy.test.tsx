@@ -13,6 +13,15 @@ beforeEach(() => vi.mocked(isNativeApp).mockReset())
 
 const render = (page: ReactElement) => renderToStaticMarkup(<MemoryRouter>{page}</MemoryRouter>)
 
+describe('Landing name', () => {
+  it('is Callsign FPV in the app and Army Jay on the site', () => {
+    vi.mocked(isNativeApp).mockReturnValue(true)
+    expect(render(<Landing />)).toContain('Callsign FPV')
+    vi.mocked(isNativeApp).mockReturnValue(false)
+    expect(render(<Landing />)).not.toContain('Callsign FPV')
+  })
+})
+
 describe.each([
   ['Landing', <Landing />],
   ['Home', <Home />],

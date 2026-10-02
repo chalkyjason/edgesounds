@@ -29,8 +29,9 @@ export function Landing() {
           FPV tooling that runs {isNativeApp() ? 'on your phone' : 'in your browser'}
         </p>
         <h1 className="text-4xl font-semibold tracking-tight text-zinc-50 sm:text-5xl">
-          Army Jay
+          {isNativeApp() ? 'Callsign FPV' : 'Army Jay'}
         </h1>
+        {isNativeApp() && <p className="-mt-2 font-mono text-xs text-zinc-500">by Army Jay</p>}
         <p className="max-w-2xl text-zinc-400">
           Two tools for the same cockpit: the sounds your radio plays, and the font your
           goggles render. No accounts, no uploads, no server doing the work.
