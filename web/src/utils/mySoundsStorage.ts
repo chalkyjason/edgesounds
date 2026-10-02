@@ -2,6 +2,8 @@
 // Single store keyed by id; oldest entries auto-evict beyond MAX_ENTRIES.
 // Blobs are stored directly (IndexedDB supports them natively — no base64 inflation).
 
+import { inStore, openDatabase, reqAsPromise } from './idb'
+
 export interface MySoundEntry {
   id: string
   filename: string
@@ -18,45 +20,16 @@ const STORE = 'my_sounds'
 export const MAX_ENTRIES = 30
 
 function openDB(): Promise<IDBDatabase> {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION)
-    req.onerror = () => reject(req.error)
-    req.onsuccess = () => resolve(req.result)
-    req.onupgradeneeded = () => {
-      const db = req.result
-      if (!db.objectStoreNames.contains(STORE)) {
-        const store = db.createObjectStore(STORE, { keyPath: 'id' })
-        store.createIndex('savedAt', 'savedAt')
-      }
+  return openDatabase(DB_NAME, DB_VERSION, (db) => {
+    if (!db.objectStoreNames.contains(STORE)) {
+      const store = db.createObjectStore(STORE, { keyPath: 'id' })
+      store.createIndex('savedAt', 'savedAt')
     }
   })
 }
 
-function reqAsPromise<T>(req: IDBRequest<T>): Promise<T> {
-  return new Promise((resolve, reject) => {
-    req.onsuccess = () => resolve(req.result)
-    req.onerror = () => reject(req.error)
-  })
-}
-
-async function withStore<T>(
-  mode: IDBTransactionMode,
-  fn: (store: IDBObjectStore) => Promise<T>
-): Promise<T> {
-  const db = await openDB()
-  const tx = db.transaction(STORE, mode)
-  const store = tx.objectStore(STORE)
-  try {
-    const result = await fn(store)
-    await new Promise<void>((resolve, reject) => {
-      tx.oncomplete = () => resolve()
-      tx.onerror = () => reject(tx.error)
-      tx.onabort = () => reject(tx.error)
-    })
-    return result
-  } finally {
-    db.close()
-  }
+function withStore<T>(mode: IDBTransactionMode, fn: (store: IDBObjectStore) => Promise<T>): Promise<T> {
+  return inStore(openDB, STORE, mode, fn)
 }
 
 export async function listMySounds(): Promise<MySoundEntry[]> {

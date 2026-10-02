@@ -8,6 +8,8 @@
 // Separate from 'edgesounds' on purpose: the sounds store has its own users
 // and its own upgrade history, and the two features share nothing.
 
+import { inStore, openDatabase, reqAsPromise } from './idb'
+
 export const DB_NAME = 'armyjay_osd'
 export const DB_VERSION = 2
 
@@ -25,37 +27,15 @@ export function upgrade(db: Pick<IDBDatabase, 'objectStoreNames' | 'createObject
 }
 
 export function openDB(): Promise<IDBDatabase> {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION)
-    req.onerror = () => reject(req.error)
-    req.onsuccess = () => resolve(req.result)
-    req.onupgradeneeded = () => upgrade(req.result)
-  })
+  return openDatabase(DB_NAME, DB_VERSION, upgrade)
 }
 
-export function reqAsPromise<T>(req: IDBRequest<T>): Promise<T> {
-  return new Promise((resolve, reject) => {
-    req.onsuccess = () => resolve(req.result)
-    req.onerror = () => reject(req.error)
-  })
-}
+export { reqAsPromise }
 
-export async function withStore<T>(
+export function withStore<T>(
   storeName: string,
   mode: IDBTransactionMode,
   fn: (store: IDBObjectStore) => Promise<T>,
 ): Promise<T> {
-  const db = await openDB()
-  try {
-    const tx = db.transaction(storeName, mode)
-    const result = await fn(tx.objectStore(storeName))
-    await new Promise<void>((resolve, reject) => {
-      tx.oncomplete = () => resolve()
-      tx.onerror = () => reject(tx.error)
-      tx.onabort = () => reject(tx.error)
-    })
-    return result
-  } finally {
-    db.close()
-  }
+  return inStore(openDB, storeName, mode, fn)
 }
