@@ -84,13 +84,22 @@ rather than dropped quietly.
 
 ## Start screen
 
-`/osd/splash` designs the 288×72 boot splash. One *generator* makes the base
-raster — the **Text** template (two centred lines in the stencil letters,
-rules on or off, automatic black outline) or the **Image** tool (any picture
-fitted into 288×72 and thresholded to white/black/transparent) — and
-**Paint** is a sparse layer of pixel overrides on top, the same
-base-plus-edits pattern as the glyph editor, so changing the text later
-keeps the touch-ups.
+`/osd/splash` designs the 288×72 boot splash as a stack of up to 32
+**layers** — library shapes, text in the stencil letters, and an image —
+each moved, sized, rotated, flipped, filled white or black, outlined, or set
+to cut out what is below; **Paint** is a sparse layer of pixel overrides on
+top. Tap, drag, pinch and twist work directly on the preview. A design saved
+before layers converts on load, pixel for pixel
+(`src/lib/emblem/__tests__/design.test.ts`). See
+[the design spec](../docs/superpowers/specs/2026-10-02-emblem-layers-design.md).
+
+The shape library is `../assets/shapes/<pack>/*.svg` with authors and
+licences in `../assets/shapes/packs.json`: Basics, Insignia and FPV are drawn
+by `tools/draw_shapes.py` (MIT); Military and Beasts & Emblems come from
+game-icons.net (CC BY 3.0, credited on `/credits`); Symbols from Tabler Icons
+(MIT). `scripts/build-shapes.mjs` flattens them to polygons in
+`public/osd/shapes.json` before dev and build, and `src/lib/emblem` rasterizes
+them itself, so the pixels match on every browser.
 
 The stencil letterforms live in `../assets/splash_stencils.json`, which
 `tools/make_logo.py` reads too; the build stages it to `/osd/stencils.json`.
