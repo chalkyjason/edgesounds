@@ -1,0 +1,285 @@
+{
+  "order": [
+    "basics",
+    "insignia",
+    "military",
+    "beasts",
+    "fpv",
+    "symbols"
+  ],
+  "packs": {
+    "basics": {
+      "name": "Basics",
+      "author": "Army Jay",
+      "license": "MIT",
+      "url": "https://github.com/chalkyjason/edgesounds",
+      "note": "Drawn for this project by tools/draw_shapes.py."
+    },
+    "insignia": {
+      "name": "Insignia",
+      "author": "Army Jay",
+      "license": "MIT",
+      "url": "https://github.com/chalkyjason/edgesounds",
+      "note": "Drawn for this project by tools/draw_shapes.py."
+    },
+    "fpv": {
+      "name": "FPV",
+      "author": "Army Jay",
+      "license": "MIT",
+      "url": "https://github.com/chalkyjason/edgesounds",
+      "note": "Drawn for this project by tools/draw_shapes.py."
+    },
+    "military": {
+      "name": "Military",
+      "author": "Lorc and Delapouite, game-icons.net",
+      "license": "CC BY 3.0",
+      "url": "https://game-icons.net",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "note": "Background square removed; otherwise as published.",
+      "shapes": {
+        "skull-crossed-bones": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/skull-crossed-bones.html"
+        },
+        "crossed-swords": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/crossed-swords.html"
+        },
+        "crossed-sabres": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/crossed-sabres.html"
+        },
+        "crossed-pistols": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/crossed-pistols.html"
+        },
+        "crossed-axes": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/crossed-axes.html"
+        },
+        "grenade": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/grenade.html"
+        },
+        "battle-tank": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/battle-tank.html"
+        },
+        "tank": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/tank.html"
+        },
+        "jet-fighter": {
+          "author": "Delapouite",
+          "source": "https://game-icons.net/1x1/delapouite/jet-fighter.html"
+        },
+        "stealth-bomber": {
+          "author": "Delapouite",
+          "source": "https://game-icons.net/1x1/delapouite/stealth-bomber.html"
+        },
+        "helicopter": {
+          "author": "Delapouite",
+          "source": "https://game-icons.net/1x1/delapouite/helicopter.html"
+        },
+        "parachute": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/parachute.html"
+        },
+        "bombing-run": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/bombing-run.html"
+        },
+        "rocket": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/rocket.html"
+        },
+        "bullets": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/bullets.html"
+        },
+        "medal": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/medal.html"
+        },
+        "medal-skull": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/medal-skull.html"
+        },
+        "star-medal": {
+          "author": "Delapouite",
+          "source": "https://game-icons.net/1x1/delapouite/star-medal.html"
+        },
+        "laurels": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/laurels.html"
+        },
+        "laurel-crown": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/laurel-crown.html"
+        },
+        "anchor": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/anchor.html"
+        },
+        "compass": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/compass.html"
+        },
+        "radioactive": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/radioactive.html"
+        },
+        "crowned-skull": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/crowned-skull.html"
+        },
+        "thunder-skull": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/thunder-skull.html"
+        },
+        "skull-shield": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/skull-shield.html"
+        },
+        "spartan-helmet": {
+          "author": "Delapouite",
+          "source": "https://game-icons.net/1x1/delapouite/spartan-helmet.html"
+        },
+        "crested-helmet": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/crested-helmet.html"
+        },
+        "crosshair": {
+          "author": "Delapouite",
+          "source": "https://game-icons.net/1x1/delapouite/crosshair.html"
+        },
+        "explosion-rays": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/explosion-rays.html"
+        }
+      }
+    },
+    "beasts": {
+      "name": "Beasts & Emblems",
+      "author": "Lorc and Delapouite, game-icons.net",
+      "license": "CC BY 3.0",
+      "url": "https://game-icons.net",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+      "note": "Background square removed; otherwise as published.",
+      "shapes": {
+        "eagle-emblem": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/eagle-emblem.html"
+        },
+        "hawk-emblem": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/hawk-emblem.html"
+        },
+        "winged-emblem": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/winged-emblem.html"
+        },
+        "steelwing-emblem": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/steelwing-emblem.html"
+        },
+        "batwing-emblem": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/batwing-emblem.html"
+        },
+        "angel-wings": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/angel-wings.html"
+        },
+        "winged-sword": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/winged-sword.html"
+        },
+        "winged-shield": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/winged-shield.html"
+        },
+        "wolf-head": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/wolf-head.html"
+        },
+        "wolf-howl": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/wolf-howl.html"
+        },
+        "lion": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/lion.html"
+        },
+        "raven": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/raven.html"
+        },
+        "scorpion": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/scorpion.html"
+        },
+        "snake": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/snake.html"
+        },
+        "cobra": {
+          "author": "Delapouite",
+          "source": "https://game-icons.net/1x1/delapouite/cobra.html"
+        },
+        "eagle-head": {
+          "author": "Delapouite",
+          "source": "https://game-icons.net/1x1/delapouite/eagle-head.html"
+        },
+        "bear-head": {
+          "author": "Delapouite",
+          "source": "https://game-icons.net/1x1/delapouite/bear-head.html"
+        },
+        "stag-head": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/stag-head.html"
+        },
+        "shark-jaws": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/shark-jaws.html"
+        },
+        "dragon-head": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/dragon-head.html"
+        },
+        "reaper-scythe": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/reaper-scythe.html"
+        },
+        "heavy-lightning": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/heavy-lightning.html"
+        },
+        "fist": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/fist.html"
+        },
+        "spartan": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/spartan.html"
+        },
+        "crown": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/crown.html"
+        },
+        "trident": {
+          "author": "Lorc",
+          "source": "https://game-icons.net/1x1/lorc/trident.html"
+        }
+      }
+    },
+    "symbols": {
+      "name": "Symbols",
+      "author": "Paweł Kuna, Tabler Icons",
+      "license": "MIT",
+      "url": "https://tabler.io/icons",
+      "licenseUrl": "https://github.com/tabler/tabler-icons/blob/main/LICENSE",
+      "note": "Filled set, as published. Copyright (c) 2020-2026 Paweł Kuna; see symbols/LICENSE."
+    }
+  }
+}

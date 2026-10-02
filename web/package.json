@@ -19,8 +19,8 @@
     "build:ios": "npm run build && node scripts/prepare-ios.mjs && cap sync ios",
     "ios:sim": "set -o pipefail && xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath \"$HOME/Library/Developer/Xcode/DerivedData/armyjay-ios\" CODE_SIGNING_ALLOWED=NO build | grep -E 'error:|BUILD'",
     "ios:open": "cap open ios",
-    "prebuild": "node scripts/stage-osd-assets.mjs && node scripts/gen-sitemap.mjs",
-    "predev": "node scripts/stage-osd-assets.mjs && node scripts/gen-sitemap.mjs"
+    "prebuild": "node scripts/stage-osd-assets.mjs && node scripts/build-shapes.mjs && node scripts/gen-sitemap.mjs",
+    "predev": "node scripts/stage-osd-assets.mjs && node scripts/build-shapes.mjs && node scripts/gen-sitemap.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.2",
@@ -50,6 +50,7 @@
     "globals": "^17.5.0",
     "patch-package": "^8.0.1",
     "postcss": "^8.5.13",
+    "svgpath": "^2.6.0",
     "tailwindcss": "^3.4.19",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",
