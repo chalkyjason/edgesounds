@@ -3,8 +3,8 @@
 ## App
 
 bundle_id: com.armyjay.app
-name: Army Jay                      # TODO: App Store names are unique -- if taken, try "Army Jay FPV"
-subtitle: FPV radio sounds & OSD fonts
+name: Callsign FPV                  # free on the App Store as of 2026-10-02; home-screen label "Callsign"
+subtitle: Radio sounds & OSD emblems
 platform: ios
 version: 1.0.0
 build: 1
@@ -30,7 +30,10 @@ unrestricted_web: no                # the only outside link (Source) opens in Sa
 ### English (en-US)
 
 description: |
-  Army Jay is a toolkit for FPV pilots: the sounds your radio plays and the font your goggles show, made right on your iPhone.
+  Callsign FPV is a toolkit for FPV pilots: the sounds your radio plays, the font your goggles show, and the emblem Betaflight puts on screen at power-up, all made right on your iPhone.
+
+  BUILD YOUR EMBLEM
+  Design the 288x72 start screen Betaflight shows at boot the way you'd build a game emblem: stack shapes, text and a picture as layers. Drag with a finger, pinch to resize, twist to rotate. Fill each layer white or black, give it an outline so it reads over sky and ground, or cut it out of the layers below. Over 100 shapes in six packs, from basic geometry and rank insignia to skulls, eagles, wings and quads, plus starter emblems to make your own.
 
   SOUNDS FOR EDGETX
   Turn any audio clip into the exact file EdgeTX radios accept: 32 kHz, mono, 16-bit WAV. Pick a file from Files, trim it to the second you want, choose which event it should play on, and save it straight to Files or AirDrop it to your computer. Conversion happens on your phone; nothing is uploaded.
@@ -40,32 +43,33 @@ description: |
   OSD FONTS FOR BETAFLIGHT
   Browse the Army Jay MAX7456 character sets for analog Betaflight OSDs: bold stencil letters and chunky icons, each outlined in black so they read over bright sky and dark ground. Every glyph is shown decoded from the font file itself.
 
-  Edit any glyph pixel by pixel with your finger, with undo. Design the boot splash Betaflight shows at power-up: type a callsign, bring in a picture, or paint it. Then save a .mcm font ready for Betaflight Configurator's Font Manager.
+  Edit any glyph pixel by pixel with your finger, with undo, and touch up your emblem the same way. Then save a .mcm font with your start screen in it, ready for Betaflight Configurator's Font Manager.
 
   Features:
+  - Layered start-screen emblem builder with 100+ shapes and starter designs
   - Convert MP3, M4A, WAV and FLAC to EdgeTX-ready WAV
   - Trim clips and name them for EdgeTX's built-in events
   - Ready-made warning tones and sound effects
   - My Sounds keeps everything you convert; save it all as one ZIP
   - Three Army Jay OSD font variants, including a high-readability set
-  - Pixel glyph editor and boot splash designer
+  - Pixel glyph editor
   - Works offline; no account, no tracking, nothing uploaded
 
-keywords: fpv,edgetx,betaflight,osd,font,drone,quad,radio,callouts,wav,sounds,opentx,analog
+keywords: fpv,edgetx,betaflight,osd,font,drone,quad,emblem,callsign,radio,callouts,wav,sounds
 whats_new: Initial release.
-promo_text: Make your radio talk back and your OSD readable. Convert sounds for EdgeTX and design Betaflight OSD fonts, all on your iPhone.
-support_url: https://chalkyjason.github.io/MyWebsite/projects/army-jay/support
-marketing_url: https://chalkyjason.github.io/MyWebsite/projects/army-jay/
+promo_text: Make your radio talk back and put your own emblem on your OSD. EdgeTX sounds and Betaflight start screens, built on your iPhone.
+support_url: https://chalkyjason.github.io/MyWebsite/projects/callsign-fpv/support
+marketing_url: https://chalkyjason.github.io/MyWebsite/projects/callsign-fpv/
 
 ## Screenshots
 
 ### 6.9-inch (iPhone 17 Pro Max)
 
-- screenshots/appstore/01-convert.png        # a clip trimmed, named for the "armed" event, converted
-- screenshots/appstore/02-library.png        # the library of ready-made tones
-- screenshots/appstore/03-font.png           # the armyjay_full font and its boot splash
-- screenshots/appstore/04-editor.png         # the pixel glyph editor
-- screenshots/appstore/05-start-screen.png   # a boot splash typed in with the text template
+- screenshots/appstore/01-emblem.png    # the layered start screen: skull, props and a callsign
+- screenshots/appstore/02-shapes.png    # the shape library, Military pack
+- screenshots/appstore/03-convert.png   # a clip trimmed, named for the "armed" event, converted
+- screenshots/appstore/04-glyphs.png    # the pixel glyph editor
+- screenshots/appstore/05-home.png      # Callsign FPV's home screen
 
 1320 x 2868. Rendered in WebKit at 440 x 956 pt, 3x, with the app's
 native mode on and the iPhone 17 Pro Max's safe areas, under the status bar
@@ -78,7 +82,7 @@ last_name: Chalky
 phone:                              # TODO: required -- not in the repo
 email: chalkyjason@gmail.com
 notes: |
-  Army Jay works fully offline and needs no account.
+  Callsign FPV works fully offline and needs no account.
 
   To try the sound converter: Sounds > Convert, tap "Choose an audio file",
   pick any MP3/M4A/WAV from Files, choose a Trigger preset (e.g. "On arm"),
@@ -86,9 +90,10 @@ notes: |
   result to Files. The output is a 32 kHz mono 16-bit WAV, the format
   EdgeTX radios play.
 
-  To try the font tools: OSD Fonts > full > Edit glyphs, drag on the large
-  glyph to paint pixels; or OSD Fonts > Start screen, type into Big line,
-  then save the .mcm font from the Export panel.
+  To try the emblem builder: OSD Fonts > Start screen > Starters, pick one,
+  then drag, pinch or twist a layer on the preview, or add a Shape from the
+  library; save the .mcm font from the Export panel. To edit glyphs: OSD
+  Fonts > full > Edit glyphs, and drag on the large glyph.
 
   Files are produced for FPV hardware (EdgeTX radios, Betaflight flight
   controllers) and saved through the standard share sheet.
@@ -101,7 +106,7 @@ pre_order: false
 
 ## Privacy
 
-privacy_url: https://chalkyjason.github.io/MyWebsite/projects/army-jay/privacy-policy
+privacy_url: https://chalkyjason.github.io/MyWebsite/projects/callsign-fpv/privacy-policy
 data_collected: none
 
 ## Compliance
