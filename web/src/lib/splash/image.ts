@@ -1,4 +1,4 @@
-import { RASTER_HEIGHT, RASTER_WIDTH, emptyRaster, maskToRaster, outlineMask } from './raster'
+import { RASTER_HEIGHT, RASTER_WIDTH, emptyRaster, maskToRaster } from './raster'
 import type { Raster } from './raster'
 
 export interface ImageOptions {
@@ -91,4 +91,3 @@ function withPlate(mask: boolean[], plate: boolean[]): Raster {
   return raster
 }
 
-export { outlineMask }

@@ -30,16 +30,3 @@ export async function saveEdit(variantId: string, edits: Record<number, Pixel[]>
     await reqAsPromise(store.put(record))
   })
 }
-
-export async function clearEdit(variantId: string): Promise<void> {
-  await withStore(FONT_EDITS_STORE, 'readwrite', async (store) => {
-    await reqAsPromise(store.delete(variantId))
-  })
-}
-
-export async function listEdits(): Promise<FontEdit[]> {
-  return withStore(FONT_EDITS_STORE, 'readonly', async (store) => {
-    const all = await reqAsPromise<FontEdit[]>(store.getAll())
-    return all.sort((a, b) => b.savedAt - a.savedAt)
-  })
-}
