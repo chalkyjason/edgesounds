@@ -3,6 +3,7 @@ import JSZip from 'jszip'
 import { Download, Pause, Play, Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useMySounds } from '../hooks/useMySounds'
+import { useSharedAudio } from '../hooks/useSharedAudio'
 import { useToast } from '../hooks/useToast'
 import { formatBytes, formatDuration } from '../utils/validateAudio'
 import { MAX_ENTRIES } from '../utils/mySoundsStorage'
@@ -10,11 +11,17 @@ import { SaveLink } from '../components/SaveLink'
 import { saveFile } from '../platform/saveFile'
 import { zipPaths } from '../utils/zipPaths'
 
+/** Namespaces this page's ids in the shared player, apart from the Library's. */
+const PLAYER_PREFIX = 'my:'
+
 export function MySounds() {
   const { sounds, loading, remove, clearAll } = useMySounds()
   const { notify } = useToast()
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const [playingId, setPlayingId] = useState<string | null>(null)
+  // The app's one player, so a clip here and a Library preview never overlap.
+  const audio = useSharedAudio()
+  const playingId = audio.isPlaying && audio.currentId?.startsWith(PLAYER_PREFIX)
+    ? audio.currentId.slice(PLAYER_PREFIX.length)
+    : null
   const [zipping, setZipping] = useState(false)
 
   // Build short-lived object URLs for each blob; revoke when sounds change
@@ -30,38 +37,26 @@ export function MySounds() {
     }
   }, [urls])
 
+  // This page's object URLs are revoked when it unmounts, so its clip can't
+  // outlive it.
+  const { currentId, stop } = audio
+  const currentRef = useRef(currentId)
   useEffect(() => {
-    const audio = new Audio()
-    audioRef.current = audio
-    const onEnded = () => setPlayingId(null)
-    audio.addEventListener('ended', onEnded)
+    currentRef.current = currentId
+  })
+  useEffect(() => {
     return () => {
-      audio.removeEventListener('ended', onEnded)
-      audio.pause()
-      audioRef.current = null
+      if (currentRef.current?.startsWith(PLAYER_PREFIX)) stop()
     }
-  }, [])
+  }, [stop])
 
   const togglePlay = (id: string) => {
-    const audio = audioRef.current
-    if (!audio) return
-    if (playingId === id) {
-      audio.pause()
-      setPlayingId(null)
-      return
-    }
     const url = urls.get(id)
-    if (!url) return
-    if (audio.src !== url) audio.src = url
-    void audio.play()
-    setPlayingId(id)
+    if (url) audio.play(url, PLAYER_PREFIX + id)
   }
 
   const handleRemove = async (id: string, name: string) => {
-    if (playingId === id) {
-      audioRef.current?.pause()
-      setPlayingId(null)
-    }
+    if (playingId === id) audio.stop()
     try {
       await remove(id)
       notify(`Removed ${name}`, 'info')
@@ -72,8 +67,7 @@ export function MySounds() {
 
   const handleClear = async () => {
     if (!confirm(`Remove all ${sounds.length} saved sounds? This can't be undone.`)) return
-    audioRef.current?.pause()
-    setPlayingId(null)
+    if (playingId) audio.stop()
     try {
       await clearAll()
       notify('Cleared all saved sounds', 'info')
