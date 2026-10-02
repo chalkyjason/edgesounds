@@ -8,7 +8,7 @@ const HALVES = [
     icon: Radio,
     title: 'Sounds',
     tagline: 'Make your radio talk back.',
-    body: 'Convert any audio file to the 32 kHz mono 16-bit .wav EdgeTX actually accepts — entirely on your device, nothing uploaded. Plus a library of ready-to-flash callouts, and a setup guide covering the filenames EdgeTX triggers on its own.',
+    body: 'Convert any audio file to the 32 kHz mono 16-bit .wav EdgeTX actually accepts — entirely on your device, nothing uploaded. Plus a library of ready-to-flash sounds, and a setup guide covering the filenames EdgeTX triggers on its own.',
     cta: 'Convert a sound',
   },
   {
