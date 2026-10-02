@@ -13,10 +13,10 @@ const BLACK_RGB: [number, number, number] = [0, 0, 0]
  * Two views of the raster: over grey "video", which is what the black
  * outline is for, and sliced into its 24 x 4 tiles with 1 px seams.
  */
-export function SplashPreview({ raster }: { raster: Raster }) {
+export function SplashPreview({ raster, tilesOnly = false }: { raster: Raster; tilesOnly?: boolean }) {
   return (
     <div className="space-y-3">
-      <Canvas raster={raster} scale={2} seams={false} label="Start screen over video" />
+      {!tilesOnly && <Canvas raster={raster} scale={2} seams={false} label="Start screen over video" />}
       <Canvas raster={raster} scale={1} seams label="Start screen as 96 tiles" />
     </div>
   )

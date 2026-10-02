@@ -1,4 +1,5 @@
 import { Coffee, Code2 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { isNativeApp } from '../platform/platform'
 
 // Update this once your Buy Me A Coffee handle is set up.
@@ -33,6 +34,12 @@ export function Footer() {
             <Code2 className="h-3.5 w-3.5" />
             <span>Source</span>
           </a>
+          <Link
+            to="/credits"
+            className="rounded-md border border-zinc-800 px-2.5 py-1.5 text-xs hover:border-accent/60 hover:text-accent"
+          >
+            Credits
+          </Link>
           <p className="font-mono text-xs">
             EdgeTX is a separate project &mdash; we're just here to feed it good audio.
           </p>

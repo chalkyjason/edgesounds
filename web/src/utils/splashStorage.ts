@@ -1,35 +1,18 @@
 // The start-screen design, one record, in the shared 'armyjay_osd' database.
 //
-// The image's source file is kept as a Blob so the threshold and the other
-// settings can be re-applied after a reload; the decoded pixels are not
-// stored, they are cheap to recompute. Paint is the sparse override map.
-// Undo history is deliberately not persisted (see useFontEditor for why).
+// The layer stack, the paint over it, and the one image the image layers
+// draw from, kept as a Blob so thresholds can be re-applied after a reload;
+// decoded pixels are not stored. A design saved before layers (no
+// `version`) is converted on load. Undo history is not persisted.
 
-import type { Pixel } from '../lib/mcm/types'
-import type { ImageOptions } from '../lib/splash/image'
-import type { PaintLayer } from '../lib/splash/raster'
-import type { TemplateInput } from '../lib/splash/template'
+import type { EmblemDesign, V1Design } from '../lib/emblem/design'
 import { SPLASH_STORE, reqAsPromise, withStore } from './osdDb'
 
-export interface SplashRecord {
-  id: 'current'
-  generator: 'text' | 'image'
-  text: TemplateInput
-  image: ImageOptions & { source: Blob | null; sourceName: string | null }
-  paint: PaintLayer
-  savedAt: number
-}
+/** What is stored: the current format, or a design saved before layers. */
+type SplashRecord = { id: 'current'; savedAt: number } & (EmblemDesign | V1Design)
 
-export type SplashDesign = Omit<SplashRecord, 'id' | 'savedAt'>
-
-export const DEFAULT_DESIGN: SplashDesign = {
-  generator: 'text',
-  text: { big: '', small: '', rules: true },
-  image: { source: null, sourceName: null, threshold: 128, invert: false, background: 'transparent', outline: false },
-  paint: {},
-}
-
-export async function loadDesign(): Promise<SplashDesign | null> {
+/** The saved design as stored; a version-1 design is converted by the caller (see migrateV1). */
+export async function loadDesign(): Promise<EmblemDesign | V1Design | null> {
   return withStore(SPLASH_STORE, 'readonly', async (store) => {
     const found = await reqAsPromise<SplashRecord | undefined>(store.get('current'))
     if (!found) return null
@@ -38,7 +21,7 @@ export async function loadDesign(): Promise<SplashDesign | null> {
   })
 }
 
-export async function saveDesign(design: SplashDesign): Promise<void> {
+export async function saveDesign(design: EmblemDesign): Promise<void> {
   const record: SplashRecord = { id: 'current', ...design, savedAt: Date.now() }
   await withStore(SPLASH_STORE, 'readwrite', async (store) => {
     await reqAsPromise(store.put(record))
@@ -50,5 +33,3 @@ export async function clearDesign(): Promise<void> {
     await reqAsPromise(store.delete('current'))
   })
 }
-
-export type { Pixel }

@@ -17,16 +17,16 @@ describe('SplashMaker', () => {
     </ToastProvider>,
   )
 
-  it('offers the three tools and starts on text', () => {
+  it('opens on the layers, with paint as the other tool', () => {
     expect(html).toContain('Start screen')
-    for (const tab of ['Text', 'Image', 'Paint']) expect(html).toMatch(new RegExp(`role="tab"[^>]*>${tab}<`))
-    expect(html).toMatch(/aria-selected="true"[^>]*>Text</)
+    for (const tab of ['Layers', 'Paint']) expect(html).toMatch(new RegExp(`role="tab"[^>]*>.*?${tab}</button>`))
+    expect(html).toMatch(/aria-selected="true"[^>]*>.*?Layers</)
   })
 
-  it('renders both inputs of the text template with the width readout', () => {
-    expect(html).toContain('id="splash-big"')
-    expect(html).toContain('id="splash-small"')
-    expect(html).toContain('0 of 288 px')
+  it('starts empty, offering shapes, text, an image and the starters', () => {
+    expect(html).toContain('No layers yet')
+    for (const label of ['Shape', 'Text', 'Image', 'Starters']) expect(html).toContain(label)
+    expect(html).toContain('Tap a layer to select it')
   })
 
   it('shows the export panel with nothing to export yet', () => {

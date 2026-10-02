@@ -19,6 +19,7 @@ const SplashMaker = lazy(() => import('./pages/osd/SplashMaker').then((m) => ({ 
 const Library = lazy(() => import('./pages/Library').then((m) => ({ default: m.Library })))
 const Convert = lazy(() => import('./pages/Convert').then((m) => ({ default: m.Convert })))
 const MySounds = lazy(() => import('./pages/MySounds').then((m) => ({ default: m.MySounds })))
+const Credits = lazy(() => import('./pages/Credits').then((m) => ({ default: m.Credits })))
 const Setup = lazy(() => import('./pages/Setup').then((m) => ({ default: m.Setup })))
 
 /** A page that crashed stays crashed only until you navigate away from it. */
@@ -49,6 +50,7 @@ function App() {
                         <Route path="/osd/fonts/:variant" element={<FontDetail />} />
                         <Route path="/osd/fonts/:variant/edit" element={<FontEditor />} />
                         <Route path="/osd/splash" element={<SplashMaker />} />
+                        <Route path="/credits" element={<Credits />} />
                         <Route path="*" element={<Landing />} />
                       </Routes>
                     </Suspense>

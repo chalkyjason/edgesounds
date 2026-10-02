@@ -1,4 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server'
+import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { isNativeApp } from '../../platform/platform'
 import { DropZone } from '../DropZone'
@@ -11,14 +12,15 @@ beforeEach(() => vi.mocked(isNativeApp).mockReset())
 describe('Footer', () => {
   it('links to Buy Me a Coffee and the source in a browser', () => {
     vi.mocked(isNativeApp).mockReturnValue(false)
-    const html = renderToStaticMarkup(<Footer />)
+    const html = renderToStaticMarkup(<MemoryRouter><Footer /></MemoryRouter>)
     expect(html).toContain('buymeacoffee.com')
     expect(html).toContain('github.com/chalkyjason/edgesounds')
+    expect(html).toContain('href="/credits"')
   })
 
   it('drops the donation link in the app but keeps the source link', () => {
     vi.mocked(isNativeApp).mockReturnValue(true)
-    const html = renderToStaticMarkup(<Footer />)
+    const html = renderToStaticMarkup(<MemoryRouter><Footer /></MemoryRouter>)
     expect(html).not.toContain('buymeacoffee.com')
     expect(html).not.toContain('Buy me a coffee')
     expect(html).toContain('github.com/chalkyjason/edgesounds')

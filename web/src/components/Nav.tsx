@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { Radio } from 'lucide-react'
 import { useMySounds } from '../hooks/useMySounds'
@@ -17,6 +18,17 @@ const SOUNDS_ITEMS: SubItem[] = [
 ]
 
 export function Nav() {
+  // Publish the bar's height so content can stick just below it (--nav-height).
+  const header = useRef<HTMLElement>(null)
+  useEffect(() => {
+    const el = header.current
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(() => {
+      document.documentElement.style.setProperty('--nav-height', `${el.offsetHeight}px`)
+    })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
   const { sounds } = useMySounds()
   const variants = useVariants()
   const { pathname } = useLocation()
@@ -41,7 +53,7 @@ export function Nav() {
   const subItems = inSounds ? SOUNDS_ITEMS : inOsd ? osdItems : []
 
   return (
-    <header className="safe-top sticky top-0 z-30 border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur">
+    <header ref={header} className="safe-top sticky top-0 z-30 border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-stretch gap-1 px-4 sm:gap-2">
         <NavLink
           to="/"
