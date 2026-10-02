@@ -4,6 +4,7 @@ import { ArrowLeft, Download, Eraser, Redo2, RotateCcw, Search, Trash2, Undo2 } 
 import { GlyphCanvas } from '../../components/osd/GlyphCanvas'
 import { GlyphEditorCanvas } from '../../components/osd/GlyphEditorCanvas'
 import { LogoUpload } from '../../components/osd/LogoUpload'
+import { PALETTE } from '../../components/osd/palette'
 import { SaveLink } from '../../components/SaveLink'
 import { isNativeApp } from '../../platform/platform'
 import { GLYPH_COUNT } from '../../lib/mcm/decode'
@@ -15,12 +16,6 @@ import { useVariants } from '../../hooks/useVariants'
 import { useToast } from '../../hooks/useToast'
 
 const hex = (index: number) => `0x${index.toString(16).toUpperCase().padStart(2, '0')}`
-
-const PALETTE: { value: Pixel; label: string; swatch: string }[] = [
-  { value: 'white', label: 'White', swatch: 'bg-white' },
-  { value: 'black', label: 'Black', swatch: 'bg-black border border-zinc-600' },
-  { value: 'transparent', label: 'Clear', swatch: 'bg-zinc-800 border border-zinc-600' },
-]
 
 export function FontEditor() {
   const { variant: variantId } = useParams<{ variant: string }>()

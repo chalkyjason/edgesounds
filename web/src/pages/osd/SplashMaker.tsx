@@ -2,6 +2,7 @@ import { Eraser, Redo2, RotateCcw, Trash2, Undo2 } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ExportPanel } from '../../components/splash/ExportPanel'
+import { PALETTE } from '../../components/osd/palette'
 import { ImagePanel } from '../../components/splash/ImagePanel'
 import { PaintCanvas } from '../../components/splash/PaintCanvas'
 import type { BrushSize } from '../../components/splash/PaintCanvas'
@@ -19,12 +20,6 @@ const TOOLS: { id: Tool; label: string }[] = [
   { id: 'text', label: 'Text' },
   { id: 'image', label: 'Image' },
   { id: 'paint', label: 'Paint' },
-]
-
-const PALETTE: { value: Pixel; label: string; swatch: string }[] = [
-  { value: 'white', label: 'White', swatch: 'bg-white' },
-  { value: 'black', label: 'Black', swatch: 'bg-black border border-zinc-600' },
-  { value: 'transparent', label: 'Clear', swatch: 'bg-zinc-800 border border-zinc-600' },
 ]
 
 const TOOLBAR =
