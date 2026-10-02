@@ -125,6 +125,7 @@ of `<a download>`), three lines of copy, and the donation link.
 npm run build:ios   # build, derive dist-ios/, cap sync
 npm run ios:sim     # unsigned simulator build (DerivedData under ~/Library)
 npm run ios:open    # the Xcode project, for a signed build on a phone
+npm run ios:release # App Store archive + signed IPA in build-ios/export/ (bump CURRENT_PROJECT_VERSION first)
 ```
 
 `dist-ios/` is `dist/` with the library trimmed to the 6 sounds licensed

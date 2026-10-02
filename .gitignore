@@ -31,3 +31,5 @@ web/public/osd/
 # Playwright MCP scratch output — screenshots and page snapshots
 .playwright-mcp/
 web/.playwright-mcp/
+# App Store archive and IPA from npm run ios:release
+web/build-ios/

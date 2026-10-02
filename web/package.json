@@ -19,6 +19,7 @@
     "build:ios": "npm run build && node scripts/prepare-ios.mjs && cap sync ios",
     "ios:sim": "set -o pipefail && xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath \"$HOME/Library/Developer/Xcode/DerivedData/armyjay-ios\" CODE_SIGNING_ALLOWED=NO build | grep -E 'error:|BUILD'",
     "ios:open": "cap open ios",
+    "ios:release": "npm run build:ios && set -o pipefail && rm -rf build-ios && xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release -destination generic/platform=iOS -archivePath build-ios/ArmyJay.xcarchive -allowProvisioningUpdates archive | grep -E 'error:|ARCHIVE' && xcodebuild -exportArchive -archivePath build-ios/ArmyJay.xcarchive -exportPath build-ios/export -exportOptionsPlist ios/ExportOptions.plist -allowProvisioningUpdates | grep -E 'error|EXPORT'",
     "prebuild": "node scripts/stage-osd-assets.mjs && node scripts/build-shapes.mjs && node scripts/gen-sitemap.mjs",
     "predev": "node scripts/stage-osd-assets.mjs && node scripts/build-shapes.mjs && node scripts/gen-sitemap.mjs"
   },
